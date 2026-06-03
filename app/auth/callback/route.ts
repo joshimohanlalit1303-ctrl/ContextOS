@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import { db } from '@/lib/db';
-import { users } from '@/lib/db/schema';
+import { users, organizationMembers, projects, organizations } from '@/lib/db/schema';
 import { eq } from 'drizzle-orm';
 
 export async function GET(request: Request) {
@@ -33,20 +33,20 @@ export async function GET(request: Request) {
           existingUser = insertedUsers[0];
 
           // Create default organization
-          const [newOrg] = await db.insert(organizationMembers.schema ? db._.schema.organizations : require('@/lib/db/schema').organizations).values({
+          const [newOrg] = await db.insert(organizations).values({
             name: `${name || email.split('@')[0]}'s Workspace`,
             slug: `workspace-${Date.now()}`
           }).returning();
 
           // Link user to org
-          await db.insert(require('@/lib/db/schema').organizationMembers).values({
+          await db.insert(organizationMembers).values({
             organizationId: newOrg.id,
             userId: existingUser.id,
             role: 'owner'
           });
 
           // Create default project
-          await db.insert(require('@/lib/db/schema').projects).values({
+          await db.insert(projects).values({
             organizationId: newOrg.id,
             name: 'Default Project'
           });
