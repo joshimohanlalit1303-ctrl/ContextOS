@@ -20,14 +20,35 @@ export async function GET(request: Request) {
 
       if (email) {
         // UPSERT the user in our local Postgres database
-        const existingUser = await db.query.users.findFirst({
+        let existingUser = await db.query.users.findFirst({
           where: eq(users.email, email)
         });
 
         if (!existingUser) {
-          await db.insert(users).values({
+          const insertedUsers = await db.insert(users).values({
             email,
             name,
+          }).returning();
+          
+          existingUser = insertedUsers[0];
+
+          // Create default organization
+          const [newOrg] = await db.insert(organizationMembers.schema ? db._.schema.organizations : require('@/lib/db/schema').organizations).values({
+            name: `${name || email.split('@')[0]}'s Workspace`,
+            slug: `workspace-${Date.now()}`
+          }).returning();
+
+          // Link user to org
+          await db.insert(require('@/lib/db/schema').organizationMembers).values({
+            organizationId: newOrg.id,
+            userId: existingUser.id,
+            role: 'owner'
+          });
+
+          // Create default project
+          await db.insert(require('@/lib/db/schema').projects).values({
+            organizationId: newOrg.id,
+            name: 'Default Project'
           });
         }
       }
