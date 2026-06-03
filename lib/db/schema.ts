@@ -1,7 +1,7 @@
 /* eslint-disable */
 
 import { pgTable, text, timestamp, uuid, jsonb, integer, varchar, boolean, index, foreignKey, customType } from "drizzle-orm/pg-core";
-import { sql } from "drizzle-orm";
+import { sql, relations } from "drizzle-orm";
 
 // -----------------------------------------------------------------------------
 // CORE & AUTH TABLES
@@ -231,3 +231,23 @@ export const sdkWaitlist = pgTable("sdk_waitlist", {
   useCase: text("use_case"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
+
+export const passportsRelations = relations(passports, ({ many }) => ({
+  tasks: many(passportTasks),
+  decisions: many(passportDecisions),
+}));
+
+export const passportTasksRelations = relations(passportTasks, ({ one }) => ({
+  passport: one(passports, {
+    fields: [passportTasks.passportId],
+    references: [passports.id],
+  }),
+}));
+
+export const passportDecisionsRelations = relations(passportDecisions, ({ one }) => ({
+  passport: one(passports, {
+    fields: [passportDecisions.passportId],
+    references: [passports.id],
+  }),
+}));
+
