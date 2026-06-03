@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "ContextOS",
   "version": "1.0.0",
-  "description": "Your AI User Context Layer",
+  "description": "Continue any AI project anywhere. Save your context from ChatGPT, Claude & Gemini as a portable AI Context Passport.",
   "action": {
     "default_icon": {
       "16": "icon-16.png",
@@ -35,7 +35,6 @@
     "https://chatgpt.com/*",
     "https://gemini.google.com/*",
     "https://chat.deepseek.com/*",
-    "http://localhost:3000/*",
     "https://*.vercel.app/*",
     "https://*/*"
   ],

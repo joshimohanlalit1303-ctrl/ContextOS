@@ -59,18 +59,6 @@ export default async function DashboardLayout({ children }: { children: React.Re
             <Link href="/dashboard" className="block px-4 py-2.5 rounded-lg text-sm text-white/70 hover:bg-white/5 hover:text-white transition-colors font-medium">
               Overview
             </Link>
-            <Link href="/dashboard/profiles" className="block px-4 py-2.5 rounded-lg text-sm text-white/70 hover:bg-white/5 hover:text-white transition-colors font-medium">
-              User Profiles
-            </Link>
-            <Link href="/dashboard/context-explorer" className="block px-4 py-2.5 rounded-lg text-sm text-white/70 hover:bg-white/5 hover:text-white transition-colors font-medium">
-              Context Explorer
-            </Link>
-            <Link href="/dashboard/timeline" className="block px-4 py-2.5 rounded-lg text-sm text-white/70 hover:bg-white/5 hover:text-white transition-colors font-medium">
-              Timeline Explorer
-            </Link>
-            <Link href="/dashboard/api-logs" className="block px-4 py-2.5 rounded-lg text-sm text-white/70 hover:bg-white/5 hover:text-white transition-colors font-medium">
-              API Logs
-            </Link>
             <div className="pt-4 pb-2 px-4 text-xs font-semibold text-white/40 uppercase tracking-wider">Settings</div>
             <Link href="/dashboard/api-keys" className="block px-4 py-2.5 rounded-lg text-sm text-white/70 hover:bg-white/5 hover:text-white transition-colors font-medium">
               API Keys
