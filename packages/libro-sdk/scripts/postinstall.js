@@ -8,11 +8,11 @@ const blue = "\x1b[34m";
 
 const banner = `
 ${cyan}${bold}
-  ____            _            _    ___  ____  
- / ___|___  _ __ | |_ _____  _| |_ / _ \\/ ___| 
-| |   / _ \\| '_ \\| __/ _ \\ \\/ / __| | | \\___ \\ 
-| |__| (_) | | | | ||  __/>  <| |_| |_| |___) |
- \\____\\___/|_| |_|\\__\\___/_/\\_\\\\__|\\___/|____/ 
+ _     _ _               
+| |   (_) |__  _ __ ___  
+| |   | | '_ \\| '__/ _ \\ 
+| |___| | |_) | | | (_) |
+|_____|_|_.__/|_|  \\___/ 
 ${reset}
 ${green}✔ Libro SDK successfully installed!${reset}
 ${blue}Documentation:${reset} https://github.com/joshimohanlalit1303-ctrl/Libro

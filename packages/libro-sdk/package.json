@@ -26,9 +26,7 @@
   ],
   "author": "Lalit Joshi",
   "license": "MIT",
-  "dependencies": {
-    "libro-sdk": "^1.0.1"
-  },
+  "dependencies": {},
   "devDependencies": {
     "tsup": "^8.0.2",
     "typescript": "^5.4.5"

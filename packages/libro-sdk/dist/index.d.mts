@@ -1,4 +1,4 @@
-interface ContextOSOptions {
+interface LibroOptions {
     apiKey: string;
     baseUrl?: string;
 }
@@ -17,10 +17,10 @@ interface GetContextRequest {
 interface GetTimelineRequest {
     userId: string;
 }
-declare class ContextOSClient {
+declare class LibroClient {
     private apiKey;
     private baseUrl;
-    constructor(options: ContextOSOptions);
+    constructor(options: LibroOptions);
     private fetchAPI;
     /**
      * Ingest a new memory or conversation turn for a user.
@@ -40,4 +40,4 @@ declare class ContextOSClient {
     getTimeline(request: GetTimelineRequest): Promise<any>;
 }
 
-export { ContextOSClient, type ContextOSOptions, type GetContextRequest, type GetProfileRequest, type GetTimelineRequest, type IngestRequest };
+export { type GetContextRequest, type GetProfileRequest, type GetTimelineRequest, type IngestRequest, LibroClient, type LibroOptions };
