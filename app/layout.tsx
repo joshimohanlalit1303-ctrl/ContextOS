@@ -2,11 +2,12 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import clsx from "clsx";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://libro.dev"),
+  metadataBase: new URL("https://libro.co.in"),
   title: {
     template: "%s | Libro",
     default: "Libro - The User Context Layer For AI Applications",
@@ -18,7 +19,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://libro.dev",
+    url: "https://libro.co.in",
     title: "Libro - The Brain for AI Agents",
     description: "Build AI applications that actually remember your users. Drop-in infinite memory SDK with local embeddings, semantic chunking, and full privacy compliance.",
     siteName: "Libro",
@@ -68,6 +69,7 @@ export default function RootLayout({
           <Footer />
         </SmoothScroll>
       </body>
+      <GoogleAnalytics gaId="G-KB14CWYVC1" />
     </html>
   );
 }
