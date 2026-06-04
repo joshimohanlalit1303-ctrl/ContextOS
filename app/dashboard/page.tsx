@@ -5,6 +5,10 @@ import { generateApiKey, deleteApiKey } from './actions'
 import { Key, Trash2, LogOut, Database, Code2 } from 'lucide-react'
 import Link from 'next/link'
 import { CopyButton } from '@/components/CopyButton'
+import { db } from "@/lib/db";
+import { users, passports } from "@/lib/db/schema";
+import { eq, desc } from "drizzle-orm";
+import { Target, FileJson, ListTodo, BrainCircuit } from "lucide-react";
 
 export default async function DashboardPage() {
   const supabase = await createClient()
@@ -25,6 +29,30 @@ export default async function DashboardPage() {
   const { count } = await supabase
     .from('memories')
     .select('*', { count: 'exact', head: true })
+
+  // Restore Passport Logic
+  let userPassports: any[] = [];
+  try {
+    const dbUser = await db.query.users.findFirst({
+      where: eq(users.email, user.email!),
+    });
+
+    if (dbUser) {
+      userPassports = await db.query.passports.findMany({
+        where: eq(passports.userId, dbUser.id),
+        orderBy: [desc(passports.updatedAt)],
+        with: {
+          tasks: true,
+          decisions: true
+        }
+      });
+    }
+  } catch (err) {
+    console.error("Failed to fetch passports:", err);
+  }
+
+  const totalPassports = userPassports.length;
+  const totalTasks = userPassports.reduce((acc, p) => acc + (p.tasks?.length || 0), 0);
 
   return (
     <div className="min-h-screen bg-black text-white p-8 md:p-12 relative overflow-hidden">
@@ -129,6 +157,67 @@ export default async function DashboardPage() {
                 <Key className="w-8 h-8 text-neutral-600 mb-4" />
                 <h3 className="text-lg font-medium mb-2">No API keys found</h3>
                 <p className="text-neutral-400 text-sm">Create an API key to start using the Libro SDK.</p>
+              </div>
+            )}
+          </div>
+        </section>
+
+        {/* --- PASSPORTS SECTION RESTORED --- */}
+        <section className="mb-12">
+          <div className="flex flex-col gap-2 mb-8">
+            <h2 className="text-xl font-medium tracking-tight text-white">Context Passports</h2>
+            <p className="text-neutral-400 text-sm">Manage your AI project contexts and seamlessly switch between platforms.</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div className="bg-white/5 border border-white/10 p-6 rounded-3xl flex flex-col gap-2 shadow-[0_0_20px_rgba(255,255,255,0.02)] relative overflow-hidden">
+              <div className="absolute top-0 right-0 p-4 opacity-10">
+                <FileJson className="w-10 h-10" />
+              </div>
+              <span className="text-sm font-medium text-neutral-400 tracking-wider z-10">Total Passports</span>
+              <span className="text-4xl font-light text-white z-10">{totalPassports}</span>
+            </div>
+            <div className="bg-white/5 border border-white/10 p-6 rounded-3xl flex flex-col gap-2 shadow-[0_0_20px_rgba(255,255,255,0.02)] relative overflow-hidden">
+              <div className="absolute top-0 right-0 p-4 opacity-10">
+                <ListTodo className="w-10 h-10" />
+              </div>
+              <span className="text-sm font-medium text-neutral-400 tracking-wider z-10">Tasks Tracked</span>
+              <span className="text-4xl font-light text-white z-10">{totalTasks}</span>
+            </div>
+            <div className="bg-white/5 border border-white/10 p-6 rounded-3xl flex flex-col gap-2 shadow-[0_0_20px_rgba(255,255,255,0.02)] relative overflow-hidden">
+              <div className="absolute top-0 right-0 p-4 opacity-10">
+                <BrainCircuit className="w-10 h-10" />
+              </div>
+              <span className="text-sm font-medium text-neutral-400 tracking-wider z-10">Extraction Status</span>
+              <span className="text-4xl font-light text-green-400 z-10">Online</span>
+            </div>
+          </div>
+
+          <div className="bg-white/5 border border-white/10 rounded-3xl p-8 min-h-[300px]">
+            {totalPassports === 0 ? (
+              <div className="flex flex-col items-center justify-center h-[200px] text-neutral-400 text-center border border-dashed border-white/10 rounded-2xl bg-white/[0.02]">
+                <span className="text-3xl mb-3">🚀</span>
+                <p className="text-sm font-medium text-white">No Passports Yet</p>
+                <p className="text-xs opacity-70 mt-1 max-w-xs">Use the Chrome Extension to save your first Context Passport from any AI chat.</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                 {userPassports.map((passport) => (
+                   <Link href={`/dashboard/passports/${passport.id}`} key={passport.id} className="block group">
+                     <div className="bg-white/5 border border-white/10 rounded-2xl p-5 hover:border-blue-500/50 hover:bg-white/10 transition-all h-full relative overflow-hidden">
+                       <h4 className="text-lg font-medium text-white mb-2">{passport.project}</h4>
+                       <div className="flex items-start gap-2 text-sm text-neutral-300 mb-4 font-medium">
+                         <Target className="w-4 h-4 mt-0.5 text-blue-400 shrink-0" />
+                         <p className="line-clamp-2">{passport.goal}</p>
+                       </div>
+                       <div className="flex gap-4 text-xs font-medium text-neutral-500 border-t border-white/10 pt-4 mt-auto">
+                         <span>{passport.tasks?.length || 0} Tasks</span>
+                         <span>{passport.decisions?.length || 0} Decisions</span>
+                         <span>Updated {new Date(passport.updatedAt).toLocaleDateString()}</span>
+                       </div>
+                     </div>
+                   </Link>
+                 ))}
               </div>
             )}
           </div>

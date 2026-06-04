@@ -2,7 +2,7 @@ const { LibroClient } = require("libro-sdk");
 
 // Replace this with the API Key you generated in the dashboard!
 const client = new LibroClient({
-  apiKey: "YOUR_API_KEY_HERE",
+  apiKey: "libro_sk_zsjekcdivrnplylpcpwpl",
   baseUrl: "http://localhost:3000",
 });
 
