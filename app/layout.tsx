@@ -64,6 +64,25 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        {/* CookieHub Consent Manager */}
+        <Script 
+          strategy="beforeInteractive" 
+          src="https://cdn.cookiehub.eu/c2/db2e2d6c.js" 
+        />
+        <Script
+          id="cookiehub-init"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              document.addEventListener("DOMContentLoaded", function(event) {
+                var cpm = {};
+                window.cookiehub.load(cpm);
+              });
+            `,
+          }}
+        />
+
+        {/* Google Analytics */}
         <Script
           strategy="afterInteractive"
           src={`https://www.googletagmanager.com/gtag/js?id=G-TMM4LXTKJ2`}
