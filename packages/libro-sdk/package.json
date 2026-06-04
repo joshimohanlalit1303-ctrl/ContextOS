@@ -1,6 +1,6 @@
 {
   "name": "libro-sdk",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "The official JavaScript/TypeScript SDK for Libro.",
   "main": "dist/index.js",
   "module": "dist/index.mjs",

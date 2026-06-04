@@ -31,7 +31,7 @@ export class LibroClient {
       throw new Error("Libro: API Key is required.");
     }
     this.apiKey = options.apiKey;
-    this.baseUrl = options.baseUrl || "https://api.libro.dev";
+    this.baseUrl = options.baseUrl || "https://libro.co.in";
   }
 
   private async fetchAPI(endpoint: string, payload: any) {

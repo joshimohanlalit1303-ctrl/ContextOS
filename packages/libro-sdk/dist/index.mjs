@@ -5,7 +5,7 @@ var LibroClient = class {
       throw new Error("Libro: API Key is required.");
     }
     this.apiKey = options.apiKey;
-    this.baseUrl = options.baseUrl || "https://api.libro.dev";
+    this.baseUrl = options.baseUrl || "https://libro.co.in";
   }
   async fetchAPI(endpoint, payload) {
     const response = await fetch(`${this.baseUrl}${endpoint}`, {
