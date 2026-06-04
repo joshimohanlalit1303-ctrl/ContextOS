@@ -3,19 +3,19 @@ import { MetadataRoute } from 'next';
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
-      url: 'https://libro.dev',
+      url: 'https://libro.co.in',
       lastModified: new Date(),
       changeFrequency: 'weekly',
       priority: 1,
     },
     {
-      url: 'https://libro.dev/docs',
+      url: 'https://libro.co.in/docs',
       lastModified: new Date(),
       changeFrequency: 'weekly',
       priority: 0.8,
     },
     {
-      url: 'https://libro.dev/dashboard',
+      url: 'https://libro.co.in/dashboard',
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 0.5,
