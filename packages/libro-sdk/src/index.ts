@@ -15,6 +15,7 @@ export interface GetProfileRequest {
 
 export interface GetContextRequest {
   userId: string;
+  query: string;
   limitTimeline?: number;
 }
 
@@ -56,7 +57,12 @@ export class LibroClient {
    * Ingest a new memory or conversation turn for a user.
    */
   async ingest(request: IngestRequest) {
-    return this.fetchAPI("/api/v1/ingest", request);
+    const payload = {
+      endUserId: request.userId,
+      content: request.text,
+      metadata: request.metadata,
+    };
+    return this.fetchAPI("/api/v1/ingest", payload);
   }
 
   /**
@@ -70,7 +76,12 @@ export class LibroClient {
    * Fetch an LLM-optimized context pack including profile and recent activity.
    */
   async getContext(request: GetContextRequest) {
-    return this.fetchAPI("/api/v1/get-context", request);
+    const payload = {
+      endUserId: request.userId,
+      query: request.query,
+      limitTimeline: request.limitTimeline,
+    };
+    return this.fetchAPI("/api/v1/get-context", payload);
   }
 
   /**

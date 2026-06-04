@@ -12,6 +12,7 @@ interface GetProfileRequest {
 }
 interface GetContextRequest {
     userId: string;
+    query: string;
     limitTimeline?: number;
 }
 interface GetTimelineRequest {

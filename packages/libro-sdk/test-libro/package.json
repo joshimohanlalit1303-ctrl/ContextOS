@@ -10,6 +10,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "libro-sdk": "^1.0.3"
+    "libro-sdk": "file:.."
   }
 }

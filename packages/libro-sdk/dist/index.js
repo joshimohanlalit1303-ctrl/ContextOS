@@ -50,7 +50,12 @@ var LibroClient = class {
    * Ingest a new memory or conversation turn for a user.
    */
   async ingest(request) {
-    return this.fetchAPI("/api/v1/ingest", request);
+    const payload = {
+      endUserId: request.userId,
+      content: request.text,
+      metadata: request.metadata
+    };
+    return this.fetchAPI("/api/v1/ingest", payload);
   }
   /**
    * Instantly fetch the structured user profile.
@@ -62,7 +67,12 @@ var LibroClient = class {
    * Fetch an LLM-optimized context pack including profile and recent activity.
    */
   async getContext(request) {
-    return this.fetchAPI("/api/v1/get-context", request);
+    const payload = {
+      endUserId: request.userId,
+      query: request.query,
+      limitTimeline: request.limitTimeline
+    };
+    return this.fetchAPI("/api/v1/get-context", payload);
   }
   /**
    * Fetch the chronological evolution timeline of the user.
