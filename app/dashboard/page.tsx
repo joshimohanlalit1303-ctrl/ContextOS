@@ -4,6 +4,7 @@ import { signOut as logout } from '../login/actions'
 import { generateApiKey, deleteApiKey } from './actions'
 import { Key, Trash2, LogOut, Database, Code2 } from 'lucide-react'
 import Link from 'next/link'
+import { CopyButton } from '@/components/CopyButton'
 
 export default async function DashboardPage() {
   const supabase = await createClient()
@@ -70,8 +71,9 @@ export default async function DashboardPage() {
               <h2 className="text-lg font-medium">Quick Start</h2>
             </div>
             <p className="text-neutral-400 text-sm mb-4">Install the SDK and start giving your AI memory instantly.</p>
-            <div className="bg-black/50 p-3 rounded-xl border border-white/10 font-mono text-sm overflow-x-auto">
-              npm install libro-sdk
+            <div className="bg-black/50 p-3 rounded-xl border border-white/10 font-mono text-sm flex items-center justify-between">
+              <span className="overflow-x-auto whitespace-nowrap">npm install libro-sdk</span>
+              <CopyButton text="npm install libro-sdk" />
             </div>
           </div>
         </div>
@@ -104,8 +106,9 @@ export default async function DashboardPage() {
                         <Key className="w-4 h-4 text-neutral-500" />
                         Default Key
                       </td>
-                      <td className="px-6 py-4 font-mono text-sm text-neutral-300">
-                        {key.key.substring(0, 15)}...
+                      <td className="px-6 py-4 font-mono text-xs flex items-center gap-2">
+                        <span className="truncate max-w-[200px] inline-block">{key.key.substring(0, 14)}...</span>
+                        <CopyButton text={key.key} />
                       </td>
                       <td className="px-6 py-4 text-sm text-neutral-400">
                         {new Date(key.created_at).toLocaleDateString()}

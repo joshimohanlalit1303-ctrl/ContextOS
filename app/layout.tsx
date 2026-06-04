@@ -64,28 +64,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        {/* CookieHub Consent Manager */}
-        <Script 
-          src="https://cdn.cookiehub.eu/c2/db2e2d6c.js" 
-          strategy="beforeInteractive"
-        />
-        <Script
-          id="cookiehub-init"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-              var checkCookieHub = setInterval(function() {
-                if (window.cookiehub) {
-                  clearInterval(checkCookieHub);
-                  window.cookiehub.load({});
-                }
-              }, 100);
-              
-              // Fallback clear after 10s
-              setTimeout(function() { clearInterval(checkCookieHub); }, 10000);
-            `,
-          }}
-        />
+
 
         {/* Google Analytics */}
         <Script
