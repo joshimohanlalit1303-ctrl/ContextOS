@@ -1,6 +1,6 @@
-import { createClient } from '@/utils/supabase/server'
+import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
-import { logout } from '../(auth)/login/actions'
+import { signOut as logout } from '../login/actions'
 import { generateApiKey, deleteApiKey } from './actions'
 import { Key, Trash2, LogOut, Database, Code2 } from 'lucide-react'
 import Link from 'next/link'
