@@ -74,10 +74,13 @@ export default function RootLayout({
           strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `
-              document.addEventListener("DOMContentLoaded", function(event) {
-                var cpm = {};
-                window.cookiehub.load(cpm);
-              });
+              if (window.cookiehub) {
+                window.cookiehub.load({});
+              } else {
+                window.addEventListener("load", function() {
+                  window.cookiehub && window.cookiehub.load({});
+                });
+              }
             `,
           }}
         />
