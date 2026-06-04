@@ -37,7 +37,7 @@ create table if not exists public.memories (
   api_key_id uuid references public.api_keys(id) on delete cascade not null,
   end_user_id text not null,
   content text not null,
-  embedding vector(1536) not null,
+  embedding vector(384) not null,
   metadata jsonb default '{}'::jsonb,
   created_at timestamp with time zone default timezone('utc'::text, now()) not null
 );
@@ -52,7 +52,7 @@ create index on public.memories using hnsw (embedding vector_cosine_ops);
 
 -- Create a function to match memories
 create or replace function match_memories (
-  query_embedding vector(1536),
+  query_embedding vector(384),
   match_threshold float,
   match_count int,
   p_api_key_id uuid,

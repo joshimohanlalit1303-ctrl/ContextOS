@@ -1,12 +1,9 @@
 import { NextResponse } from 'next/server';
 import { createAdminClient } from '@/lib/supabase/admin';
-import OpenAI from 'openai';
+import { generateEmbedding } from '@/utils/embeddings';
 
 export async function POST(req: Request) {
   try {
-    const openai = new OpenAI({
-      apiKey: process.env.OPENAI_API_KEY || 'dummy_key_to_prevent_crash_if_missing',
-    });
     const authHeader = req.headers.get('Authorization');
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       return NextResponse.json({ error: 'Missing or invalid Authorization header' }, { status: 401 });
@@ -34,13 +31,8 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Missing required fields: content, endUserId' }, { status: 400 });
     }
 
-    // 3. Generate Embedding
-    const embeddingResponse = await openai.embeddings.create({
-      model: 'text-embedding-3-small',
-      input: content,
-      encoding_format: 'float',
-    });
-    const embedding = embeddingResponse.data[0].embedding;
+    // 3. Generate Embedding using free local Transformers model
+    const embedding = await generateEmbedding(content);
 
     // 4. Store in Supabase
     const { data: memoryData, error: memoryError } = await supabase

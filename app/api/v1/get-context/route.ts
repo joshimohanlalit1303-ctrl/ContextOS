@@ -1,12 +1,9 @@
 import { NextResponse } from 'next/server';
 import { createAdminClient } from '@/lib/supabase/admin';
-import OpenAI from 'openai';
+import { generateEmbedding } from '@/utils/embeddings';
 
 export async function POST(req: Request) {
   try {
-    const openai = new OpenAI({
-      apiKey: process.env.OPENAI_API_KEY || 'dummy_key_to_prevent_crash_if_missing',
-    });
     const authHeader = req.headers.get('Authorization');
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       return NextResponse.json({ error: 'Missing or invalid Authorization header' }, { status: 401 });
@@ -34,13 +31,8 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Missing required fields: query, endUserId' }, { status: 400 });
     }
 
-    // 3. Generate Embedding for the query
-    const embeddingResponse = await openai.embeddings.create({
-      model: 'text-embedding-3-small',
-      input: query,
-      encoding_format: 'float',
-    });
-    const queryEmbedding = embeddingResponse.data[0].embedding;
+    // 3. Generate Embedding for the query using free local Transformers model
+    const queryEmbedding = await generateEmbedding(query);
 
     // 4. Perform Vector Search via RPC
     const { data: memories, error: searchError } = await supabase.rpc('match_memories', {
