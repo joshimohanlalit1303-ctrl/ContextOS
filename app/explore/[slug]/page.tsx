@@ -44,7 +44,7 @@ export default async function ExplorePage({ params }: { params: Promise<{ slug: 
               <div className="absolute top-0 right-0 w-32 h-32 bg-accent/10 blur-3xl rounded-full translate-x-1/2 -translate-y-1/2" />
               <h4 className="text-white font-medium mb-2 mt-0">Zero infrastructure required.</h4>
               <p className="text-sm text-muted mb-0">
-                ContextOS handles the embeddings, vector storage, and semantic retrieval entirely on the edge. You just pass in strings.
+                Libro handles the embeddings, vector storage, and semantic retrieval entirely on the edge. You just pass in strings.
               </p>
             </div>
           </div>

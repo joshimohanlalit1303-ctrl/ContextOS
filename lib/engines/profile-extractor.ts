@@ -14,7 +14,7 @@ export type ProfileData = z.infer<typeof ProfileSchema>;
 
 export async function extractProfileData(memoryContent: string, currentProfile?: Partial<ProfileData>): Promise<ProfileData> {
   const systemPrompt = `
-You are ContextOS Profile Extraction Engine.
+You are Libro Profile Extraction Engine.
 Your task is to analyze the user's conversational input and extract a structured profile.
 
 Current Profile Data (if any):

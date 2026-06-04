@@ -17,7 +17,7 @@ export default function Showcase() {
             <span className="font-light text-muted">Infinite recall.</span>
           </h2>
           <p className="text-muted text-lg max-w-md">
-            Your users don't want to repeat themselves. ContextOS automatically groups related conversations and surfaces relevant context precisely when needed, keeping your agents flawlessly informed.
+            Your users don't want to repeat themselves. Libro automatically groups related conversations and surfaces relevant context precisely when needed, keeping your agents flawlessly informed.
           </p>
         </div>
 

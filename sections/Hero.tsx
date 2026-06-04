@@ -156,12 +156,12 @@ export default function Hero({ userCount = 74 }: { userCount?: number }) {
           <div className="p-6 font-mono text-sm leading-7 overflow-x-auto">
             {activeTab === "JS" && (
               <div>
-                <span className="text-muted">{`// install: npm i @contextos/sdk`}</span>
+                <span className="text-muted">{`// install: npm i @libro/sdk`}</span>
                 <br />
-                <span className="text-muted">import</span> <span className="text-white">{`{ ContextOS }`}</span> <span className="text-muted">from</span> <span className="text-green-400">{`'@contextos/sdk'`}</span>
+                <span className="text-muted">import</span> <span className="text-white">{`{ Libro }`}</span> <span className="text-muted">from</span> <span className="text-green-400">{`'@libro/sdk'`}</span>
                 <br />
                 <br />
-                <span className="text-muted">const</span> <span className="text-white">ctx</span> = <span className="text-muted">new</span> <span className="text-accent">ContextOS</span>{`({ apiKey: `}<span className="text-green-400">process.env.CTX_KEY</span>{` })`}
+                <span className="text-muted">const</span> <span className="text-white">ctx</span> = <span className="text-muted">new</span> <span className="text-accent">Libro</span>{`({ apiKey: `}<span className="text-green-400">process.env.CTX_KEY</span>{` })`}
                 <br />
                 <br />
                 <span className="text-muted">{`// store context after each turn`}</span>
@@ -176,12 +176,12 @@ export default function Hero({ userCount = 74 }: { userCount?: number }) {
             )}
             {activeTab === "Python" && (
               <div>
-                <span className="text-muted">{`# install: pip install contextos`}</span>
+                <span className="text-muted">{`# install: pip install libro`}</span>
                 <br />
-                <span className="text-muted">from</span> <span className="text-white">contextos</span> <span className="text-muted">import</span> <span className="text-accent">ContextOS</span>
+                <span className="text-muted">from</span> <span className="text-white">libro</span> <span className="text-muted">import</span> <span className="text-accent">Libro</span>
                 <br />
                 <br />
-                <span className="text-white">ctx</span> = <span className="text-accent">ContextOS</span>{`(api_key=`}<span className="text-green-400">{`"YOUR_API_KEY"`}</span>{`)`}
+                <span className="text-white">ctx</span> = <span className="text-accent">Libro</span>{`(api_key=`}<span className="text-green-400">{`"YOUR_API_KEY"`}</span>{`)`}
                 <br />
                 <br />
                 <span className="text-muted">{`# store context after each turn`}</span>
@@ -198,7 +198,7 @@ export default function Hero({ userCount = 74 }: { userCount?: number }) {
               <div>
                 <span className="text-muted">{`# store context after each turn`}</span>
                 <br />
-                <span className="text-accent">curl</span> -X POST https://api.contextos.ai/v1/remember \
+                <span className="text-accent">curl</span> -X POST https://api.libro.ai/v1/remember \
                 <br />
                 &nbsp;&nbsp;-H <span className="text-green-400">{`"Authorization: Bearer YOUR_API_KEY"`}</span> \
                 <br />
@@ -209,7 +209,7 @@ export default function Hero({ userCount = 74 }: { userCount?: number }) {
                 <br />
                 <span className="text-muted">{`# retrieve before each AI call`}</span>
                 <br />
-                <span className="text-accent">curl</span> -X POST https://api.contextos.ai/v1/recall \
+                <span className="text-accent">curl</span> -X POST https://api.libro.ai/v1/recall \
                 <br />
                 &nbsp;&nbsp;-H <span className="text-green-400">{`"Authorization: Bearer YOUR_API_KEY"`}</span> \
                 <br />

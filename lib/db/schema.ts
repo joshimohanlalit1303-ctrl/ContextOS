@@ -50,7 +50,7 @@ export const apiKeys = pgTable("api_keys", {
 });
 
 // -----------------------------------------------------------------------------
-// CONTEXTOS DATA TABLES
+// LIBRO DATA TABLES
 // -----------------------------------------------------------------------------
 
 export const endUsers = pgTable("end_users", {
@@ -75,11 +75,11 @@ const customVector = customType<{ data: number[] }>({
   toDriver(value: number[]) {
     return JSON.stringify(value);
   },
-  fromDriver(value: string | number[]) {
+  fromDriver(value: unknown): number[] {
     if (typeof value === 'string') {
       return JSON.parse(value);
     }
-    return value;
+    return value as number[];
   }
 });
 
@@ -229,6 +229,8 @@ export const sdkWaitlist = pgTable("sdk_waitlist", {
   email: varchar("email", { length: 255 }).notNull(),
   company: varchar("company", { length: 255 }),
   useCase: text("use_case"),
+  grantedAccess: boolean("granted_access").default(false).notNull(),
+  grantedAt: timestamp("granted_at"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 

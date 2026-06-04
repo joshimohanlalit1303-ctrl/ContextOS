@@ -64,7 +64,7 @@ Your job is to read the attached chat history, generate a short title, a descrip
         structure: []
       },
       meta: {
-        exported_via: "ContextOS",
+        exported_via: "Libro",
         message_count: history.length,
         timestamp: new Date().toISOString()
       }

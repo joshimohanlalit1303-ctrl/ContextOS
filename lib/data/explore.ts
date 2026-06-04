@@ -2,10 +2,10 @@ export const exploreData: Record<string, { title: string, subtitle: string, desc
   "ai-chatbots": {
     title: "AI Chatbots",
     subtitle: "Give your chatbot a persistent personality.",
-    description: "Connect ContextOS to your AI chatbot to instantly give it long-term memory. It remembers user preferences, past topics, and communication styles across every single conversation.",
-    codeSnippet: `// 1. Initialize ContextOS
-import { ContextOS } from '@contextos/sdk';
-const ctx = new ContextOS({ apiKey: process.env.CTX_KEY });
+    description: "Connect Libro to your AI chatbot to instantly give it long-term memory. It remembers user preferences, past topics, and communication styles across every single conversation.",
+    codeSnippet: `// 1. Initialize Libro
+import { Libro } from '@libro/sdk';
+const ctx = new Libro({ apiKey: process.env.CTX_KEY });
 
 // 2. Chatbot receives a message
 const userMessage = "Remember that I prefer concise answers.";
@@ -28,7 +28,7 @@ const context = await ctx.getContext(
   "dev_456", 
   "Write a React component for a button."
 );
-// ContextOS automatically injects:
+// Libro automatically injects:
 // "User uses TailwindCSS, prefers functional components, and uses TypeScript."
 `
   },

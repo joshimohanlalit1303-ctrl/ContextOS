@@ -7,11 +7,11 @@ export default {
   theme: {
     extend: {
       colors: {
-        bg: "#050505",
-        accent: "#ffffff",
-        muted: "#888888",
-        glass: "rgba(255, 255, 255, 0.03)",
-        glassborder: "rgba(255, 255, 255, 0.08)"
+        bg: "#f9fafb",
+        accent: "#000000",
+        muted: "#6b7280",
+        glass: "#ffffff",
+        glassborder: "#e5e7eb"
       },
       animation: {
         'gradient-x': 'gradient-x 3s ease infinite',

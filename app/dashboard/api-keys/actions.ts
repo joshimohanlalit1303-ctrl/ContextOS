@@ -26,7 +26,7 @@ export async function createApiKey(formData: FormData) {
 
   revalidatePath("/dashboard/api-keys");
   
-  // Note: In a real production app, we would return the raw fullKey here and display it in a modal to the user.
+  return { fullKey };
 }
 
 export async function revokeApiKey(formData: FormData) {

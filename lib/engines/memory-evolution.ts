@@ -18,7 +18,7 @@ export async function detectTimelineEvent(
   newProfile: ProfileData
 ): Promise<TimelineEventData | null> {
   const systemPrompt = `
-You are the ContextOS Memory Evolution Engine.
+You are the Libro Memory Evolution Engine.
 Your task is to compare the user's old profile and their new profile (after a new memory was ingested) and determine if a significant timeline event occurred.
 
 Old Profile:

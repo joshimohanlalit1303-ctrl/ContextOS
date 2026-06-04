@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "ContextOS",
+  "name": "Libro",
   "version": "1.0.0",
   "description": "Continue any AI project anywhere. Save your context from ChatGPT, Claude & Gemini as a portable AI Context Passport.",
   "action": {

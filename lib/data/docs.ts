@@ -41,22 +41,21 @@ export const docsNavigation = [
       { title: "Webhooks", slug: "webhooks" },
       { title: "Rate Limiting", slug: "rate-limiting" },
       { title: "Error Handling", slug: "error-handling" },
-      { title: "Integrations", slug: "integrations" },
-      { title: "Billing & Pricing", slug: "billing-pricing" },
+      { title: "Integrations", slug: "integrations" }
     ]
   }
 ];
 
 export const docsContent: Record<string, string> = {
   "introduction": `
-# Introduction to ContextOS
+# Introduction to Libro
 
-ContextOS is the first zero-infrastructure, Edge-native memory engine designed specifically for AI applications. Instead of managing complex vector databases like Pinecone, orchestrating embedding models with OpenAI, and dealing with chunking algorithms, ContextOS handles everything internally.
+Libro is the first zero-infrastructure, Edge-native memory engine designed specifically for AI applications. Instead of managing complex vector databases like Pinecone, orchestrating embedding models with OpenAI, and dealing with chunking algorithms, Libro handles everything internally.
 
-### Why ContextOS?
+### Why Libro?
 In modern AI development, retaining context is hard. Context windows are limited, and stuffing entire conversation histories into a prompt is expensive and slow.
 
-ContextOS solves this by taking raw text or conversations, instantly embedding them at the edge, and dynamically retrieving only the most relevant semantic information right before you generate your prompt.
+Libro solves this by taking raw text or conversations, instantly embedding them at the edge, and dynamically retrieving only the most relevant semantic information right before you generate your prompt.
 
 - **Zero setup**: No databases to provision.
 - **Cost effective**: Substantially cheaper than OpenAI embeddings.
@@ -65,19 +64,19 @@ ContextOS solves this by taking raw text or conversations, instantly embedding t
   "quickstart": `
 # Quickstart Guide
 
-Get up and running with ContextOS in under two minutes. Our SDK is completely typed and native to modern JavaScript environments.
+Get up and running with Libro in under two minutes. Our SDK is completely typed and native to modern JavaScript environments.
 
 ### 1. Install the SDK
 \`\`\`bash
-npm install @contextos/sdk
+npm install @libro/sdk
 \`\`\`
 
 ### 2. Basic Ingestion
 Import and initialize the client, then ingest your first memory.
 \`\`\`typescript
-import { ContextOS } from '@contextos/sdk';
+import { Libro } from '@libro/sdk';
 
-const ctx = new ContextOS({ apiKey: process.env.CONTEXTOS_API_KEY });
+const ctx = new Libro({ apiKey: process.env.LIBRO_API_KEY });
 
 await ctx.ingest({
   userId: "user_789",
@@ -98,7 +97,7 @@ const context = await ctx.getContext("user_789", "How should I structure my app?
 All API requests and SDK methods require a valid Bearer token for authentication. 
 
 ### Obtaining Keys
-You can generate unlimited API keys from your ContextOS Dashboard under **Settings > API Keys**.
+You can generate unlimited API keys from your Libro Dashboard under **Settings > API Keys**.
 We provide two environments:
 - **Test Keys** (\`cos_test_...\`): Memory ingested here is wiped automatically after 24 hours.
 - **Live Keys** (\`cos_live_...\`): Persistent production storage.
@@ -106,13 +105,13 @@ We provide two environments:
 ### Using the SDK
 The SDK automatically handles the \`Authorization\` header. Just pass your key during instantiation:
 \`\`\`typescript
-const ctx = new ContextOS({ apiKey: 'cos_live_YOUR_KEY_HERE' });
+const ctx = new Libro({ apiKey: 'cos_live_YOUR_KEY_HERE' });
 \`\`\`
 
 ### API Requests
 If using direct HTTP requests, include the token:
 \`\`\`bash
-curl -X POST https://contextos.dev/api/v1/ingest \\
+curl -X POST https://libro.dev/api/v1/ingest \\
   -H "Authorization: Bearer cos_live_YOUR_KEY_HERE" \\
   -d '{"userId":"test", "content":"Hello"}'
 \`\`\`
@@ -120,25 +119,25 @@ curl -X POST https://contextos.dev/api/v1/ingest \\
   "sdk-installation": `
 # SDK Installation
 
-ContextOS distributes a lightweight, dependency-free SDK designed to run in any JavaScript environment.
+Libro distributes a lightweight, dependency-free SDK designed to run in any JavaScript environment.
 
 ### Node Package Manager
 \`\`\`bash
-npm install @contextos/sdk
+npm install @libro/sdk
 \`\`\`
 
 ### Yarn
 \`\`\`bash
-yarn add @contextos/sdk
+yarn add @libro/sdk
 \`\`\`
 
 ### pnpm
 \`\`\`bash
-pnpm add @contextos/sdk
+pnpm add @libro/sdk
 \`\`\`
 
 ### Supported Environments
-Because the ContextOS SDK uses the native \`fetch\` API, it is universally compatible with:
+Because the Libro SDK uses the native \`fetch\` API, it is universally compatible with:
 - **Node.js** (v18+)
 - **Vercel Edge Functions**
 - **Cloudflare Workers**
@@ -148,22 +147,22 @@ Because the ContextOS SDK uses the native \`fetch\` API, it is universally compa
   "initializing-client": `
 # Initializing the Client
 
-The \`ContextOS\` client class is your primary entrypoint. 
+The \`Libro\` client class is your primary entrypoint. 
 
 ### Basic Initialization
 \`\`\`typescript
-import { ContextOS } from '@contextos/sdk';
+import { Libro } from '@libro/sdk';
 
-const ctx = new ContextOS({
-  apiKey: process.env.CONTEXTOS_API_KEY
+const ctx = new Libro({
+  apiKey: process.env.LIBRO_API_KEY
 });
 \`\`\`
 
 ### Advanced Configuration
 You can pass additional configurations to customize the behavior of the SDK, such as configuring custom retry logic or changing the base URL.
 \`\`\`typescript
-const ctx = new ContextOS({
-  apiKey: process.env.CONTEXTOS_API_KEY,
+const ctx = new Libro({
+  apiKey: process.env.LIBRO_API_KEY,
   maxRetries: 3,         // Retry up to 3 times on 5xx errors
   timeout: 5000,         // Fail after 5 seconds
   debug: true            // Enable verbose logging
@@ -173,7 +172,7 @@ const ctx = new ContextOS({
   "global-architecture": `
 # Global Architecture
 
-ContextOS fundamentally rewrites how vectorization occurs by bringing the embedding models to the edge.
+Libro fundamentally rewrites how vectorization occurs by bringing the embedding models to the edge.
 
 ### The Problem with Traditional Vectors
 Historically, developers had to:
@@ -181,8 +180,8 @@ Historically, developers had to:
 2. Store that massive float array in Pinecone or Postgres (pgvector).
 3. Do this on a centralized database, introducing heavy latency.
 
-### The ContextOS Edge Engine
-ContextOS runs specialized, highly optimized ONNX variants of Transformer models directly on the Edge. When you call \`ingest()\`:
+### The Libro Edge Engine
+Libro runs specialized, highly optimized ONNX variants of Transformer models directly on the Edge. When you call \`ingest()\`:
 1. The text hits our nearest edge node (e.g. Frankfurt, Sydney, Washington).
 2. It is chunked and vectorized locally in under 15ms.
 3. It is stored in a distributed edge-replica database.
@@ -192,7 +191,7 @@ This architecture results in zero central-database bottleneck, meaning infinite 
   "multilingual-vectorization": `
 # Multilingual Vectorization
 
-ContextOS doesn't just understand English. It natively speaks over 50 languages using our \`paraphrase-multilingual-MiniLM-L12-v2\` core model.
+Libro doesn't just understand English. It natively speaks over 50 languages using our \`paraphrase-multilingual-MiniLM-L12-v2\` core model.
 
 ### How it works
 The vector space maps semantics, not just vocabulary. This means the concept of "Software Engineer" in English is mapped incredibly closely to "Ingénieur Logiciel" in French.
@@ -209,7 +208,7 @@ And later query it in English:
 \`\`\`typescript
 const result = await ctx.getContext("user_jp", "What is their favorite animal?");
 \`\`\`
-ContextOS will perfectly resolve the semantic match and return the Japanese text. No pre-translation required.
+Libro will perfectly resolve the semantic match and return the Japanese text. No pre-translation required.
 `,
   "semantic-chunking": `
 # Semantic Chunking
@@ -217,7 +216,7 @@ ContextOS will perfectly resolve the semantic match and return the Japanese text
 If you've ever built a RAG (Retrieval-Augmented Generation) pipeline, you know that chunking is the hardest part. If you cut a sentence in half, you lose the semantic meaning.
 
 ### Infinite Chunking Engine
-ContextOS completely abstracts this away. You can pass a 100,000-word document into the \`ingest()\` endpoint.
+Libro completely abstracts this away. You can pass a 100,000-word document into the \`ingest()\` endpoint.
 
 1. **Sentence Boundary Detection**: We split the text precisely at periods, newlines, and semantic shifts.
 2. **Overlap Buffering**: We automatically overlap chunks by 15% so context isn't lost between boundaries.
@@ -235,14 +234,14 @@ await ctx.ingest({
   "security-privacy": `
 # Security & Privacy
 
-Your users' context is highly sensitive. ContextOS is designed from the ground up for privacy, compliance, and security.
+Your users' context is highly sensitive. Libro is designed from the ground up for privacy, compliance, and security.
 
 ### Data Encryption
 - **In Transit**: All connections utilize TLS 1.3.
 - **At Rest**: Data is encrypted at rest using AES-256 block-level encryption.
 
 ### SOC2 & GDPR
-ContextOS is SOC2 Type II compliant. We offer strict GDPR compliance tools, including one-click permanent deletion of user data.
+Libro is SOC2 Type II compliant. We offer strict GDPR compliance tools, including one-click permanent deletion of user data.
 
 ### Zero-Training Policy
 **We do not train models on your data.** The embedding models used for vectorization are pre-trained. Your text is processed dynamically in memory and immediately persisted to isolated tables. We will never use your users' conversations to improve our models.
@@ -250,7 +249,7 @@ ContextOS is SOC2 Type II compliant. We offer strict GDPR compliance tools, incl
   "best-practices": `
 # Best Practices for Prompts
 
-To get the most out of ContextOS, you should structure your AI prompts to smoothly consume the injected context.
+To get the most out of Libro, you should structure your AI prompts to smoothly consume the injected context.
 
 ### The System Prompt Injection
 Always place the retrieved context at the **top** of your system prompt, so the AI reads the context before determining its persona.
@@ -277,7 +276,7 @@ The better your query matches the desired semantics, the better the retrieval.
   "ingesting-data-basic": `
 # Ingesting Data (Basics)
 
-The \`ingest()\` method is the lifeblood of ContextOS. It tells the engine to memorize a piece of information for a specific user.
+The \`ingest()\` method is the lifeblood of Libro. It tells the engine to memorize a piece of information for a specific user.
 
 ### Basic Payload
 The minimum required fields are \`userId\` and \`content\`.
@@ -379,16 +378,16 @@ await ctx.deleteUser("user_123");
 \`\`\`
 
 ### Deleting Specific Memories
-Currently, ContextOS treats the user as the primary boundary. If you need to delete a specific memory, we recommend using short-lived keys, or managing memory via the Dashboard. Granular chunk-level deletion API is coming in v2.
+Currently, Libro treats the user as the primary boundary. If you need to delete a specific memory, we recommend using short-lived keys, or managing memory via the Dashboard. Granular chunk-level deletion API is coming in v2.
 `,
   "webhooks": `
 # Webhooks
 
-ContextOS can notify your application when asynchronous events finish executing, such as massive document chunking.
+Libro can notify your application when asynchronous events finish executing, such as massive document chunking.
 
 ### Setting up Webhooks
-1. Go to your ContextOS Dashboard -> Webhooks.
-2. Add your endpoint (e.g. \`https://api.yourapp.com/webhooks/contextos\`).
+1. Go to your Libro Dashboard -> Webhooks.
+2. Add your endpoint (e.g. \`https://api.yourapp.com/webhooks/libro\`).
 3. Select the events you want to subscribe to.
 
 ### Webhook Payload
@@ -405,7 +404,7 @@ When a large ingestion finishes, you will receive a POST request:
 \`\`\`
 
 ### Security Signature
-Always verify the \`X-ContextOS-Signature\` header to ensure the webhook genuinely originated from our servers.
+Always verify the \`X-Libro-Signature\` header to ensure the webhook genuinely originated from our servers.
 `,
   "rate-limiting": `
 # Rate Limiting
@@ -422,12 +421,12 @@ If you exceed your rate limit, the API will return a \`429 Too Many Requests\` s
 The response will include a \`Retry-After\` header indicating how many seconds you must wait.
 
 ### Built-in Backoff
-If you initialize the ContextOS SDK with \`maxRetries\`, it will automatically handle 429 responses and implement exponential backoff logic on your behalf!
+If you initialize the Libro SDK with \`maxRetries\`, it will automatically handle 429 responses and implement exponential backoff logic on your behalf!
 `,
   "error-handling": `
 # Error Handling
 
-ContextOS uses standard HTTP status codes.
+Libro uses standard HTTP status codes.
 
 ### Common Status Codes
 - \`200 OK\`: Request succeeded.
@@ -437,14 +436,14 @@ ContextOS uses standard HTTP status codes.
 - \`500 Internal Server Error\`: Edge node failure.
 
 ### SDK Error Catching
-The SDK will throw a \`ContextOSError\` containing detailed information.
+The SDK will throw a \`LibroError\` containing detailed information.
 \`\`\`typescript
-import { ContextOSError } from '@contextos/sdk';
+import { LibroError } from '@libro/sdk';
 
 try {
   await ctx.ingest({ userId: "", content: "" });
 } catch (error) {
-  if (error instanceof ContextOSError) {
+  if (error instanceof LibroError) {
     console.log(error.status);  // 400
     console.log(error.message); // "userId is required"
   }
@@ -454,10 +453,10 @@ try {
   "integrations": `
 # Integrations
 
-ContextOS is designed to slot perfectly into modern Fullstack frameworks.
+Libro is designed to slot perfectly into modern Fullstack frameworks.
 
 ### Vercel AI SDK Integration
-You can use ContextOS seamlessly alongside the Vercel AI SDK to stream context-aware responses.
+You can use Libro seamlessly alongside the Vercel AI SDK to stream context-aware responses.
 
 \`\`\`typescript
 import { streamText } from 'ai';
@@ -477,25 +476,6 @@ return result.toDataStreamResponse();
 \`\`\`
 
 ### Supabase Integration
-You can trigger ContextOS ingestion directly from Supabase Database Webhooks when a new row is inserted into your \`users\` table!
+You can trigger Libro ingestion directly from Supabase Database Webhooks when a new row is inserted into your \`users\` table!
 `,
-  "billing-pricing": `
-# Billing & Pricing
-
-ContextOS operates on a simple, transparent usage-based pricing model.
-
-### Compute vs Storage
-Unlike traditional databases, we don't charge for hours running. We only charge for:
-1. **Ingestion Bytes**: Data processed through our embedding models.
-2. **Retrieval Requests**: API calls to \`getContext\` or \`search\`.
-
-### Free Tier
-Every new account gets **10,000 requests** and **50MB of ingestion** completely free every month. No credit card required.
-
-### Pay as you Go
-- $0.05 per 1,000 Retrieval Requests
-- $0.10 per MB of Ingested Text
-
-You can set hard caps in your Dashboard to ensure you never receive an unexpected bill.
-`
 };

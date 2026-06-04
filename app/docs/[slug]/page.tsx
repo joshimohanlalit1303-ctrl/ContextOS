@@ -31,7 +31,7 @@ export default async function DocPage({ params }: { params: Promise<{ slug: stri
 
   return (
     <article 
-      className="prose prose-lg prose-invert max-w-none prose-pre:p-0 prose-pre:border prose-pre:border-white/10 prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-accent pb-24"
+      className="prose prose-lg max-w-none prose-pre:p-0 prose-pre:border prose-pre:border-gray-200 prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-accent pb-24"
       dangerouslySetInnerHTML={{ __html: htmlContent }} 
     />
   );

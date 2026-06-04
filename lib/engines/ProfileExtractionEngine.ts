@@ -31,7 +31,7 @@ export class ProfileExtractionEngine {
         // Uses the free-tier Gemini 1.5 Flash model
         model: google("gemini-2.5-flash"),
         schema: ExtractionSchema,
-        system: `You are an expert user context extraction engine for ContextOS.
+        system: `You are an expert user context extraction engine for Libro.
 Your job is to read raw conversational inputs and extract structured understanding of the user.
 Extract persistent attributes: name, age, location, what they can do, what they are building, what they like (preferences).
 Output strict JSON matching the schema. Handle conflicting or ambiguous data gracefully by lowering your confidence score.`,

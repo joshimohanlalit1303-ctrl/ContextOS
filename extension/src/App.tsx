@@ -217,7 +217,7 @@ function App() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-full w-full bg-bg">
-        <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 1.5, ease: "linear" }} className="text-white/50">
+        <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 1.5, ease: "linear" }} className="text-gray-400">
           <Logo />
         </motion.div>
       </div>
@@ -227,18 +227,18 @@ function App() {
   if (!session) {
     return (
       <div className="flex flex-col items-center justify-center h-full w-full bg-bg p-6 text-center">
-        <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="w-20 h-20 bg-glass rounded-3xl flex items-center justify-center mb-8 border border-glassborder shadow-2xl">
-          <Logo className="w-10 h-10 text-white" />
+        <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="w-20 h-20 bg-glass rounded-3xl flex items-center justify-center mb-8 border border-glassborder shadow-sm">
+          <Logo className="w-10 h-10 text-black" />
         </motion.div>
-        <motion.h1 initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.1 }} className="text-3xl font-bold tracking-tight mb-3">ContextOS</motion.h1>
-        <motion.p initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.2 }} className="text-sm text-white/60 mb-10 leading-relaxed">
+        <motion.h1 initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.1 }} className="text-3xl font-bold tracking-tight mb-3 text-black">Libro</motion.h1>
+        <motion.p initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.2 }} className="text-sm text-gray-500 mb-10 leading-relaxed font-medium">
           The User Context Layer For AI Applications.<br/>Sign in to sync your local context.
         </motion.p>
         <motion.button
           initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.3 }}
-          whileHover={{ scale: 1.02, backgroundColor: 'rgba(255,255,255,0.9)' }} whileTap={{ scale: 0.98 }}
+          whileHover={{ scale: 1.02, backgroundColor: '#f3f4f6' }} whileTap={{ scale: 0.98 }}
           onClick={handleGitHubLogin}
-          className="w-full flex items-center justify-center gap-3 bg-white text-black font-semibold py-4 px-4 rounded-2xl shadow-lg mb-6"
+          className="w-full flex items-center justify-center gap-3 bg-white text-black font-semibold py-4 px-4 rounded-2xl border border-gray-200 shadow-sm mb-6"
         >
           <Github className="w-5 h-5" />
           Continue with GitHub
@@ -248,27 +248,28 @@ function App() {
   }
 
   return (
-    <div className="flex flex-col h-full w-full bg-bg overflow-y-auto text-accent font-sans">
-      <motion.div initial={{ y: -50 }} animate={{ y: 0 }} className="flex items-center justify-between p-4 border-b border-glassborder sticky top-0 bg-bg/80 backdrop-blur-xl z-20">
-        <div className="flex items-center gap-2.5">
-          <div className="p-1.5 bg-glass rounded-lg border border-glassborder">
+    <div className="flex flex-col min-h-screen w-full bg-bg text-accent font-sans selection:bg-blue-100">
+      {/* Top Header */}
+      <motion.div initial={{ y: -50 }} animate={{ y: 0 }} className="flex items-center justify-between px-6 py-4 bg-white/70 backdrop-blur-2xl border-b border-gray-100 z-20 sticky top-0">
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-black to-gray-700 flex items-center justify-center shadow-md">
             <Logo className="w-4 h-4 text-white" />
           </div>
-          <span className="font-semibold tracking-tight">ContextOS</span>
+          <span className="font-bold tracking-tight text-gray-900 text-lg">Libro</span>
         </div>
-        <button onClick={handleLogout} className="p-2 bg-glass border border-glassborder hover:bg-white/10 rounded-xl transition-colors text-muted hover:text-white" title="Logout">
+        <button onClick={handleLogout} className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-full transition-all" title="Logout">
           <LogOut className="w-4 h-4" />
         </button>
       </motion.div>
 
-      <div className="p-5 flex-1 flex flex-col relative z-10">
+      <div className="p-6 flex-1 flex flex-col relative z-10">
         <AnimatePresence>
           {fetchError && (
-            <motion.div initial={{ opacity: 0, height: 0, marginBottom: 0 }} animate={{ opacity: 1, height: 'auto', marginBottom: 20 }} exit={{ opacity: 0, height: 0, marginBottom: 0 }} className="overflow-hidden">
-              <div className="bg-red-500/10 border border-red-500/20 text-red-200 text-xs p-3 rounded-xl flex items-start gap-2.5">
-                <AlertCircle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
+            <motion.div initial={{ opacity: 0, height: 0, marginBottom: 0 }} animate={{ opacity: 1, height: 'auto', marginBottom: 24 }} exit={{ opacity: 0, height: 0, marginBottom: 0 }} className="overflow-hidden">
+              <div className="bg-red-50 border border-red-100 text-red-600 text-sm p-4 rounded-2xl flex items-start gap-3 shadow-sm">
+                <AlertCircle className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
                 <div className="flex-1">
-                  <span className="font-semibold block mb-0.5 text-red-300">Connection Failed</span>
+                  <span className="font-semibold block mb-0.5 text-red-800">Connection Failed</span>
                   {fetchError}
                 </div>
               </div>
@@ -276,80 +277,81 @@ function App() {
           )}
         </AnimatePresence>
 
-        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="flex items-center gap-4 mb-8 bg-glass p-4 rounded-2xl border border-glassborder">
-          <img src={session.user.user_metadata.avatar_url} alt="Avatar" className="w-14 h-14 rounded-full border border-glassborder shadow-lg" />
+        {/* Profile Card */}
+        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="flex items-center gap-4 mb-8 bg-white p-5 rounded-[20px] border border-gray-100 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)]">
+          <img src={session.user.user_metadata.avatar_url} alt="Avatar" className="w-12 h-12 rounded-full border border-gray-100 shadow-sm" />
           <div>
-            <div className="font-medium text-[15px]">{session.user.user_metadata.full_name || session.user.email}</div>
-            <div className="text-[11px] text-green-400 flex items-center gap-1.5 mt-1 font-medium tracking-wide">
-              <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse-slow shadow-[0_0_8px_rgba(74,222,128,0.6)]"></div>
-              Connected to Context Engine
+            <div className="font-bold text-[16px] text-gray-900 leading-tight">{session.user.user_metadata.full_name || session.user.email}</div>
+            <div className="text-[12px] text-emerald-500 flex items-center gap-1.5 mt-1 font-medium tracking-wide">
+              <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse-slow shadow-[0_0_8px_rgba(16,185,129,0.5)]"></div>
+              Engine Active
             </div>
           </div>
         </motion.div>
 
-        <div className="flex flex-col gap-3 mb-10">
-          <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} onClick={handleSavePassport} disabled={passportLoading}
-            className="w-full flex items-center justify-center gap-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-semibold py-4 px-4 rounded-2xl shadow-lg border border-blue-400/30 transition-all disabled:opacity-50 relative overflow-hidden">
+        {/* Action Buttons */}
+        <div className="flex flex-col gap-3.5 mb-10">
+          <motion.button whileHover={{ scale: 1.01, y: -1 }} whileTap={{ scale: 0.98 }} onClick={handleSavePassport} disabled={passportLoading}
+            className="w-full flex items-center justify-center gap-3 bg-black hover:bg-gray-900 text-white font-medium py-4 px-5 rounded-[16px] shadow-[0_8px_20px_-8px_rgba(0,0,0,0.3)] transition-all disabled:opacity-50 disabled:hover:scale-100 relative overflow-hidden group">
             {passportLoading ? (
-              <RefreshCw className="w-5 h-5 animate-spin" />
+              <RefreshCw className="w-5 h-5 animate-spin text-white/80" />
             ) : passportData ? (
               <>
-                <motion.svg initial={{ scale: 0 }} animate={{ scale: 1 }} className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                <motion.svg initial={{ scale: 0 }} animate={{ scale: 1 }} className="w-5 h-5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
                 </motion.svg>
                 Passport Saved!
               </>
             ) : (
               <>
-                <FileJson className="w-5 h-5" />
-                Save Passport
+                <FileJson className="w-5 h-5 text-white/80 group-hover:text-white transition-colors" />
+                Save Context Passport
               </>
             )}
           </motion.button>
 
-          <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} onClick={handleContinueProject} disabled={!passportData}
-            className="w-full flex items-center justify-center gap-2.5 bg-glass/80 backdrop-blur-md text-white font-medium py-4 px-4 rounded-2xl border border-white/10 hover:border-white/30 hover:bg-white/10 transition-all shadow-[0_0_15px_rgba(255,255,255,0.05)] disabled:opacity-50">
+          <motion.button whileHover={{ scale: 1.01, y: -1 }} whileTap={{ scale: 0.98 }} onClick={handleContinueProject} disabled={!passportData}
+            className="w-full flex items-center justify-center gap-3 bg-white text-gray-800 font-medium py-4 px-5 rounded-[16px] border border-gray-200 hover:border-gray-300 hover:shadow-[0_4px_12px_-4px_rgba(0,0,0,0.05)] transition-all disabled:opacity-50 disabled:hover:scale-100 group">
             {exportCopied ? (
               <>
-                <motion.svg initial={{ scale: 0 }} animate={{ scale: 1 }} className="w-5 h-5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                <motion.svg initial={{ scale: 0 }} animate={{ scale: 1 }} className="w-5 h-5 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
                 </motion.svg>
-                <span className="text-green-300">Copied Prompt!</span>
+                <span className="text-emerald-600 font-semibold">Prompt Copied!</span>
               </>
             ) : (
               <>
-                <Send className="w-5 h-5 text-white/60" />
+                <Send className="w-5 h-5 text-gray-400 group-hover:text-blue-500 transition-colors" />
                 Continue Project
               </>
             )}
           </motion.button>
 
-          <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} onClick={handleCopyPassport} disabled={!passportData}
-            className="w-full flex items-center justify-center gap-2.5 bg-glass/80 backdrop-blur-md text-white font-medium py-4 px-4 rounded-2xl border border-white/10 hover:border-white/30 hover:bg-white/10 transition-all shadow-[0_0_15px_rgba(255,255,255,0.05)] disabled:opacity-50">
+          <motion.button whileHover={{ scale: 1.01, y: -1 }} whileTap={{ scale: 0.98 }} onClick={handleCopyPassport} disabled={!passportData}
+            className="w-full flex items-center justify-center gap-3 bg-white text-gray-800 font-medium py-4 px-5 rounded-[16px] border border-gray-200 hover:border-gray-300 hover:shadow-[0_4px_12px_-4px_rgba(0,0,0,0.05)] transition-all disabled:opacity-50 disabled:hover:scale-100 group">
             {capsuleCopied ? (
               <>
-                <motion.svg initial={{ scale: 0 }} animate={{ scale: 1 }} className="w-5 h-5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                <motion.svg initial={{ scale: 0 }} animate={{ scale: 1 }} className="w-5 h-5 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
                 </motion.svg>
-                <span className="text-green-300">Copied JSON!</span>
+                <span className="text-emerald-600 font-semibold">JSON Copied!</span>
               </>
             ) : (
               <>
-                <Copy className="w-5 h-5 text-white/60" />
-                Copy Passport JSON
+                <Copy className="w-5 h-5 text-gray-400 group-hover:text-gray-900 transition-colors" />
+                Copy Raw JSON
               </>
             )}
           </motion.button>
         </div>
 
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}>
-          <h3 className="text-[10px] uppercase tracking-widest text-white/40 font-bold mb-3 px-1">Live Context Stream</h3>
-          <div className="space-y-3">
-            <div className="p-3.5 border border-glassborder rounded-xl bg-glass text-xs flex gap-3 items-center backdrop-blur-sm shadow-sm relative overflow-hidden">
-              <div className="absolute top-0 left-0 w-1 h-full bg-blue-500/50"></div>
-              <Activity className="w-4 h-4 text-blue-400 shrink-0" />
-              <div className="text-white/70 leading-relaxed font-medium">Listening for interactions on supported AI platforms...</div>
-            </div>
+        {/* Status Stream */}
+        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="mt-auto">
+          <h3 className="text-[11px] uppercase tracking-widest text-gray-400 font-bold mb-3 px-1">System Status</h3>
+          <div className="bg-white p-4 border border-gray-100 rounded-[16px] text-[13px] flex gap-3.5 items-center shadow-[0_2px_10px_-4px_rgba(0,0,0,0.02)] relative overflow-hidden group hover:border-blue-100 transition-colors">
+            <div className="absolute top-0 left-0 w-1 h-full bg-blue-500 group-hover:w-1.5 transition-all"></div>
+            <Activity className="w-4 h-4 text-blue-500 shrink-0" />
+            <div className="text-gray-600 font-medium leading-relaxed">Listening for AI interactions...</div>
           </div>
         </motion.div>
       </div>

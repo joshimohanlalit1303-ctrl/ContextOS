@@ -1,4 +1,4 @@
-console.log("ContextOS Tracker initialized.");
+console.log("Libro Tracker initialized.");
 
 type PlatformConfig = {
   name: string;
@@ -42,7 +42,7 @@ const PLATFORMS: PlatformConfig[] = [
 const currentPlatform = PLATFORMS.find(p => window.location.hostname.includes(p.host));
 
 if (currentPlatform) {
-  console.log(`ContextOS: Active on ${currentPlatform.name}`);
+  console.log(`Libro: Active on ${currentPlatform.name}`);
   
   // 1. Capture user messages
   let processedNodes = new WeakSet();
@@ -54,7 +54,7 @@ if (currentPlatform) {
     const text = element.textContent?.trim();
     if (!text || text.length < 10) return;
 
-    console.log(`ContextOS captured context on ${currentPlatform?.name}:`, text);
+    console.log(`Libro captured context on ${currentPlatform?.name}:`, text);
 
     chrome.runtime.sendMessage({
       type: 'PROMPT_TRACKED',
@@ -130,7 +130,7 @@ if (currentPlatform) {
     const inputElement = document.querySelector(currentPlatform.inputSelector) as HTMLElement;
     
     if (!inputElement) {
-      console.warn("ContextOS: Could not find input element to drop context.");
+      console.warn("Libro: Could not find input element to drop context.");
       alert("Could not find the chat input box.");
       return;
     }
@@ -153,7 +153,7 @@ if (currentPlatform) {
       inputElement.dispatchEvent(new Event('input', { bubbles: true }));
     }
     
-    console.log("ContextOS: Dropped capsule context successfully.");
+    console.log("Libro: Dropped capsule context successfully.");
   }
 }
 

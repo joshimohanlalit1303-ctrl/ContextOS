@@ -10,13 +10,13 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        bg: "#07070C",
-        surface: "#0D0D14",
-        card: "#131322",
-        white: "#F2F2F7",
-        muted: "#8E8EA0",
-        accent: "#EC4899",
-        green: "#0CCB8B",
+        bg: "#F5F5F7",
+        surface: "#FFFFFF",
+        card: "#FFFFFF",
+        white: "#FFFFFF",
+        muted: "#86868B",
+        accent: "#0066CC",
+        green: "#34C759",
         border: "hsl(var(--border))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",

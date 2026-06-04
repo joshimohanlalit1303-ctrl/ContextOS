@@ -7,7 +7,6 @@ import { Logo } from "./Logo";
 
 const navLinks = [
   { label: "Developers", href: "/#developers" },
-  { label: "Pricing", href: "/#pricing" },
   { label: "Use Cases", href: "/#use-cases" },
   { label: "Docs", href: "/docs" },
 ];
@@ -38,14 +37,14 @@ export default function Navbar() {
         transition={{ delay: 0.1, duration: 0.5, ease: "easeOut" }}
         className="fixed top-0 inset-x-0 z-50 transition-colors duration-300 pointer-events-none"
       >
-        <div className="absolute inset-0 bg-[#07070C]/70 backdrop-blur-xl border-b border-white/10" />
+        <div className="absolute inset-0 bg-white/70 backdrop-blur-xl border-b border-gray-200" />
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between pointer-events-auto relative z-10">
           
           {/* Left: Logo & Links */}
           <div className="flex items-center gap-8">
             <Link href="/" className="flex items-center gap-2.5 group">
-              <Logo className="w-6 h-6 text-white" />
-              <span className="font-bold text-xl text-white tracking-tighter">ContextOS</span>
+              <Logo className="w-6 h-6 text-black" />
+              <span className="font-bold text-xl text-black tracking-tighter">Libro</span>
             </Link>
 
             <nav className="hidden md:flex items-center gap-1">
@@ -53,7 +52,7 @@ export default function Navbar() {
                 <Link
                   key={link.label}
                   href={link.href}
-                  className="px-4 py-2 text-[14px] text-white/70 hover:text-white transition-colors rounded-md hover:bg-white/5 font-medium tracking-wide"
+                  className="px-4 py-2 text-[14px] text-gray-500 hover:text-black transition-colors rounded-md hover:bg-gray-100 font-medium tracking-wide"
                 >
                   {link.label}
                 </Link>
@@ -64,18 +63,18 @@ export default function Navbar() {
           {/* Right: Actions */}
           <div className="flex items-center gap-6">
             <Link
-              href="https://github.com/contextos"
+              href="https://github.com/libro"
               target="_blank"
-              className="flex items-center gap-2 text-[13px] text-muted hover:text-white uppercase tracking-wide transition-colors font-medium whitespace-nowrap"
+              className="flex items-center gap-2 text-[13px] text-gray-500 hover:text-black uppercase tracking-wide transition-colors font-medium whitespace-nowrap"
             >
               <GithubIcon />
               <span className="hidden md:inline-block">GitHub</span>
             </Link>
             <Link
-              href="/dashboard"
-              className="px-5 py-2 bg-accent text-white text-[13px] font-semibold rounded shadow-[0_0_15px_rgba(236,72,153,0.3)] hover:shadow-[0_0_25px_rgba(236,72,153,0.6)] hover:brightness-110 transition-all uppercase tracking-wide whitespace-nowrap"
+              href="/#waitlist"
+              className="px-5 py-2 bg-black text-white text-[13px] font-semibold rounded shadow-md hover:shadow-lg transition-all uppercase tracking-wide whitespace-nowrap"
             >
-              Get API Key
+              Join Waitlist
             </Link>
           </div>
 

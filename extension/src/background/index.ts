@@ -17,7 +17,7 @@ async function handlePrompt(payload: { text: string; timestamp: string; source: 
   const { data: { session } } = await supabase.auth.getSession();
   
   if (!session) {
-    console.log("ContextOS: No active session. Cannot sync context.");
+    console.log("Libro: No active session. Cannot sync context.");
     return;
   }
 
@@ -35,11 +35,11 @@ async function handlePrompt(payload: { text: string; timestamp: string; source: 
     });
     
     if (!response.ok) {
-      console.error("ContextOS: Failed to ingest context", await response.text());
+      console.error("Libro: Failed to ingest context", await response.text());
     } else {
-      console.log("ContextOS: Successfully synced context to backend.");
+      console.log("Libro: Successfully synced context to backend.");
     }
   } catch (error) {
-    console.error("ContextOS: Network error during ingestion", error);
+    console.error("Libro: Network error during ingestion", error);
   }
 }

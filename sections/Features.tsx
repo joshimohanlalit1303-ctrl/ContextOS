@@ -51,7 +51,7 @@ const tabData: Record<
       <div className="bg-card border border-white/10 rounded-2xl p-6 shadow-sm font-mono text-sm leading-relaxed overflow-x-auto">
         <span className="text-muted">{`// 1. Initialize`}</span>
         <br />
-        <span className="text-muted">const</span> <span className="text-white">ctx</span> = <span className="text-muted">new</span> <span className="text-accent">ContextOS</span>()
+        <span className="text-muted">const</span> <span className="text-white">ctx</span> = <span className="text-muted">new</span> <span className="text-accent">Libro</span>()
         <br />
         <br />
         <span className="text-muted">{`// 2. Store context`}</span>

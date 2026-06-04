@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: ['/dashboard/', '/api/'],
     },
-    sitemap: 'https://contextos.dev/sitemap.xml',
+    sitemap: 'https://libro.dev/sitemap.xml',
   };
 }

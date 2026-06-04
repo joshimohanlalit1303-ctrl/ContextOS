@@ -1,28 +1,20 @@
-import Hero from "@/sections/Hero";
-import ProofBar from "@/sections/ProofBar";
-import Features from "@/sections/Features";
-import HowItWorks from "@/sections/HowItWorks";
-import UseCases from "@/sections/UseCases";
-import Showcase from "@/sections/Showcase";
-import Pricing from "@/sections/Pricing";
-import CTABanner from "@/sections/CTABanner";
+import HeroCinematic from "@/sections/HeroCinematic";
+import NarrativeJourney from "@/sections/NarrativeJourney";
 import { getUserCount } from "@/app/actions/get-user-count";
+import DynamicThreeScene from "@/components/DynamicThreeScene";
 
 export default async function Home() {
   const userCount = await getUserCount();
 
   return (
-    <>
-      <Hero userCount={userCount} />
-      <div className="bg-3d-grid-container relative">
-        <ProofBar />
-        <Features />
-        <Showcase />
-        <HowItWorks />
-        <UseCases />
-        <Pricing />
-        <CTABanner userCount={userCount} />
+    <div className="bg-[#f5f5f7] min-h-screen selection:bg-black selection:text-white relative">
+      <div className="absolute inset-0 bg-grid-pattern pointer-events-none z-0"></div>
+      <DynamicThreeScene />
+      
+      <div className="relative z-10 w-full">
+        <HeroCinematic />
+        <NarrativeJourney />
       </div>
-    </>
+    </div>
   );
 }
