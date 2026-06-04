@@ -66,21 +66,23 @@ export default function RootLayout({
       <head>
         {/* CookieHub Consent Manager */}
         <Script 
-          strategy="beforeInteractive" 
           src="https://cdn.cookiehub.eu/c2/db2e2d6c.js" 
+          strategy="beforeInteractive"
         />
         <Script
           id="cookiehub-init"
           strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `
-              if (window.cookiehub) {
-                window.cookiehub.load({});
-              } else {
-                window.addEventListener("load", function() {
-                  window.cookiehub && window.cookiehub.load({});
-                });
-              }
+              var checkCookieHub = setInterval(function() {
+                if (window.cookiehub) {
+                  clearInterval(checkCookieHub);
+                  window.cookiehub.load({});
+                }
+              }, 100);
+              
+              // Fallback clear after 10s
+              setTimeout(function() { clearInterval(checkCookieHub); }, 10000);
             `,
           }}
         />
