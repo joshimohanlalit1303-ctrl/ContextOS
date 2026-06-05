@@ -23,6 +23,19 @@ export interface GetTimelineRequest {
   userId: string;
 }
 
+export interface ForgetRequest {
+  userId: string;
+  memoryId?: string;
+  query?: string;
+}
+
+export interface UpdateRequest {
+  userId: string;
+  memoryId: string;
+  text?: string;
+  metadata?: Record<string, any>;
+}
+
 export class LibroClient {
   private apiKey: string;
   private baseUrl: string;
@@ -89,5 +102,19 @@ export class LibroClient {
    */
   async getTimeline(request: GetTimelineRequest) {
     return this.fetchAPI("/api/v1/get-timeline", request);
+  }
+
+  /**
+   * Delete a specific memory by ID, or memories matching a query.
+   */
+  async forget(request: ForgetRequest) {
+    return this.fetchAPI("/api/v1/forget", request);
+  }
+
+  /**
+   * Update an existing memory's text or metadata.
+   */
+  async update(request: UpdateRequest) {
+    return this.fetchAPI("/api/v1/update", request);
   }
 }

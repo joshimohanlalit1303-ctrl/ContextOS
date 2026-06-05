@@ -1,0 +1,1113 @@
+{
+  "timestamp": "2026-06-05T18:15:56.515Z",
+  "config": {
+    "baseUrl": "http://localhost:3000",
+    "statRuns": 100
+  },
+  "phases": {
+    "coldStart": {
+      "ms": 359,
+      "rating": "acceptable"
+    },
+    "latency": {
+      "ingest": {
+        "count": 1,
+        "min": 86,
+        "max": 86,
+        "avg": 86,
+        "median": 86,
+        "p50": 86,
+        "p95": 86,
+        "p99": 86
+      },
+      "getContext": {
+        "count": 66,
+        "min": 54,
+        "max": 15068,
+        "avg": 467,
+        "median": 88,
+        "p50": 88,
+        "p95": 1195,
+        "p99": 15068
+      },
+      "slaIngest": true,
+      "slaContext": false
+    },
+    "components": {
+      "apiKey": {
+        "count": 10,
+        "min": 59,
+        "max": 417,
+        "avg": 98,
+        "median": 63,
+        "p50": 63,
+        "p95": 417,
+        "p99": 417
+      },
+      "ingest": {
+        "count": 10,
+        "min": 87,
+        "max": 139,
+        "avg": 107,
+        "median": 102,
+        "p50": 102,
+        "p95": 139,
+        "p99": 139
+      },
+      "search": {
+        "count": 10,
+        "min": 64,
+        "max": 217,
+        "avg": 110,
+        "median": 105,
+        "p50": 105,
+        "p95": 217,
+        "p99": 217
+      },
+      "embeddingEstimate": 0
+    },
+    "datasetIngest": {
+      "count": 90,
+      "failed": 0,
+      "stats": {
+        "count": 90,
+        "min": 60,
+        "max": 5249,
+        "avg": 295,
+        "median": 126,
+        "p50": 126,
+        "p95": 1415,
+        "p99": 5249
+      },
+      "throughput": 3
+    },
+    "retrieval": {
+      "prec1": 86,
+      "prec5": 94,
+      "rec5": 94,
+      "mrr": 0.8958333333333333,
+      "f1": 89.82222222222224,
+      "fp": 7,
+      "fn": 2,
+      "latency": {
+        "count": 50,
+        "min": 64,
+        "max": 910,
+        "avg": 140,
+        "median": 102,
+        "p50": 102,
+        "p95": 331,
+        "p99": 910
+      }
+    },
+    "threshold": {
+      "results": [
+        {
+          "threshold": 0.2,
+          "precision": 100,
+          "avgResults": 10
+        },
+        {
+          "threshold": 0.3,
+          "precision": 100,
+          "avgResults": 10
+        },
+        {
+          "threshold": 0.35,
+          "precision": 100,
+          "avgResults": 10
+        },
+        {
+          "threshold": 0.4,
+          "precision": 100,
+          "avgResults": 10
+        },
+        {
+          "threshold": 0.45,
+          "precision": 100,
+          "avgResults": 10
+        },
+        {
+          "threshold": 0.5,
+          "precision": 100,
+          "avgResults": 10
+        },
+        {
+          "threshold": 0.55,
+          "precision": 100,
+          "avgResults": 10
+        },
+        {
+          "threshold": 0.6,
+          "precision": 100,
+          "avgResults": 8
+        },
+        {
+          "threshold": 0.7,
+          "precision": 90,
+          "avgResults": 1.8
+        },
+        {
+          "threshold": 0.8,
+          "precision": 30,
+          "avgResults": 0.3
+        },
+        {
+          "threshold": 0.9,
+          "precision": 0,
+          "avgResults": 0
+        }
+      ],
+      "optimal": {
+        "threshold": 0.2,
+        "precision": 100,
+        "avgResults": 10
+      }
+    },
+    "concurrency_10": {
+      "n": 10,
+      "success": 10,
+      "failures": 0,
+      "failRate": 0,
+      "rps": 26,
+      "latency": {
+        "count": 10,
+        "min": 78,
+        "max": 378,
+        "avg": 235,
+        "median": 296,
+        "p50": 296,
+        "p95": 378,
+        "p99": 378
+      }
+    },
+    "concurrency_100": {
+      "n": 100,
+      "success": 100,
+      "failures": 0,
+      "failRate": 0,
+      "rps": 37,
+      "latency": {
+        "count": 100,
+        "min": 211,
+        "max": 2693,
+        "avg": 1495,
+        "median": 1508,
+        "p50": 1508,
+        "p95": 2619,
+        "p99": 2693
+      }
+    },
+    "concurrency_250": {
+      "n": 250,
+      "success": 250,
+      "failures": 0,
+      "failRate": 0,
+      "rps": 24,
+      "latency": {
+        "count": 250,
+        "min": 232,
+        "max": 10465,
+        "avg": 4639,
+        "median": 3914,
+        "p50": 3914,
+        "p95": 8459,
+        "p99": 9981
+      }
+    },
+    "concurrency_500": {
+      "n": 500,
+      "success": 141,
+      "failures": 359,
+      "failRate": 72,
+      "rps": 9,
+      "latency": {
+        "count": 141,
+        "min": 996,
+        "max": 15812,
+        "avg": 9153,
+        "median": 8406,
+        "p50": 8406,
+        "p95": 15671,
+        "p99": 15812
+      }
+    },
+    "memory": {
+      "heapGrowthMb": 1,
+      "rssGrowthMb": 1,
+      "peakHeapMb": 12
+    },
+    "failure": {
+      "passed": 4,
+      "total": 10,
+      "score": 40
+    },
+    "devex": {
+      "ttfi": 496,
+      "ttfr": 213,
+      "dxScore": 83
+    }
+  },
+  "errors": [
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 1,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 2,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 3,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 4,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 5,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 6,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 7,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 8,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 9,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 10,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 11,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 12,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 13,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 14,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 15,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 16,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 17,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 18,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 19,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 20,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 21,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 22,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 23,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 24,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 25,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 26,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 27,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 28,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 29,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 30,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 31,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 32,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 33,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 34,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 35,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 36,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 37,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 38,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 39,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 40,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 41,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 42,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 43,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 44,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 45,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 46,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 47,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 48,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 49,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 50,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 51,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 52,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 53,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 54,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 55,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 56,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 57,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 58,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 59,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 60,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 61,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 62,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 63,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 64,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 65,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 66,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 67,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 68,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 69,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 70,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 71,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 72,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 73,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 74,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 75,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 76,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 77,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 78,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 79,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 80,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 81,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 82,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 83,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 84,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 85,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 86,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 87,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 88,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 89,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 90,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 91,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 92,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 93,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 94,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 95,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 96,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 97,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 98,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "ingest",
+      "run": 99,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "getContext",
+      "run": 0,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "getContext",
+      "run": 1,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "getContext",
+      "run": 2,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "getContext",
+      "run": 3,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "getContext",
+      "run": 4,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "getContext",
+      "run": 5,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "getContext",
+      "run": 6,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "getContext",
+      "run": 7,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "getContext",
+      "run": 8,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "getContext",
+      "run": 9,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "getContext",
+      "run": 10,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "getContext",
+      "run": 11,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "getContext",
+      "run": 12,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "getContext",
+      "run": 13,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "getContext",
+      "run": 14,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "getContext",
+      "run": 15,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "getContext",
+      "run": 16,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "getContext",
+      "run": 17,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "getContext",
+      "run": 18,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "getContext",
+      "run": 19,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "getContext",
+      "run": 20,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "getContext",
+      "run": 21,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "getContext",
+      "run": 22,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "getContext",
+      "run": 23,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "getContext",
+      "run": 24,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "getContext",
+      "run": 25,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "getContext",
+      "run": 26,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "getContext",
+      "run": 27,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "getContext",
+      "run": 28,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "getContext",
+      "run": 29,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "getContext",
+      "run": 30,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "getContext",
+      "run": 31,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "getContext",
+      "run": 32,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    },
+    {
+      "phase": 2,
+      "method": "getContext",
+      "run": 33,
+      "err": "Libro API Error: 429 Too Many Requests - {\"error\":\"Too many requests\"}"
+    }
+  ],
+  "scores": {
+    "total": 60,
+    "grade": "SIGNIFICANT",
+    "checks": [
+      {
+        "label": "Cold start < 3s",
+        "pass": true,
+        "pts": 10,
+        "maxPts": 10,
+        "detail": "359ms"
+      },
+      {
+        "label": "ingest() SLA p99 < 500ms",
+        "pass": true,
+        "pts": 15,
+        "maxPts": 15,
+        "detail": "p99=86ms"
+      },
+      {
+        "label": "getContext() SLA p99<300ms",
+        "pass": false,
+        "pts": 0,
+        "maxPts": 15,
+        "detail": "p99=15068ms"
+      },
+      {
+        "label": "Precision@1 > 80%",
+        "pass": true,
+        "pts": 20,
+        "maxPts": 20,
+        "detail": "86%"
+      },
+      {
+        "label": "MRR > 0.80",
+        "pass": true,
+        "pts": 10,
+        "maxPts": 10,
+        "detail": "0.896"
+      },
+      {
+        "label": "Concurrency 50u stable",
+        "pass": false,
+        "pts": 0,
+        "maxPts": 10,
+        "detail": "N/A% failures"
+      },
+      {
+        "label": "Resilience score > 80%",
+        "pass": false,
+        "pts": 0,
+        "maxPts": 15,
+        "detail": "40%"
+      },
+      {
+        "label": "DX score > 60",
+        "pass": true,
+        "pts": 5,
+        "maxPts": 5,
+        "detail": "83/100"
+      }
+    ]
+  }
+}

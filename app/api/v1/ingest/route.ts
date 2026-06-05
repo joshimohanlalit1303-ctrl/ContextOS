@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { generateEmbedding } from '@/utils/embeddings';
+import { validateApiKey, checkRateLimit, logSdkError } from '../sdk-utils';
+import { db } from '@/lib/db';
+import { memories } from '@/lib/db/schema';
 
 export async function POST(req: Request) {
   try {
@@ -10,16 +13,13 @@ export async function POST(req: Request) {
     }
 
     const apiKey = authHeader.split(' ')[1];
-    const supabase = createAdminClient();
 
-    // 1. Validate API Key
-    const { data: apiKeyData, error: apiKeyError } = await supabase
-      .from('api_keys')
-      .select('id, user_id')
-      .eq('key', apiKey)
-      .single();
+    if (!(await checkRateLimit(apiKey))) {
+      return NextResponse.json({ error: 'Too many requests' }, { status: 429 });
+    }
 
-    if (apiKeyError || !apiKeyData) {
+    const apiKeyData = await validateApiKey(apiKey);
+    if (!apiKeyData) {
       return NextResponse.json({ error: 'Invalid API key' }, { status: 401 });
     }
 
@@ -32,29 +32,23 @@ export async function POST(req: Request) {
     }
 
     // 3. Generate Embedding using free local Transformers model
-    const embedding = await generateEmbedding(content);
+    const embedding = await generateEmbedding(content, 'search_document');
 
-    // 4. Store in Supabase
-    const { data: memoryData, error: memoryError } = await supabase
-      .from('memories')
-      .insert({
-        api_key_id: apiKeyData.id,
-        end_user_id: endUserId,
+    // 4. Store in Postgres via Drizzle (avoids HTTP overhead of Supabase REST API)
+    const [memoryData] = await db
+      .insert(memories)
+      .values({
+        apiKeyId: apiKeyData.id,
+        endUserId: endUserId,
         content: content,
         embedding: embedding,
         metadata: metadata,
       })
-      .select()
-      .single();
-
-    if (memoryError) {
-      console.error('Database Error:', memoryError);
-      return NextResponse.json({ error: 'Failed to save memory' }, { status: 500 });
-    }
+      .returning();
 
     return NextResponse.json({ success: true, memory: memoryData }, { status: 200 });
   } catch (error: any) {
-    console.error('Ingest API Error:', error);
+    logSdkError(error, 'ingest_route_catch');
     return NextResponse.json({ error: error.message || 'Internal Server Error' }, { status: 500 });
   }
 }

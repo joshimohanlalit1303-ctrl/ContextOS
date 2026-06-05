@@ -11,8 +11,8 @@ export const docsNavigation = [
       { title: "Introduction", slug: "introduction" },
       { title: "Quickstart", slug: "quickstart" },
       { title: "Authentication", slug: "authentication" },
-      { title: "SDK Installation", slug: "sdk-installation" },
-      { title: "Initializing Client", slug: "initializing-client" },
+      { title: "JavaScript SDK", slug: "sdk-installation" },
+      { title: "Python SDK", slug: "python-sdk" },
     ]
   },
   {
@@ -28,11 +28,10 @@ export const docsNavigation = [
   {
     section: "Data Management",
     links: [
-      { title: "Ingesting Data (Basic)", slug: "ingesting-data-basic" },
-      { title: "Ingesting Data (Metadata)", slug: "ingesting-data-metadata" },
+      { title: "Ingesting Data", slug: "ingesting-data-basic" },
       { title: "Retrieving Context", slug: "retrieving-context" },
-      { title: "Semantic Search API", slug: "semantic-search-api" },
-      { title: "Managing Data", slug: "managing-data" },
+      { title: "Semantic Search", slug: "semantic-search-api" },
+      { title: "Managing Data (GDPR)", slug: "managing-data" },
     ]
   },
   {
@@ -117,23 +116,13 @@ curl -X POST https://libro.dev/api/v1/ingest \\
 \`\`\`
 `,
   "sdk-installation": `
-# SDK Installation
+# JavaScript/TypeScript SDK
 
 Libro distributes a lightweight, dependency-free SDK designed to run in any JavaScript environment.
 
 ### Node Package Manager
 \`\`\`bash
-npm install @libro/sdk
-\`\`\`
-
-### Yarn
-\`\`\`bash
-yarn add @libro/sdk
-\`\`\`
-
-### pnpm
-\`\`\`bash
-pnpm add @libro/sdk
+npm install libro-sdk
 \`\`\`
 
 ### Supported Environments
@@ -143,6 +132,39 @@ Because the Libro SDK uses the native \`fetch\` API, it is universally compatibl
 - **Cloudflare Workers**
 - **Deno**
 - **Browser Environments** (though we strictly recommend against using API keys in client-side code).
+`,
+  "python-sdk": `
+# Python SDK
+
+Libro provides a first-class Python SDK for machine learning pipelines and backend services.
+
+### Installation
+\`\`\`bash
+pip install libro-sdk
+\`\`\`
+
+### Quick Start
+\`\`\`python
+from libro import LibroClient
+
+# Initialize the client
+client = LibroClient(api_key="your_api_key", base_url="http://localhost:3000")
+
+# 1. Ingest a memory
+client.ingest(
+    user_id="user_123",
+    text="User prefers Python over Java",
+    metadata={"source": "slack"}
+)
+
+# 2. Retrieve context
+context = client.get_context(
+    user_id="user_123",
+    query="What programming language do they like?"
+)
+
+print(context)
+\`\`\`
 `,
   "initializing-client": `
 # Initializing the Client
@@ -366,19 +388,43 @@ results.forEach(res => {
 \`\`\`
 `,
   "managing-data": `
-# Managing & Deleting Data
+# Managing & Deleting Data (GDPR)
 
-To comply with GDPR and CCPA, you must provide a way to delete user data when requested.
-
-### Deleting a User
-The \`deleteUser()\` method wipes all memory, vectors, and metadata associated with a specific \`userId\` instantly.
-\`\`\`typescript
-await ctx.deleteUser("user_123");
-// All data is completely destroyed across all edge replicas.
-\`\`\`
+To comply with GDPR and CCPA, Libro provides granular APIs to manage and delete user memories.
 
 ### Deleting Specific Memories
-Currently, Libro treats the user as the primary boundary. If you need to delete a specific memory, we recommend using short-lived keys, or managing memory via the Dashboard. Granular chunk-level deletion API is coming in v2.
+You can delete a specific memory by ID or by a semantic query string using the \`forget()\` API.
+
+#### JavaScript SDK
+\`\`\`typescript
+// Delete by ID
+await ctx.forget({ userId: "user_123", memoryId: "uuid-1234" });
+
+// Delete all memories matching a string
+await ctx.forget({ userId: "user_123", query: "credit card number" });
+\`\`\`
+
+#### Python SDK
+\`\`\`python
+# Delete by ID
+client.forget(user_id="user_123", memory_id="uuid-1234")
+
+# Delete by query
+client.forget(user_id="user_123", query="credit card number")
+\`\`\`
+
+### Updating Memories
+You can update the text or metadata of an existing memory. If the text changes, Libro automatically recalculates the 768-dim embedding via the sidecar service.
+
+#### JavaScript SDK
+\`\`\`typescript
+await ctx.update({
+  userId: "user_123",
+  memoryId: "uuid-1234",
+  text: "Updated preference: prefers dark mode.",
+  metadata: { priority: "high" }
+});
+\`\`\`
 `,
   "webhooks": `
 # Webhooks

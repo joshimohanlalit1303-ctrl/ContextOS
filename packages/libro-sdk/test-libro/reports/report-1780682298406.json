@@ -1,0 +1,508 @@
+{
+  "timestamp": "2026-06-05T17:55:00.421Z",
+  "config": {
+    "baseUrl": "http://localhost:3000",
+    "statRuns": 30
+  },
+  "phases": {
+    "coldStart": {
+      "ms": 3280,
+      "rating": "poor"
+    },
+    "latency": {
+      "ingest": {
+        "count": 30,
+        "min": 59,
+        "max": 203,
+        "avg": 75,
+        "median": 72,
+        "p50": 72,
+        "p95": 86,
+        "p99": 203
+      },
+      "getContext": {
+        "count": 30,
+        "min": 65,
+        "max": 511,
+        "avg": 117,
+        "median": 87,
+        "p50": 87,
+        "p95": 314,
+        "p99": 511
+      },
+      "slaIngest": true,
+      "slaContext": false
+    },
+    "components": {
+      "apiKey": {
+        "count": 10,
+        "min": 43,
+        "max": 74,
+        "avg": 50,
+        "median": 47,
+        "p50": 47,
+        "p95": 74,
+        "p99": 74
+      },
+      "ingest": {
+        "count": 10,
+        "min": 62,
+        "max": 279,
+        "avg": 89,
+        "median": 68,
+        "p50": 68,
+        "p95": 279,
+        "p99": 279
+      },
+      "search": {
+        "count": 10,
+        "min": 75,
+        "max": 128,
+        "avg": 91,
+        "median": 84,
+        "p50": 84,
+        "p95": 128,
+        "p99": 128
+      },
+      "embeddingEstimate": 0
+    },
+    "datasetIngest": {
+      "count": 90,
+      "failed": 0,
+      "stats": {
+        "count": 90,
+        "min": 60,
+        "max": 755,
+        "avg": 101,
+        "median": 73,
+        "p50": 73,
+        "p95": 205,
+        "p99": 755
+      },
+      "throughput": 10
+    },
+    "retrieval": {
+      "prec1": 12,
+      "prec5": 14.000000000000002,
+      "rec5": 14.000000000000002,
+      "mrr": 0.12666666666666665,
+      "f1": 12.923076923076923,
+      "fp": 1,
+      "fn": 43,
+      "latency": {
+        "count": 7,
+        "min": 69,
+        "max": 229,
+        "avg": 135,
+        "median": 88,
+        "p50": 88,
+        "p95": 229,
+        "p99": 229
+      }
+    },
+    "threshold": {
+      "results": [
+        {
+          "threshold": 0.2,
+          "precision": 0,
+          "avgResults": 0
+        },
+        {
+          "threshold": 0.3,
+          "precision": 0,
+          "avgResults": 0
+        },
+        {
+          "threshold": 0.35,
+          "precision": 0,
+          "avgResults": 0
+        },
+        {
+          "threshold": 0.4,
+          "precision": 0,
+          "avgResults": 0
+        },
+        {
+          "threshold": 0.45,
+          "precision": 0,
+          "avgResults": 0
+        },
+        {
+          "threshold": 0.5,
+          "precision": 0,
+          "avgResults": 0
+        },
+        {
+          "threshold": 0.55,
+          "precision": 0,
+          "avgResults": 0
+        },
+        {
+          "threshold": 0.6,
+          "precision": 0,
+          "avgResults": 0
+        },
+        {
+          "threshold": 0.7,
+          "precision": 0,
+          "avgResults": 0
+        },
+        {
+          "threshold": 0.8,
+          "precision": 0,
+          "avgResults": 0
+        },
+        {
+          "threshold": 0.9,
+          "precision": 0,
+          "avgResults": 0
+        }
+      ]
+    },
+    "concurrency_10": {
+      "n": 10,
+      "success": 10,
+      "failures": 0,
+      "failRate": 0,
+      "rps": 14,
+      "latency": {
+        "count": 10,
+        "min": 511,
+        "max": 707,
+        "avg": 605,
+        "median": 605,
+        "p50": 605,
+        "p95": 707,
+        "p99": 707
+      }
+    },
+    "concurrency_50": {
+      "n": 50,
+      "success": 50,
+      "failures": 0,
+      "failRate": 0,
+      "rps": 27,
+      "latency": {
+        "count": 50,
+        "min": 322,
+        "max": 1834,
+        "avg": 803,
+        "median": 752,
+        "p50": 752,
+        "p95": 1544,
+        "p99": 1834
+      }
+    },
+    "concurrency_100": {
+      "n": 100,
+      "success": 100,
+      "failures": 0,
+      "failRate": 0,
+      "rps": 3,
+      "latency": {
+        "count": 100,
+        "min": 421,
+        "max": 32191,
+        "avg": 16327,
+        "median": 19589,
+        "p50": 19589,
+        "p95": 29449,
+        "p99": 32191
+      }
+    },
+    "memory": {
+      "heapGrowthMb": 1,
+      "rssGrowthMb": -3,
+      "peakHeapMb": 12
+    },
+    "failure": {
+      "passed": 10,
+      "total": 10,
+      "score": 100
+    },
+    "devex": {
+      "ttfi": 227,
+      "ttfr": 1704,
+      "dxScore": 39
+    }
+  },
+  "errors": [
+    {
+      "phase": 5,
+      "q": "How does the user take their morning coffee?",
+      "err": "Libro API Error: 500 Internal Server Error - {\"error\":\"Failed to search memory\"}"
+    },
+    {
+      "phase": 5,
+      "q": "When does the user work best?",
+      "err": "Libro API Error: 500 Internal Server Error - {\"error\":\"Failed to search memory\"}"
+    },
+    {
+      "phase": 5,
+      "q": "Is the user vegetarian or do they eat meat?",
+      "err": "Libro API Error: 500 Internal Server Error - {\"error\":\"Failed to search memory\"}"
+    },
+    {
+      "phase": 5,
+      "q": "What laptop hardware does the user work on?",
+      "err": "Libro API Error: 500 Internal Server Error - {\"error\":\"Failed to search memory\"}"
+    },
+    {
+      "phase": 5,
+      "q": "What frontend framework does the user use?",
+      "err": "Libro API Error: 500 Internal Server Error - {\"error\":\"Failed to search memory\"}"
+    },
+    {
+      "phase": 5,
+      "q": "What ORM does the user use for database queries?",
+      "err": "Libro API Error: 500 Internal Server Error - {\"error\":\"Failed to search memory\"}"
+    },
+    {
+      "phase": 5,
+      "q": "What database technology does the user rely on?",
+      "err": "Libro API Error: 500 Internal Server Error - {\"error\":\"Failed to search memory\"}"
+    },
+    {
+      "phase": 5,
+      "q": "Where does the user deploy their applications?",
+      "err": "Libro API Error: 500 Internal Server Error - {\"error\":\"Failed to search memory\"}"
+    },
+    {
+      "phase": 5,
+      "q": "How does the user send transactional emails?",
+      "err": "Libro API Error: 500 Internal Server Error - {\"error\":\"Failed to search memory\"}"
+    },
+    {
+      "phase": 5,
+      "q": "How does the user implement API rate limiting?",
+      "err": "Libro API Error: 500 Internal Server Error - {\"error\":\"Failed to search memory\"}"
+    },
+    {
+      "phase": 5,
+      "q": "What does Libro actually do as a product?",
+      "err": "Libro API Error: 500 Internal Server Error - {\"error\":\"Failed to search memory\"}"
+    },
+    {
+      "phase": 5,
+      "q": "What indexing algorithm does Libro use?",
+      "err": "Libro API Error: 500 Internal Server Error - {\"error\":\"Failed to search memory\"}"
+    },
+    {
+      "phase": 5,
+      "q": "What embedding model powers Libro?",
+      "err": "Libro API Error: 500 Internal Server Error - {\"error\":\"Failed to search memory\"}"
+    },
+    {
+      "phase": 5,
+      "q": "Who are Libro's ideal customers?",
+      "err": "Libro API Error: 500 Internal Server Error - {\"error\":\"Failed to search memory\"}"
+    },
+    {
+      "phase": 5,
+      "q": "What makes Libro different from competitors?",
+      "err": "Libro API Error: 500 Internal Server Error - {\"error\":\"Failed to search memory\"}"
+    },
+    {
+      "phase": 5,
+      "q": "What is Libro's monthly revenue target?",
+      "err": "Libro API Error: 500 Internal Server Error - {\"error\":\"Failed to search memory\"}"
+    },
+    {
+      "phase": 5,
+      "q": "Does the user plan to open source anything?",
+      "err": "Libro API Error: 500 Internal Server Error - {\"error\":\"Failed to search memory\"}"
+    },
+    {
+      "phase": 5,
+      "q": "How much funding does the user want to raise?",
+      "err": "Libro API Error: 500 Internal Server Error - {\"error\":\"Failed to search memory\"}"
+    },
+    {
+      "phase": 5,
+      "q": "Does the user write tests before shipping?",
+      "err": "Libro API Error: 500 Internal Server Error - {\"error\":\"Failed to search memory\"}"
+    },
+    {
+      "phase": 5,
+      "q": "What git commit style does the user follow?",
+      "err": "Libro API Error: 500 Internal Server Error - {\"error\":\"Failed to search memory\"}"
+    },
+    {
+      "phase": 5,
+      "q": "Why did the user choose Supabase?",
+      "err": "Libro API Error: 500 Internal Server Error - {\"error\":\"Failed to search memory\"}"
+    },
+    {
+      "phase": 5,
+      "q": "Why Drizzle instead of Prisma?",
+      "err": "Libro API Error: 500 Internal Server Error - {\"error\":\"Failed to search memory\"}"
+    },
+    {
+      "phase": 5,
+      "q": "Why HNSW over IVFFlat?",
+      "err": "Libro API Error: 500 Internal Server Error - {\"error\":\"Failed to search memory\"}"
+    },
+    {
+      "phase": 5,
+      "q": "Why not use OpenAI for embeddings?",
+      "err": "Libro API Error: 500 Internal Server Error - {\"error\":\"Failed to search memory\"}"
+    },
+    {
+      "phase": 5,
+      "q": "Does the user have any co-founders?",
+      "err": "Libro API Error: 500 Internal Server Error - {\"error\":\"Failed to search memory\"}"
+    },
+    {
+      "phase": 5,
+      "q": "When does the user plan to hire?",
+      "err": "Libro API Error: 500 Internal Server Error - {\"error\":\"Failed to search memory\"}"
+    },
+    {
+      "phase": 5,
+      "q": "What accelerators has the user applied to?",
+      "err": "Libro API Error: 500 Internal Server Error - {\"error\":\"Failed to search memory\"}"
+    },
+    {
+      "phase": 5,
+      "q": "What book is the user currently reading?",
+      "err": "Libro API Error: 500 Internal Server Error - {\"error\":\"Failed to search memory\"}"
+    },
+    {
+      "phase": 5,
+      "q": "What is the main performance bottleneck?",
+      "err": "Libro API Error: 500 Internal Server Error - {\"error\":\"Failed to search memory\"}"
+    },
+    {
+      "phase": 5,
+      "q": "Is there a problem with the similarity threshold?",
+      "err": "Libro API Error: 500 Internal Server Error - {\"error\":\"Failed to search memory\"}"
+    },
+    {
+      "phase": 5,
+      "q": "Is the API rate limited?",
+      "err": "Libro API Error: 500 Internal Server Error - {\"error\":\"Failed to search memory\"}"
+    },
+    {
+      "phase": 5,
+      "q": "What SDK methods are missing?",
+      "err": "Libro API Error: 500 Internal Server Error - {\"error\":\"Failed to search memory\"}"
+    },
+    {
+      "phase": 5,
+      "q": "What GDPR issues does the product have?",
+      "err": "Libro API Error: 500 Internal Server Error - {\"error\":\"Failed to search memory\"}"
+    },
+    {
+      "phase": 5,
+      "q": "How does the user track bugs and issues?",
+      "err": "Libro API Error: 500 Internal Server Error - {\"error\":\"Failed to search memory\"}"
+    },
+    {
+      "phase": 5,
+      "q": "What communities does the user participate in?",
+      "err": "Libro API Error: 500 Internal Server Error - {\"error\":\"Failed to search memory\"}"
+    },
+    {
+      "phase": 5,
+      "q": "How often does the user post on social media?",
+      "err": "Libro API Error: 500 Internal Server Error - {\"error\":\"Failed to search memory\"}"
+    },
+    {
+      "phase": 5,
+      "q": "What analytics tool does the user use?",
+      "err": "Libro API Error: 500 Internal Server Error - {\"error\":\"Failed to search memory\"}"
+    },
+    {
+      "phase": 5,
+      "q": "Who is Libro's main competitor?",
+      "err": "Libro API Error: 500 Internal Server Error - {\"error\":\"Failed to search memory\"}"
+    },
+    {
+      "phase": 5,
+      "q": "What CI/CD does the user use?",
+      "err": "Libro API Error: 500 Internal Server Error - {\"error\":\"Failed to search memory\"}"
+    },
+    {
+      "phase": 5,
+      "q": "What Chrome extension is being built?",
+      "err": "Libro API Error: 500 Internal Server Error - {\"error\":\"Failed to search memory\"}"
+    },
+    {
+      "phase": 5,
+      "q": "What monorepo tool does the user use?",
+      "err": "Libro API Error: 500 Internal Server Error - {\"error\":\"Failed to search memory\"}"
+    },
+    {
+      "phase": 5,
+      "q": "What is the user's biggest marketing challenge?",
+      "err": "Libro API Error: 500 Internal Server Error - {\"error\":\"Failed to search memory\"}"
+    },
+    {
+      "phase": 5,
+      "q": "Where does the user plan to publicly launch?",
+      "err": "Libro API Error: 500 Internal Server Error - {\"error\":\"Failed to search memory\"}"
+    }
+  ],
+  "scores": {
+    "total": 40,
+    "grade": "NOT_READY",
+    "checks": [
+      {
+        "label": "Cold start < 3s",
+        "pass": false,
+        "pts": 0,
+        "maxPts": 10,
+        "detail": "3280ms"
+      },
+      {
+        "label": "ingest() SLA p99 < 500ms",
+        "pass": true,
+        "pts": 15,
+        "maxPts": 15,
+        "detail": "p99=203ms"
+      },
+      {
+        "label": "getContext() SLA p99<300ms",
+        "pass": false,
+        "pts": 0,
+        "maxPts": 15,
+        "detail": "p99=511ms"
+      },
+      {
+        "label": "Precision@1 > 80%",
+        "pass": false,
+        "pts": 0,
+        "maxPts": 20,
+        "detail": "12%"
+      },
+      {
+        "label": "MRR > 0.80",
+        "pass": false,
+        "pts": 0,
+        "maxPts": 10,
+        "detail": "0.127"
+      },
+      {
+        "label": "Concurrency 50u stable",
+        "pass": true,
+        "pts": 10,
+        "maxPts": 10,
+        "detail": "0% failures"
+      },
+      {
+        "label": "Resilience score > 80%",
+        "pass": true,
+        "pts": 15,
+        "maxPts": 15,
+        "detail": "100%"
+      },
+      {
+        "label": "DX score > 60",
+        "pass": false,
+        "pts": 0,
+        "maxPts": 5,
+        "detail": "39/100"
+      }
+    ]
+  }
+}

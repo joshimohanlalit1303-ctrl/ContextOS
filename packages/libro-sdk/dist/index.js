@@ -80,6 +80,18 @@ var LibroClient = class {
   async getTimeline(request) {
     return this.fetchAPI("/api/v1/get-timeline", request);
   }
+  /**
+   * Delete a specific memory by ID, or memories matching a query.
+   */
+  async forget(request) {
+    return this.fetchAPI("/api/v1/forget", request);
+  }
+  /**
+   * Update an existing memory's text or metadata.
+   */
+  async update(request) {
+    return this.fetchAPI("/api/v1/update", request);
+  }
 };
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {

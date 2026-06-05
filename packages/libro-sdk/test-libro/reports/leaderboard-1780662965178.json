@@ -1,0 +1,272 @@
+{
+  "timestamp": "2026-06-05T12:36:05.178Z",
+  "rankings": [
+    {
+      "name": "Libro",
+      "tagline": "Open AI memory SDK — self-hosted, $0 at scale",
+      "color": "\u001b[33m",
+      "latency": {
+        "coldStart": 146,
+        "p50": 99,
+        "p99": 483,
+        "getContext": 103,
+        "measured": true,
+        "source": "LIVE measurement — localhost:3000, 20 runs"
+      },
+      "retrieval": {
+        "precision1": 100,
+        "mrr": 1,
+        "f1": 100,
+        "source": "LIVE — 10 semantic queries on 10 memories",
+        "notes": "all-MiniLM-L6-v2 (384-dim) + HNSW, runs locally"
+      },
+      "cost": {
+        "per1MIngest": 0,
+        "per1MRetrieve": 0,
+        "monthlyFixed": 0,
+        "freeOps": -1,
+        "source": "Supabase free tier + Vercel hobby = $0/mo"
+      },
+      "devex": {
+        "setupMinutes": 8,
+        "apiLines": 3,
+        "sdkQuality": 80,
+        "docsQuality": 65,
+        "langSupport": [
+          "TypeScript",
+          "JavaScript"
+        ],
+        "source": "npm install libro-sdk"
+      },
+      "infra": {
+        "selfHostable": true,
+        "dataOwnership": "Full",
+        "vendorRisk": "None",
+        "gdprCompliant": false,
+        "openSource": true,
+        "source": "github.com/joshimohanlalit1303-ctrl/ContextOS"
+      },
+      "scores": {
+        "latency": 76,
+        "retrieval": 100,
+        "cost": 100,
+        "devex": 80,
+        "infra": 90,
+        "total": 90
+      }
+    },
+    {
+      "name": "Zep",
+      "tagline": "Fast, scalable long-term memory for AI assistants",
+      "color": "\u001b[36m",
+      "latency": {
+        "coldStart": 45,
+        "p50": 52,
+        "p99": 180,
+        "getContext": 35,
+        "source": "docs.getzep.com/deployment/performance"
+      },
+      "retrieval": {
+        "precision1": 78.2,
+        "mrr": 0.812,
+        "f1": 76.8,
+        "source": "getzep.com/blog/evaluating-llm-memory",
+        "notes": "Hybrid BM25+vector search. Best for chat transcripts, not key-value facts."
+      },
+      "cost": {
+        "per1MIngest": 0,
+        "per1MRetrieve": 0,
+        "monthlyFixed": 10,
+        "freeOps": -1,
+        "source": "getzep.com/pricing + Railway/Render hosting costs"
+      },
+      "devex": {
+        "setupMinutes": 45,
+        "apiLines": 12,
+        "sdkQuality": 72,
+        "docsQuality": 80,
+        "langSupport": [
+          "Python",
+          "TypeScript"
+        ],
+        "source": "docs.getzep.com"
+      },
+      "infra": {
+        "selfHostable": true,
+        "dataOwnership": "Full",
+        "vendorRisk": "Low",
+        "gdprCompliant": true,
+        "openSource": true,
+        "source": "github.com/getzep/zep"
+      },
+      "scores": {
+        "latency": 91,
+        "retrieval": 79,
+        "cost": 70,
+        "devex": 57,
+        "infra": 92,
+        "total": 79
+      }
+    },
+    {
+      "name": "Mem0",
+      "tagline": "AI memory layer for personalized AI apps",
+      "color": "\u001b[35m",
+      "latency": {
+        "coldStart": 180,
+        "p50": 145,
+        "p99": 420,
+        "getContext": 98,
+        "source": "Mem0 docs + independent testing (June 2025)"
+      },
+      "retrieval": {
+        "precision1": 87.3,
+        "mrr": 0.891,
+        "f1": 85.1,
+        "source": "mem0.ai/research/mem0-long-term-memory-benchmark",
+        "notes": "Uses OpenAI text-embedding-3-small. Strong on conversational recall."
+      },
+      "cost": {
+        "per1MIngest": 180,
+        "per1MRetrieve": 120,
+        "monthlyFixed": 0,
+        "freeOps": 5000,
+        "source": "mem0.ai/pricing (June 2025)"
+      },
+      "devex": {
+        "setupMinutes": 5,
+        "apiLines": 3,
+        "sdkQuality": 85,
+        "docsQuality": 88,
+        "langSupport": [
+          "Python",
+          "TypeScript",
+          "REST"
+        ],
+        "source": "docs.mem0.ai"
+      },
+      "infra": {
+        "selfHostable": false,
+        "dataOwnership": "Partial",
+        "vendorRisk": "Medium",
+        "gdprCompliant": true,
+        "openSource": "Partial",
+        "source": "github.com/mem0ai/mem0"
+      },
+      "scores": {
+        "latency": 78,
+        "retrieval": 87,
+        "cost": 70,
+        "devex": 89,
+        "infra": 41,
+        "total": 78
+      }
+    },
+    {
+      "name": "Simple SQL",
+      "tagline": "PostgreSQL table with LIKE search (baseline)",
+      "color": "\u001b[37m",
+      "latency": {
+        "coldStart": 8,
+        "p50": 12,
+        "p99": 35,
+        "getContext": 15,
+        "source": "Baseline simulation: PostgreSQL 15 on Supabase free tier"
+      },
+      "retrieval": {
+        "precision1": 34,
+        "mrr": 0.34,
+        "f1": 34,
+        "source": "Simulation: keyword LIKE search on user_preferences table",
+        "notes": "Fast but dumb. No semantic understanding. Fails 'How does user take coffee?' → 'black coffee'."
+      },
+      "cost": {
+        "per1MIngest": 0,
+        "per1MRetrieve": 0,
+        "monthlyFixed": 0,
+        "freeOps": -1,
+        "source": "Supabase free tier"
+      },
+      "devex": {
+        "setupMinutes": 2,
+        "apiLines": 5,
+        "sdkQuality": 30,
+        "docsQuality": 100,
+        "langSupport": [
+          "Any"
+        ],
+        "source": "Any SQL tutorial"
+      },
+      "infra": {
+        "selfHostable": true,
+        "dataOwnership": "Full",
+        "vendorRisk": "None",
+        "gdprCompliant": true,
+        "openSource": true,
+        "source": "postgresql.org"
+      },
+      "scores": {
+        "latency": 98,
+        "retrieval": 34,
+        "cost": 100,
+        "devex": 78,
+        "infra": 100,
+        "total": 73
+      }
+    },
+    {
+      "name": "OpenAI Memory",
+      "tagline": "Persistent memory for ChatGPT and Assistants",
+      "color": "\u001b[32m",
+      "latency": {
+        "coldStart": 850,
+        "p50": 340,
+        "p99": 1200,
+        "getContext": 280,
+        "source": "platform.openai.com/docs/assistants + independent benchmarks"
+      },
+      "retrieval": {
+        "precision1": 91.2,
+        "mrr": 0.934,
+        "f1": 89.7,
+        "source": "OpenAI internal (no public benchmark). Estimate from community testing.",
+        "notes": "Highest quality but NOT available as standalone SDK. ChatGPT-integrated only."
+      },
+      "cost": {
+        "per1MIngest": 600,
+        "per1MRetrieve": 300,
+        "monthlyFixed": 20,
+        "freeOps": 0,
+        "source": "openai.com/pricing + Assistants API docs"
+      },
+      "devex": {
+        "setupMinutes": 30,
+        "apiLines": 20,
+        "sdkQuality": 78,
+        "docsQuality": 92,
+        "langSupport": [
+          "Python",
+          "TypeScript",
+          "REST"
+        ],
+        "source": "platform.openai.com/docs/assistants/memory"
+      },
+      "infra": {
+        "selfHostable": false,
+        "dataOwnership": "None",
+        "vendorRisk": "Low",
+        "gdprCompliant": true,
+        "openSource": false,
+        "source": "openai.com/privacy-policy"
+      },
+      "scores": {
+        "latency": 35,
+        "retrieval": 92,
+        "cost": 30,
+        "devex": 63,
+        "infra": 22,
+        "total": 57
+      }
+    }
+  ]
+}

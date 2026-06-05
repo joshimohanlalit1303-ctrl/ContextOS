@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { generateEmbedding } from '@/utils/embeddings';
+import { validateApiKey, checkRateLimit, logSdkError } from '../sdk-utils';
+import { db } from '@/lib/db';
+import { sql } from 'drizzle-orm';
 
 export async function POST(req: Request) {
   try {
@@ -10,16 +13,13 @@ export async function POST(req: Request) {
     }
 
     const apiKey = authHeader.split(' ')[1];
-    const supabase = createAdminClient();
 
-    // 1. Validate API Key
-    const { data: apiKeyData, error: apiKeyError } = await supabase
-      .from('api_keys')
-      .select('id, user_id')
-      .eq('key', apiKey)
-      .single();
+    if (!(await checkRateLimit(apiKey))) {
+      return NextResponse.json({ error: 'Too many requests' }, { status: 429 });
+    }
 
-    if (apiKeyError || !apiKeyData) {
+    const apiKeyData = await validateApiKey(apiKey);
+    if (!apiKeyData) {
       return NextResponse.json({ error: 'Invalid API key' }, { status: 401 });
     }
 
@@ -32,20 +32,24 @@ export async function POST(req: Request) {
     }
 
     // 3. Generate Embedding for the query using free local Transformers model
-    const queryEmbedding = await generateEmbedding(query);
+    const queryEmbedding = await generateEmbedding(query, 'search_query');
 
-    // 4. Perform Vector Search via RPC
-    const { data: memories, error: searchError } = await supabase.rpc('match_memories', {
-      query_embedding: queryEmbedding,
-      match_threshold: 0.2, // Adjust based on strictness
-      match_count: 10,
-      p_api_key_id: apiKeyData.id,
-      p_end_user_id: endUserId,
-    });
-
-    if (searchError) {
-      console.error('Vector Search Error:', searchError);
-      return NextResponse.json({ error: 'Failed to search memory' }, { status: 500 });
+    // 4. Perform Vector Search via Postgres directly (avoids Supabase REST API overhead)
+    let memories: any[] = [];
+    try {
+      const result = await db.execute(sql`
+        SELECT * FROM match_memories(
+          ${JSON.stringify(queryEmbedding)}::vector,
+          0.2,
+          10,
+          ${apiKeyData.id}::uuid,
+          ${endUserId}::text
+        )
+      `);
+      memories = result.rows;
+    } catch (searchError: any) {
+      logSdkError(searchError, 'get_context_vector_search', apiKeyData.id);
+      return NextResponse.json({ error: 'Failed to search memory', details: searchError.message || String(searchError) }, { status: 500 });
     }
 
     // 5. Compile Context
@@ -62,7 +66,7 @@ export async function POST(req: Request) {
       memories: memories 
     }, { status: 200 });
   } catch (error: any) {
-    console.error('Get Context API Error:', error);
+    logSdkError(error, 'get_context_route_catch');
     return NextResponse.json({ error: error.message || 'Internal Server Error' }, { status: 500 });
   }
 }

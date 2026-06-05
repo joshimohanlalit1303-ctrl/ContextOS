@@ -8,9 +8,16 @@ if (connectionString.startsWith('"') && connectionString.endsWith('"')) {
   connectionString = connectionString.slice(1, -1);
 }
 
-const pool = new Pool({
+// Cache the pool to prevent connection exhaustion in Next.js dev mode
+const globalForDb = globalThis as unknown as {
+  pool: Pool | undefined;
+};
+
+export const pool = globalForDb.pool ?? new Pool({
   connectionString,
   ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : undefined,
 });
+
+if (process.env.NODE_ENV !== 'production') globalForDb.pool = pool;
 
 export const db = drizzle(pool, { schema });

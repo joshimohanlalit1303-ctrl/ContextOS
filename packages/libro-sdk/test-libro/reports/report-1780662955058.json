@@ -1,0 +1,297 @@
+{
+  "timestamp": "2026-06-05T12:34:26.955Z",
+  "config": {
+    "baseUrl": "http://localhost:3000",
+    "statRuns": 30
+  },
+  "phases": {
+    "coldStart": {
+      "ms": 991,
+      "rating": "acceptable"
+    },
+    "latency": {
+      "ingest": {
+        "count": 30,
+        "min": 84,
+        "max": 261,
+        "avg": 101,
+        "median": 95,
+        "p50": 95,
+        "p95": 147,
+        "p99": 261
+      },
+      "getContext": {
+        "count": 30,
+        "min": 79,
+        "max": 398,
+        "avg": 104,
+        "median": 86,
+        "p50": 86,
+        "p95": 135,
+        "p99": 398
+      },
+      "slaIngest": true,
+      "slaContext": false
+    },
+    "components": {
+      "apiKey": {
+        "count": 10,
+        "min": 40,
+        "max": 64,
+        "avg": 48,
+        "median": 47,
+        "p50": 47,
+        "p95": 64,
+        "p99": 64
+      },
+      "ingest": {
+        "count": 10,
+        "min": 85,
+        "max": 113,
+        "avg": 93,
+        "median": 93,
+        "p50": 93,
+        "p95": 113,
+        "p99": 113
+      },
+      "search": {
+        "count": 10,
+        "min": 81,
+        "max": 131,
+        "avg": 99,
+        "median": 99,
+        "p50": 99,
+        "p95": 131,
+        "p99": 131
+      },
+      "embeddingEstimate": 5
+    },
+    "datasetIngest": {
+      "count": 90,
+      "failed": 0,
+      "stats": {
+        "count": 90,
+        "min": 84,
+        "max": 377,
+        "avg": 105,
+        "median": 97,
+        "p50": 97,
+        "p95": 134,
+        "p99": 377
+      },
+      "throughput": 10
+    },
+    "retrieval": {
+      "prec1": 80,
+      "prec5": 88,
+      "rec5": 88,
+      "mrr": 0.848888888888889,
+      "f1": 83.80952380952381,
+      "fp": 10,
+      "fn": 3,
+      "latency": {
+        "count": 50,
+        "min": 80,
+        "max": 260,
+        "avg": 98,
+        "median": 93,
+        "p50": 93,
+        "p95": 123,
+        "p99": 260
+      }
+    },
+    "threshold": {
+      "results": [
+        {
+          "threshold": 0.2,
+          "precision": 100,
+          "avgResults": 9.4
+        },
+        {
+          "threshold": 0.3,
+          "precision": 95,
+          "avgResults": 5.3
+        },
+        {
+          "threshold": 0.35,
+          "precision": 95,
+          "avgResults": 3.3
+        },
+        {
+          "threshold": 0.4,
+          "precision": 95,
+          "avgResults": 2.1
+        },
+        {
+          "threshold": 0.45,
+          "precision": 95,
+          "avgResults": 1.4
+        },
+        {
+          "threshold": 0.5,
+          "precision": 75,
+          "avgResults": 0.9
+        },
+        {
+          "threshold": 0.55,
+          "precision": 65,
+          "avgResults": 0.7
+        },
+        {
+          "threshold": 0.6,
+          "precision": 55,
+          "avgResults": 0.6
+        },
+        {
+          "threshold": 0.7,
+          "precision": 25,
+          "avgResults": 0.3
+        },
+        {
+          "threshold": 0.8,
+          "precision": 5,
+          "avgResults": 0.1
+        },
+        {
+          "threshold": 0.9,
+          "precision": 0,
+          "avgResults": 0
+        }
+      ],
+      "optimal": {
+        "threshold": 0.2,
+        "precision": 100,
+        "avgResults": 9.4
+      }
+    },
+    "concurrency_10": {
+      "n": 10,
+      "success": 10,
+      "failures": 0,
+      "failRate": 0,
+      "rps": 33,
+      "latency": {
+        "count": 10,
+        "min": 188,
+        "max": 298,
+        "avg": 249,
+        "median": 256,
+        "p50": 256,
+        "p95": 298,
+        "p99": 298
+      }
+    },
+    "concurrency_50": {
+      "n": 50,
+      "success": 50,
+      "failures": 0,
+      "failRate": 0,
+      "rps": 54,
+      "latency": {
+        "count": 50,
+        "min": 286,
+        "max": 924,
+        "avg": 769,
+        "median": 856,
+        "p50": 856,
+        "p95": 922,
+        "p99": 924
+      }
+    },
+    "concurrency_100": {
+      "n": 100,
+      "success": 100,
+      "failures": 0,
+      "failRate": 0,
+      "rps": 126,
+      "latency": {
+        "count": 100,
+        "min": 443,
+        "max": 783,
+        "avg": 657,
+        "median": 680,
+        "p50": 680,
+        "p95": 780,
+        "p99": 783
+      }
+    },
+    "memory": {
+      "heapGrowthMb": 1,
+      "rssGrowthMb": 1,
+      "peakHeapMb": 14
+    },
+    "failure": {
+      "passed": 10,
+      "total": 10,
+      "score": 100
+    },
+    "devex": {
+      "ttfi": 120,
+      "ttfr": 117,
+      "dxScore": 94
+    }
+  },
+  "errors": [],
+  "scores": {
+    "total": 55,
+    "grade": "SIGNIFICANT",
+    "checks": [
+      {
+        "label": "Cold start < 3s",
+        "pass": true,
+        "pts": 10,
+        "maxPts": 10,
+        "detail": "991ms"
+      },
+      {
+        "label": "ingest() SLA p99 < 500ms",
+        "pass": true,
+        "pts": 15,
+        "maxPts": 15,
+        "detail": "p99=261ms"
+      },
+      {
+        "label": "getContext() SLA p99<300ms",
+        "pass": false,
+        "pts": 0,
+        "maxPts": 15,
+        "detail": "p99=398ms"
+      },
+      {
+        "label": "Precision@1 > 80%",
+        "pass": false,
+        "pts": 0,
+        "maxPts": 20,
+        "detail": "80%"
+      },
+      {
+        "label": "MRR > 0.80",
+        "pass": true,
+        "pts": 10,
+        "maxPts": 10,
+        "detail": "0.849"
+      },
+      {
+        "label": "Concurrency 50u stable",
+        "pass": false,
+        "pts": 0,
+        "maxPts": 10,
+        "detail": "N/A% failures"
+      },
+      {
+        "label": "Resilience score > 80%",
+        "pass": true,
+        "pts": 15,
+        "maxPts": 15,
+        "detail": "100%"
+      },
+      {
+        "label": "DX score > 60",
+        "pass": true,
+        "pts": 5,
+        "maxPts": 5,
+        "detail": "94/100"
+      }
+    ]
+  }
+}

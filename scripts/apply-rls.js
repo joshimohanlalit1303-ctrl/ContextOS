@@ -84,9 +84,9 @@ CREATE POLICY "Users can manage end users via project" ON end_users
 
 -- 10. Memories
 ALTER TABLE memories ENABLE ROW LEVEL SECURITY;
-DROP POLICY IF EXISTS "Users can manage memories via end users" ON memories;
-CREATE POLICY "Users can manage memories via end users" ON memories
-  FOR ALL USING (end_user_id IN (SELECT id FROM end_users WHERE has_project_access(project_id)));
+DROP POLICY IF EXISTS "Users can manage memories via API keys" ON memories;
+CREATE POLICY "Users can manage memories via API keys" ON memories
+  FOR ALL USING (api_key_id IN (SELECT id FROM api_keys WHERE user_id = get_internal_user_id()));
 
 -- 11. Profiles
 ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
@@ -116,9 +116,9 @@ CREATE POLICY "Users can manage edges via nodes" ON context_graph_edges
   
 -- 13. API Keys
 ALTER TABLE api_keys ENABLE ROW LEVEL SECURITY;
-DROP POLICY IF EXISTS "Users can manage API keys via project" ON api_keys;
-CREATE POLICY "Users can manage API keys via project" ON api_keys
-  FOR ALL USING (has_project_access(project_id));
+DROP POLICY IF EXISTS "Users can manage API keys" ON api_keys;
+CREATE POLICY "Users can manage API keys" ON api_keys
+  FOR ALL USING (user_id = get_internal_user_id());
 
 -- 14. Logs & Feedback
 ALTER TABLE usage_logs ENABLE ROW LEVEL SECURITY;

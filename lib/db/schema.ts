@@ -70,7 +70,7 @@ export const endUsers = pgTable("end_users", {
 
 const customVector = customType<{ data: number[] }>({
   dataType() {
-    return 'vector(384)';
+    return 'vector(768)';
   },
   toDriver(value: number[]) {
     return JSON.stringify(value);
@@ -85,6 +85,7 @@ const customVector = customType<{ data: number[] }>({
 
 export const memories = pgTable("memories", {
   id: uuid("id").primaryKey().defaultRandom(),
+  apiKeyId: uuid("api_key_id").references(() => apiKeys.id, { onDelete: "cascade" }),
   endUserId: uuid("end_user_id").notNull().references(() => endUsers.id, { onDelete: "cascade" }),
   content: text("content").notNull(),
   embedding: customVector("embedding"),
