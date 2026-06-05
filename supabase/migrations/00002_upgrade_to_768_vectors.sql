@@ -11,11 +11,14 @@ DROP INDEX IF EXISTS memories_embedding_idx;
 DROP FUNCTION IF EXISTS match_memories;
 
 -- 3. Alter the embedding column to 768 dimensions
--- WARNING: This will clear existing embeddings data (it's incompatible)
+-- Step 1: Drop old column
 ALTER TABLE public.memories DROP COLUMN embedding;
-ALTER TABLE public.memories ADD COLUMN embedding vector(768) NOT NULL DEFAULT '[0]';
--- Remove the default now (only needed for the ALTER)
-ALTER TABLE public.memories ALTER COLUMN embedding DROP DEFAULT;
+-- Step 2: Add as nullable (avoids invalid default dimension error)
+ALTER TABLE public.memories ADD COLUMN embedding vector(768);
+-- Step 3: Remove any lingering null rows (safety)
+DELETE FROM public.memories WHERE embedding IS NULL;
+-- Step 4: Enforce NOT NULL
+ALTER TABLE public.memories ALTER COLUMN embedding SET NOT NULL;
 
 -- 4. Recreate HNSW index for 768 dimensions with tuned parameters
 CREATE INDEX memories_embedding_idx ON public.memories 
