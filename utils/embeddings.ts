@@ -1,47 +1,31 @@
 /**
  * Embeddings Generator
  *
- * Strategy: Google Gemini text-embedding-004 (FREE, 1500 req/day)
- * - No cold starts (external API call, always warm)
- * - 768 dimensions (better quality than MiniLM's 384)
- * - Already have GOOGLE_GENERATIVE_AI_API_KEY in your .env!
- * - Falls back to local Xenova if key not available
+ * Uses the @ai-sdk/google package (same as PassportExtractionEngine)
+ * which already works with the configured GOOGLE_GENERATIVE_AI_API_KEY.
+ * 
+ * Model: text-embedding-004 (768 dimensions, free, always warm, no cold start)
+ * Falls back to local Xenova if the Google key is not available.
  */
 
-// ─── Google Gemini Embeddings (Primary, Free, Always Warm) ───────────────────
-async function generateEmbeddingViaGemini(text: string): Promise<number[]> {
-  const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
-  if (!apiKey) throw new Error('GOOGLE_GENERATIVE_AI_API_KEY not set');
+import { embed } from 'ai';
+import { google } from '@ai-sdk/google';
 
-  const response = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/text-embedding-004:embedContent?key=${apiKey}`,
-    {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'models/text-embedding-004',
-        content: {
-          parts: [{ text: text.slice(0, 2048) }]
-        },
-        taskType: 'SEMANTIC_SIMILARITY',
-      }),
-    }
-  );
-
-  if (!response.ok) {
-    const err = await response.text();
-    throw new Error(`Gemini Embeddings API error: ${response.status} - ${err}`);
-  }
-
-  const result = await response.json();
-  return result.embedding.values as number[];
+// ─── Google AI SDK Embeddings (Primary) ───────────────────────────────────────
+async function generateEmbeddingViaGoogle(text: string): Promise<number[]> {
+  const { embedding } = await embed({
+    model: google.textEmbeddingModel('text-embedding-004'),
+    value: text.slice(0, 2048),
+  });
+  return embedding;
 }
 
-// ─── Xenova Local (Fallback) ──────────────────────────────────────────────────
+// ─── Xenova Local (Fallback for dev without API key) ──────────────────────────
 let localPipelinePromise: Promise<any> | null = null;
 
 async function generateEmbeddingLocally(text: string): Promise<number[]> {
   const { pipeline } = await import('@xenova/transformers');
+  // Store the Promise itself so concurrent callers await the same load
   if (!localPipelinePromise) {
     localPipelinePromise = pipeline('feature-extraction', 'Xenova/all-MiniLM-L6-v2');
   }
@@ -55,12 +39,10 @@ export async function generateEmbedding(text: string): Promise<number[]> {
   const trimmed = text.trim();
   if (!trimmed) throw new Error('Cannot embed empty text');
 
-  // Use Gemini in production (free, 1500 req/day, no cold start)
   if (process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
-    return generateEmbeddingViaGemini(trimmed);
+    return generateEmbeddingViaGoogle(trimmed);
   }
 
-  // Fall back to local model
-  console.warn('[embeddings] No embedding API key found. Falling back to local Xenova (slow cold start).');
+  console.warn('[embeddings] GOOGLE_GENERATIVE_AI_API_KEY not set. Falling back to local Xenova (cold start expected in dev).');
   return generateEmbeddingLocally(trimmed);
 }
