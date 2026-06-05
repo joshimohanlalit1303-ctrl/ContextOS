@@ -1,0 +1,9 @@
+README.md
+pyproject.toml
+libro/__init__.py
+libro/client.py
+libro_sdk.egg-info/PKG-INFO
+libro_sdk.egg-info/SOURCES.txt
+libro_sdk.egg-info/dependency_links.txt
+libro_sdk.egg-info/requires.txt
+libro_sdk.egg-info/top_level.txt

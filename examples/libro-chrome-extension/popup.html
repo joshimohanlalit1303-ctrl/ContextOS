@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Libro Clipper</title>
+  <style>
+    body {
+      width: 320px;
+      padding: 16px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: #333;
+      margin: 0;
+    }
+    h2 {
+      margin-top: 0;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    textarea {
+      width: 100%;
+      height: 80px;
+      padding: 8px;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      resize: none;
+      font-family: inherit;
+      font-size: 14px;
+      margin-bottom: 12px;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 8px;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      margin-bottom: 12px;
+    }
+    button {
+      background: #000;
+      color: #fff;
+      border: none;
+      padding: 10px 16px;
+      width: 100%;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    button:hover {
+      background: #333;
+    }
+    #status {
+      margin-top: 12px;
+      font-size: 13px;
+      color: #666;
+      text-align: center;
+      height: 16px;
+    }
+    .settings-panel {
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid #eee;
+      display: none;
+    }
+    .settings-toggle {
+      font-size: 12px;
+      color: #666;
+      cursor: pointer;
+      text-align: center;
+      display: block;
+      margin-top: 8px;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <h2>🧠 Libro Memory Clipper</h2>
+  <textarea id="memoryText" placeholder="Highlight text on the page or type a memory here..."></textarea>
+  <button id="saveBtn">Save to Brain</button>
+  <div id="status"></div>
+
+  <a class="settings-toggle" id="toggleSettings">API Settings</a>
+  <div class="settings-panel" id="settingsPanel">
+    <input type="text" id="apiKey" placeholder="Libro API Key (sk_...)">
+    <input type="text" id="userId" placeholder="End User ID (e.g. your-email@test.com)">
+    <button id="saveSettingsBtn">Save Settings</button>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

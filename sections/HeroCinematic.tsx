@@ -3,7 +3,6 @@
 import React, { useRef } from "react";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
-import WaitlistForm from "@/components/WaitlistForm";
 
 export default function HeroCinematic() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -79,11 +78,16 @@ export default function HeroCinematic() {
 
         <p className="hero-desc text-[20px] md:text-[24px] text-gray-500 max-w-2xl mx-auto leading-relaxed mt-10 font-light">
           Drop-in context infrastructure for your AI applications. 
-          Zero pipeline changes. Join the exclusive developer waitlist.
+          Zero pipeline changes. Full data sovereignty.
         </p>
 
-        <div className="hero-actions mt-14 w-full relative z-20">
-          <WaitlistForm />
+        <div className="hero-actions mt-14 w-full relative z-20 flex flex-col items-center gap-4">
+          <div className="flex items-center gap-3 bg-white/60 backdrop-blur-md border border-gray-200/50 px-6 py-4 rounded-xl shadow-sm cursor-copy hover:bg-white/80 transition-colors" onClick={() => navigator.clipboard.writeText('npm install libro-sdk')}>
+            <span className="text-gray-400 font-mono text-sm">$</span>
+            <code className="text-gray-800 font-mono font-medium tracking-tight">npm install libro-sdk</code>
+            <svg className="w-4 h-4 ml-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
+          </div>
+          <p className="text-sm text-gray-400 font-medium">v1.0.4 • Read the Documentation</p>
         </div>
       </div>
     </section>

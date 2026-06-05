@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "libro-sdk"
-version = "0.1.0"
+version = "0.1.1"
 description = "Official Python SDK for the Libro AI memory infrastructure."
 authors = [
     { name="Libro Team" }
