@@ -2,7 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { signOut as logout } from '../login/actions'
 import { generateApiKey, deleteApiKey } from './actions'
-import { Key, Trash2, LogOut, Database, Code2, Zap, BookOpen } from 'lucide-react'
+import { Key, Trash2, LogOut, Database, Code2, Zap, BookOpen, Brain, Globe } from 'lucide-react'
 import Link from 'next/link'
 import { CopyButton } from '@/components/CopyButton'
 
@@ -12,38 +12,42 @@ export default async function DashboardPage() {
 
   if (!user) redirect('/login')
 
-  // Fetch API keys
-  const { data: apiKeys } = await supabase
-    .from('api_keys')
-    .select('*')
-    .order('created_at', { ascending: false })
+  // Fetch data in parallel for speed and health check
+  const [
+    { data: apiKeys, error: apiKeysError },
+    { count: memoryCount, error: memoryError }
+  ] = await Promise.all([
+    supabase
+      .from('api_keys')
+      .select('*')
+      .order('created_at', { ascending: false }),
+    supabase
+      .from('memories')
+      .select('*', { count: 'exact', head: true })
+  ]);
 
-  // Fetch memory count
-  const { count: memoryCount } = await supabase
-    .from('memories')
-    .select('*', { count: 'exact', head: true })
-
-  // Fetch API key count
-  const keyCount = apiKeys?.length || 0
+  // Determine engine health
+  const isEngineLive = !apiKeysError && !memoryError;
+  const keyCount = apiKeys?.length || 0;
 
   return (
-    <div className="min-h-screen bg-black text-white p-8 md:p-12 relative overflow-hidden">
+    <div className="min-h-screen bg-[#f5f5f7] text-black p-8 pt-28 md:p-12 md:pt-32 relative overflow-hidden">
       {/* Glow */}
-      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-white/[0.02] rounded-full blur-3xl pointer-events-none -translate-y-1/2 translate-x-1/3" />
+      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-blue-500/5 rounded-full blur-3xl pointer-events-none -translate-y-1/2 translate-x-1/3" />
 
       <div className="max-w-4xl mx-auto relative z-10">
         {/* Header */}
-        <header className="flex items-center justify-between mb-16 border-b border-white/10 pb-8">
+        <header className="flex items-center justify-between mb-16 border-b border-gray-200 pb-8">
           <div>
-            <h1 className="text-3xl font-light mb-1">Developer Dashboard</h1>
-            <p className="text-neutral-400 text-sm">{user.email}</p>
+            <h1 className="text-3xl font-bold tracking-tight text-gray-900 mb-1">Developer Dashboard</h1>
+            <p className="text-gray-500 text-sm font-medium">{user.email}</p>
           </div>
           <div className="flex items-center gap-4">
-            <Link href="/" className="text-sm text-neutral-400 hover:text-white transition-colors">
+            <Link href="/" className="text-sm font-medium text-gray-500 hover:text-black transition-colors">
               Home
             </Link>
             <form action={logout}>
-              <button className="flex items-center text-sm text-neutral-400 hover:text-red-400 transition-colors">
+              <button className="flex items-center text-sm font-medium text-gray-500 hover:text-red-500 transition-colors">
                 <LogOut className="w-4 h-4 mr-2" />
                 Sign Out
               </button>
@@ -53,78 +57,125 @@ export default async function DashboardPage() {
 
         {/* Stats Row */}
         <div className="grid md:grid-cols-3 gap-6 mb-12">
-          <div className="bg-white/5 border border-white/10 rounded-3xl p-6">
+          <div className="bg-white border border-gray-200/60 shadow-sm rounded-3xl p-6">
             <div className="flex items-center gap-3 mb-4">
-              <div className="p-2 bg-white/10 rounded-xl">
-                <Database className="w-5 h-5 text-white" />
+              <div className="p-2 bg-gray-50 rounded-xl border border-gray-100">
+                <Database className="w-5 h-5 text-gray-600" />
               </div>
-              <h2 className="text-lg font-medium">Memory Usage</h2>
+              <h2 className="text-lg font-semibold text-gray-800">Memory Usage</h2>
             </div>
-            <div className="text-4xl font-light mb-1">{memoryCount || 0}</div>
-            <p className="text-sm text-neutral-400">Embeddings stored</p>
+            <div className="text-4xl font-bold tracking-tight text-gray-900 mb-1">{memoryCount || 0}</div>
+            <p className="text-sm font-medium text-gray-500">Embeddings stored</p>
           </div>
 
-          <div className="bg-white/5 border border-white/10 rounded-3xl p-6">
+          <div className="bg-white border border-gray-200/60 shadow-sm rounded-3xl p-6">
             <div className="flex items-center gap-3 mb-4">
-              <div className="p-2 bg-white/10 rounded-xl">
-                <Key className="w-5 h-5 text-white" />
+              <div className="p-2 bg-gray-50 rounded-xl border border-gray-100">
+                <Key className="w-5 h-5 text-gray-600" />
               </div>
-              <h2 className="text-lg font-medium">API Keys</h2>
+              <h2 className="text-lg font-semibold text-gray-800">API Keys</h2>
             </div>
-            <div className="text-4xl font-light mb-1">{keyCount}</div>
-            <p className="text-sm text-neutral-400">Active keys</p>
+            <div className="text-4xl font-bold tracking-tight text-gray-900 mb-1">{keyCount}</div>
+            <p className="text-sm font-medium text-gray-500">Active keys</p>
           </div>
 
-          <div className="bg-white/5 border border-white/10 rounded-3xl p-6">
+          <div className="bg-white border border-gray-200/60 shadow-sm rounded-3xl p-6">
             <div className="flex items-center gap-3 mb-4">
-              <div className="p-2 bg-white/10 rounded-xl">
-                <Zap className="w-5 h-5 text-white" />
+              <div className="p-2 bg-gray-50 rounded-xl border border-gray-100">
+                <Zap className="w-5 h-5 text-gray-600" />
               </div>
-              <h2 className="text-lg font-medium">Engine Status</h2>
+              <h2 className="text-lg font-semibold text-gray-800">Engine Status</h2>
             </div>
-            <div className="text-4xl font-light mb-1 text-green-400">Live</div>
-            <p className="text-sm text-neutral-400">All systems operational</p>
+            <div className={`text-4xl font-bold tracking-tight mb-1 ${isEngineLive ? 'text-emerald-500' : 'text-red-500'}`}>
+              {isEngineLive ? 'Live' : 'Degraded'}
+            </div>
+            <p className="text-sm font-medium text-gray-500">
+              {isEngineLive ? 'All systems operational' : 'Database connection issues'}
+            </p>
           </div>
         </div>
+
+        {/* Hive Identity */}
+        <section className="mb-12">
+          <div className="flex items-center gap-3 mb-6">
+            <Brain className="w-5 h-5 text-gray-400" />
+            <h2 className="text-xl font-bold tracking-tight text-gray-900">Your Hive Identity</h2>
+          </div>
+          <div className="bg-white border border-gray-200/60 shadow-sm rounded-3xl p-8 space-y-6">
+            <p className="text-gray-500 font-medium text-sm">Use these credentials to connect any AI agent to your personal Hive Mind.</p>
+
+            {/* User ID */}
+            <div>
+              <p className="text-xs font-semibold text-gray-400 mb-2 uppercase tracking-wider">Your User ID (Hive Name)</p>
+              <div className="bg-gray-50 p-4 rounded-xl border border-gray-200 font-mono text-sm flex items-center justify-between gap-4">
+                <span className="text-gray-800 truncate">{user.id}</span>
+                <CopyButton text={user.id} />
+              </div>
+              <p className="text-xs text-gray-400 mt-2">This is your unique identifier — it labels your personal memory bucket.</p>
+            </div>
+
+            {/* MCP Connection URL */}
+            {apiKeys && apiKeys.length > 0 && (
+              <div>
+                <p className="text-xs font-semibold text-gray-400 mb-2 uppercase tracking-wider">Ready-to-Use MCP Server URL</p>
+                <div className="bg-gray-50 p-4 rounded-xl border border-gray-200 font-mono text-xs flex items-center justify-between gap-4">
+                  <span className="text-emerald-700 truncate">{`https://libro-mcp-server.onrender.com/sse?apiKey=${apiKeys[0].key}&userId=${user.id}`}</span>
+                  <CopyButton text={`https://libro-mcp-server.onrender.com/sse?apiKey=${apiKeys[0].key}&userId=${user.id}`} />
+                </div>
+                <p className="text-xs text-gray-400 mt-2">Paste this URL into Claude Desktop, Cursor, Windsurf, or Antigravity to connect instantly.</p>
+              </div>
+            )}
+
+            {/* How to use */}
+            <div className="flex items-start gap-3 bg-blue-50 border border-blue-100 rounded-2xl p-4">
+              <Globe className="w-4 h-4 text-blue-500 mt-0.5 shrink-0" />
+              <div>
+                <p className="text-sm font-semibold text-blue-800 mb-1">How to connect Claude Desktop</p>
+                <p className="text-xs text-blue-600 font-mono">{`Edit ~/Library/Application Support/Claude/claude_desktop_config.json`}</p>
+                <p className="text-xs text-blue-600 font-mono mt-1">{`{ "mcpServers": { "libro": { "type": "sse", "url": "<your URL above>" } } }`}</p>
+              </div>
+            </div>
+          </div>
+        </section>
 
         {/* Quick Start */}
         <section className="mb-12">
           <div className="flex items-center gap-3 mb-6">
-            <Code2 className="w-5 h-5 text-neutral-400" />
-            <h2 className="text-xl font-medium">Quick Start</h2>
+            <Code2 className="w-5 h-5 text-gray-400" />
+            <h2 className="text-xl font-bold tracking-tight text-gray-900">Quick Start</h2>
           </div>
-          <div className="bg-white/5 border border-white/10 rounded-3xl p-8">
-            <p className="text-neutral-400 text-sm mb-6">Install the SDK and give your AI app persistent memory in 3 lines.</p>
+          <div className="bg-white border border-gray-200/60 shadow-sm rounded-3xl p-8">
+            <p className="text-gray-500 font-medium text-sm mb-6">Install the SDK and give your AI app persistent memory in 3 lines.</p>
             
             {/* Install */}
             <div className="mb-4">
-              <p className="text-xs text-neutral-500 mb-2 font-mono">1. Install</p>
-              <div className="bg-black/60 p-4 rounded-xl border border-white/10 font-mono text-sm flex items-center justify-between gap-4">
-                <span>npm install libro-sdk</span>
+              <p className="text-xs font-semibold text-gray-400 mb-2 uppercase tracking-wider">1. Install</p>
+              <div className="bg-gray-50 p-4 rounded-xl border border-gray-200 font-mono text-sm flex items-center justify-between gap-4">
+                <span className="text-gray-800 font-medium">npm install libro-sdk</span>
                 <CopyButton text="npm install libro-sdk" />
               </div>
             </div>
 
             {/* Usage */}
             <div className="mb-4">
-              <p className="text-xs text-neutral-500 mb-2 font-mono">2. Initialize</p>
-              <div className="bg-black/60 p-4 rounded-xl border border-white/10 font-mono text-sm text-neutral-300">
-                <div className="text-neutral-500">{"// Your API key is below ↓"}</div>
-                <div>{"const libro = new LibroClient({"}</div>
-                <div className="pl-4">{"apiKey: 'YOUR_KEY',"}</div>
-                <div className="pl-4">{"baseUrl: 'https://libro.co.in'"}</div>
+              <p className="text-xs font-semibold text-gray-400 mb-2 uppercase tracking-wider">2. Initialize</p>
+              <div className="bg-gray-50 p-4 rounded-xl border border-gray-200 font-mono text-sm text-gray-700">
+                <div className="text-gray-400">{"// Your API key is below ↓"}</div>
+                <div><span className="text-purple-600 font-semibold">const</span> libro = <span className="text-purple-600 font-semibold">new</span> LibroClient({"{"}</div>
+                <div className="pl-4">apiKey: <span className="text-emerald-600">'YOUR_KEY'</span>,</div>
+                <div className="pl-4">baseUrl: <span className="text-emerald-600">'https://libro.co.in'</span></div>
                 <div>{"});"}</div>
               </div>
             </div>
 
             {/* Use */}
             <div>
-              <p className="text-xs text-neutral-500 mb-2 font-mono">3. Use</p>
-              <div className="bg-black/60 p-4 rounded-xl border border-white/10 font-mono text-sm text-neutral-300">
-                <div className="text-green-400">{"// Store a memory"}</div>
-                <div>{"await libro.ingest({ userId, text: '...' });"}</div>
-                <div className="mt-2 text-green-400">{"// Retrieve context"}</div>
-                <div>{"const ctx = await libro.getContext({ userId, query });"}</div>
+              <p className="text-xs font-semibold text-gray-400 mb-2 uppercase tracking-wider">3. Use</p>
+              <div className="bg-gray-50 p-4 rounded-xl border border-gray-200 font-mono text-sm text-gray-700">
+                <div className="text-gray-400">{"// Store a memory"}</div>
+                <div><span className="text-purple-600 font-semibold">await</span> libro.ingest({"{"} userId, text: <span className="text-emerald-600">'...'</span> {"}"});</div>
+                <div className="mt-3 text-gray-400">{"// Retrieve context"}</div>
+                <div><span className="text-purple-600 font-semibold">const</span> ctx = <span className="text-purple-600 font-semibold">await</span> libro.getContext({"{"} userId, query {"}"});</div>
               </div>
             </div>
           </div>
@@ -134,48 +185,48 @@ export default async function DashboardPage() {
         <section className="mb-12">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
-              <Key className="w-5 h-5 text-neutral-400" />
-              <h2 className="text-xl font-medium">API Keys</h2>
+              <Key className="w-5 h-5 text-gray-400" />
+              <h2 className="text-xl font-bold tracking-tight text-gray-900">API Keys</h2>
             </div>
             <form action={generateApiKey}>
-              <button className="bg-white text-black px-4 py-2 rounded-xl text-sm font-medium hover:bg-neutral-200 transition-colors">
+              <button className="bg-black text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:bg-gray-800 transition-colors shadow-sm">
                 + Create New Key
               </button>
             </form>
           </div>
 
-          <div className="bg-white/5 border border-white/10 rounded-3xl overflow-hidden">
+          <div className="bg-white border border-gray-200/60 shadow-sm rounded-3xl overflow-hidden">
             {apiKeys && apiKeys.length > 0 ? (
-              <table className="w-full text-left">
-                <thead className="bg-white/5 border-b border-white/10 text-sm text-neutral-400">
+              <table className="w-full text-left border-collapse">
+                <thead className="bg-gray-50 border-b border-gray-200 text-xs font-semibold text-gray-500 uppercase tracking-wider">
                   <tr>
-                    <th className="px-6 py-4 font-normal">Name</th>
-                    <th className="px-6 py-4 font-normal">Key</th>
-                    <th className="px-6 py-4 font-normal">Created</th>
-                    <th className="px-6 py-4 text-right font-normal">Action</th>
+                    <th className="px-6 py-4">Name</th>
+                    <th className="px-6 py-4">Key</th>
+                    <th className="px-6 py-4">Created</th>
+                    <th className="px-6 py-4 text-right">Action</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-white/5">
+                <tbody className="divide-y divide-gray-100">
                   {apiKeys.map((key) => (
-                    <tr key={key.id} className="hover:bg-white/[0.02] transition-colors">
-                      <td className="px-6 py-4 font-medium">
+                    <tr key={key.id} className="hover:bg-gray-50/50 transition-colors">
+                      <td className="px-6 py-4 font-semibold text-gray-900 text-sm">
                         <div className="flex items-center gap-3">
-                          <Key className="w-4 h-4 text-neutral-500" />
+                          <Key className="w-4 h-4 text-gray-400" />
                           Default Key
                         </div>
                       </td>
-                      <td className="px-6 py-4 font-mono text-xs">
-                        <div className="flex items-center gap-2">
-                          <span className="truncate max-w-[180px] inline-block">{key.key.substring(0, 20)}...</span>
+                      <td className="px-6 py-4 font-mono text-xs text-gray-600">
+                        <div className="flex items-center gap-2 bg-gray-50 px-3 py-1.5 rounded-lg border border-gray-200 inline-flex">
+                          <span className="truncate max-w-[180px]">{key.key.substring(0, 20)}...</span>
                           <CopyButton text={key.key} />
                         </div>
                       </td>
-                      <td className="px-6 py-4 text-sm text-neutral-400">
+                      <td className="px-6 py-4 text-sm font-medium text-gray-500">
                         {new Date(key.created_at).toLocaleDateString()}
                       </td>
                       <td className="px-6 py-4 text-right">
                         <form action={deleteApiKey.bind(null, key.id)}>
-                          <button className="text-neutral-500 hover:text-red-400 transition-colors p-2 rounded-lg hover:bg-white/5">
+                          <button className="text-gray-400 hover:text-red-500 transition-colors p-2 rounded-lg hover:bg-red-50">
                             <Trash2 className="w-4 h-4" />
                           </button>
                         </form>
@@ -186,9 +237,11 @@ export default async function DashboardPage() {
               </table>
             ) : (
               <div className="p-12 text-center flex flex-col items-center">
-                <Key className="w-8 h-8 text-neutral-600 mb-4" />
-                <h3 className="text-lg font-medium mb-2">No API keys yet</h3>
-                <p className="text-neutral-400 text-sm">Create your first API key to start using the Libro SDK.</p>
+                <div className="p-4 bg-gray-50 rounded-full mb-4">
+                  <Key className="w-8 h-8 text-gray-400" />
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">No API keys yet</h3>
+                <p className="text-gray-500 text-sm font-medium">Create your first API key to start using the Libro SDK.</p>
               </div>
             )}
           </div>
@@ -196,17 +249,17 @@ export default async function DashboardPage() {
 
         {/* Docs link */}
         <section>
-          <div className="bg-white/5 border border-white/10 rounded-3xl p-8 flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div className="p-3 bg-white/10 rounded-2xl">
-                <BookOpen className="w-6 h-6" />
+          <div className="bg-white border border-gray-200/60 shadow-sm rounded-3xl p-8 flex items-center justify-between">
+            <div className="flex items-center gap-5">
+              <div className="p-3 bg-gray-50 border border-gray-100 rounded-2xl">
+                <BookOpen className="w-6 h-6 text-gray-600" />
               </div>
               <div>
-                <h3 className="font-medium mb-1">Documentation</h3>
-                <p className="text-sm text-neutral-400">Full SDK reference, examples, and guides.</p>
+                <h3 className="font-bold text-gray-900 mb-1">Documentation</h3>
+                <p className="text-sm font-medium text-gray-500">Full SDK reference, examples, and guides.</p>
               </div>
             </div>
-            <Link href="/docs" className="text-sm text-white border border-white/20 px-4 py-2 rounded-xl hover:bg-white/10 transition-colors">
+            <Link href="/docs" className="text-sm font-semibold text-black border border-gray-200 px-5 py-2.5 rounded-xl hover:bg-gray-50 transition-colors shadow-sm">
               View Docs →
             </Link>
           </div>
