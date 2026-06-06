@@ -1,0 +1,2 @@
+-e ../../../packages/libro-sdk-python
+python-dotenv
