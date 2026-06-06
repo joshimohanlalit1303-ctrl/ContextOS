@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: libro-mcp-server
+    env: docker
+    dockerfilePath: ./packages/libro-mcp-server/Dockerfile
+    dockerContext: ./packages/libro-mcp-server
+    plan: free
+    envVars:
+      - key: PORT
+        value: 3001
+      - key: LIBRO_API_KEY
+        sync: false
+      - key: LIBRO_USER_ID
+        sync: false
