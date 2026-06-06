@@ -8,7 +8,3 @@ services:
     envVars:
       - key: PORT
         value: 3001
-      - key: LIBRO_API_KEY
-        sync: false
-      - key: LIBRO_USER_ID
-        sync: false

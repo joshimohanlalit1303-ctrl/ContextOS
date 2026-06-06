@@ -199,8 +199,27 @@ async function main() {
   if (isSSE) {
     const app = express();
     app.use(cors());
-    
-    // Store active SSE transports. Key is the sessionId provided by SSEServerTransport
+    app.use(express.json());
+
+    // Health check — Render pings this to confirm the service is alive
+    app.get("/health", (_req, res) => {
+      res.json({ status: "ok", service: "libro-mcp-server", version: "1.0.0" });
+    });
+
+    // Root — friendly info page for developers
+    app.get("/", (_req, res) => {
+      res.json({
+        name: "Libro Hive Mind MCP Server",
+        description: "Connect your AI agents to a shared, persistent memory using the Model Context Protocol.",
+        usage: {
+          sse_endpoint: "/sse?apiKey=YOUR_LIBRO_API_KEY&userId=YOUR_HIVE_NAME",
+          tools: ["libro_ingest", "libro_get_context", "libro_forget"],
+        },
+        docs: "https://github.com/joshimohanlalit1303-ctrl/ContextOS",
+      });
+    });
+
+
     const transports = new Map<string, SSEServerTransport>();
 
     app.get("/sse", async (req, res) => {
