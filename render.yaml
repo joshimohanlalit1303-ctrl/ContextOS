@@ -3,7 +3,7 @@ services:
     name: libro-mcp-server
     env: docker
     dockerfilePath: ./packages/libro-mcp-server/Dockerfile
-    dockerContext: ./packages/libro-mcp-server
+    dockerContext: .
     plan: free
     envVars:
       - key: PORT
