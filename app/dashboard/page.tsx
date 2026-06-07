@@ -6,7 +6,7 @@ import { Key, Trash2, LogOut, Database, Code2, Zap, BookOpen, Brain, Globe, Plug
 import Link from 'next/link'
 import { CopyButton } from '@/components/CopyButton'
 import MCPSetupWizard from '@/components/MCPSetupWizard'
-import BenchmarkDashboard from '@/components/BenchmarkDashboard'
+
 export default async function DashboardPage() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
@@ -153,10 +153,7 @@ export default async function DashboardPage() {
           </div>
         </section>
 
-        {/* Benchmarks */}
-        <section className="mb-12">
-          <BenchmarkDashboard />
-        </section>
+
 
         {/* Quick Start */}
         <section className="mb-12">
