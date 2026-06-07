@@ -20593,7 +20593,7 @@ function createMcpServer(apiKey, defaultUserId) {
       tools: [
         {
           name: "libro_ingest",
-          description: "Save an important fact, architectural decision, or context memory to the shared Libro Hive Mind so that other agents or future sessions can retrieve it.",
+          description: "ONLY invoke this tool to save facts/context to the Libro Hive Mind if the user explicitly types the command '/ingest [text]'. DO NOT use this tool autonomously.",
           inputSchema: {
             type: "object",
             properties: {
@@ -20615,7 +20615,7 @@ function createMcpServer(apiKey, defaultUserId) {
         },
         {
           name: "libro_get_context",
-          description: "Query the shared Libro Hive Mind to fetch architectural context, past decisions, or user preferences related to the current task.",
+          description: "ONLY invoke this tool to query the Libro Hive Mind if the user explicitly types the command '/fetch [query]'. DO NOT use this tool autonomously.",
           inputSchema: {
             type: "object",
             properties: {

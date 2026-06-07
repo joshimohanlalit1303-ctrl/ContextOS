@@ -5,7 +5,8 @@ import { generateApiKey, deleteApiKey } from './actions'
 import { Key, Trash2, LogOut, Database, Code2, Zap, BookOpen, Brain, Globe, Plug2 } from 'lucide-react'
 import Link from 'next/link'
 import { CopyButton } from '@/components/CopyButton'
-
+import MCPSetupWizard from '@/components/MCPSetupWizard'
+import BenchmarkDashboard from '@/components/BenchmarkDashboard'
 export default async function DashboardPage() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
@@ -143,19 +144,18 @@ export default async function DashboardPage() {
                   <CopyButton text={`https://libro-mcp-server.onrender.com/sse?apiKey=${apiKeys[0].key}&userId=${user.id}`} />
                 </div>
                 <p className="text-xs text-gray-400 mt-2">Paste this URL into Claude Desktop, Cursor, Windsurf, or Antigravity to connect instantly.</p>
+                
+                <div className="mt-8">
+                  <MCPSetupWizard apiKey={apiKeys[0].key} userId={user.id} />
+                </div>
               </div>
             )}
-
-            {/* How to use */}
-            <div className="flex items-start gap-3 bg-blue-50 border border-blue-100 rounded-2xl p-4">
-              <Globe className="w-4 h-4 text-blue-500 mt-0.5 shrink-0" />
-              <div>
-                <p className="text-sm font-semibold text-blue-800 mb-1">How to connect Claude Desktop</p>
-                <p className="text-xs text-blue-600 font-mono">{`Edit ~/Library/Application Support/Claude/claude_desktop_config.json`}</p>
-                <p className="text-xs text-blue-600 font-mono mt-1">{`{ "mcpServers": { "libro": { "type": "sse", "url": "<your URL above>" } } }`}</p>
-              </div>
-            </div>
           </div>
+        </section>
+
+        {/* Benchmarks */}
+        <section className="mb-12">
+          <BenchmarkDashboard />
         </section>
 
         {/* Quick Start */}

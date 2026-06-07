@@ -1,0 +1,100 @@
+---
+title: "MCP Setup Guide"
+description: "How to connect your Libro Hive Mind to Claude Desktop, Cursor, and Antigravity IDE."
+---
+
+# Connect to Your Hive Mind
+
+The Model Context Protocol (MCP) allows your AI agents (like Claude Desktop or Cursor) to directly read and write to your ContextOS Hive Mind. 
+
+By connecting the `libro-mcp-server`, your agents will have a persistent, infinite memory across all your sessions.
+
+## Prerequisites
+Before you start, you need your unique **User ID (Hive Name)** and a **Libro API Key**. You can generate these from your [Developer Dashboard](/dashboard).
+
+---
+
+## 1. Claude Desktop Setup
+
+Claude Desktop supports connecting to MCP servers via its configuration file.
+
+1. Open the Claude Desktop configuration file:
+   - **Mac:** `~/Library/Application Support/Claude/claude_desktop_config.json`
+   - **Windows:** `%APPDATA%\Claude\claude_desktop_config.json`
+   
+2. Add the `libro` server block into the `mcpServers` object:
+
+```json
+{
+  "mcpServers": {
+    "libro": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "libro-mcp-server@latest"
+      ],
+      "env": {
+        "LIBRO_API_KEY": "YOUR_API_KEY",
+        "LIBRO_USER_ID": "YOUR_USER_ID"
+      }
+    }
+  }
+}
+```
+
+3. **Restart Claude Desktop** completely for the changes to take effect.
+4. Open a chat and verify that the `libro_get_context` and `libro_ingest` tools are available!
+
+---
+
+## 2. Cursor / Windsurf Setup
+
+Cursor allows you to add MCP servers directly from the IDE settings.
+
+1. Open **Cursor Settings** (Cmd + ,).
+2. Navigate to **Features** > **MCP**.
+3. Click **+ Add new MCP server**.
+4. Configure with the following settings:
+   - **Type:** `command`
+   - **Name:** `libro`
+   - **Command:** `npx -y libro-mcp-server@latest`
+5. In the **Environment Variables** section, add your keys:
+   - `LIBRO_API_KEY=YOUR_API_KEY`
+   - `LIBRO_USER_ID=YOUR_USER_ID`
+6. Click **Save** and verify the server connects successfully.
+
+---
+
+## 3. Antigravity IDE Setup
+
+Antigravity uses a local JSON config to manage MCP servers.
+
+1. Open the file `~/.gemini/config/mcp_servers.json`.
+2. Add the `libro` block:
+
+```json
+{
+  "mcpServers": {
+    "libro": {
+      "command": "npx",
+      "args": ["-y", "libro-mcp-server@latest"],
+      "env": {
+        "LIBRO_API_KEY": "YOUR_API_KEY",
+        "LIBRO_USER_ID": "YOUR_USER_ID"
+      }
+    }
+  }
+}
+```
+
+3. Open the **Command Palette** (Cmd + Shift + P) and select **Reload Window**.
+4. The agent will now automatically use the Hive Mind tools when context is needed!
+
+---
+
+## Verifying the Connection
+
+You can ask any connected agent:
+> "Please check my hive mind for recent memories."
+
+If connected properly, the agent will invoke the `libro_get_context` tool and return your exact timeline!

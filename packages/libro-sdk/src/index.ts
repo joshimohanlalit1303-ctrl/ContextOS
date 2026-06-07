@@ -36,9 +36,15 @@ export interface UpdateRequest {
   metadata?: Record<string, any>;
 }
 
+export interface CacheEntry {
+  data: any;
+  expiresAt: number;
+}
+
 export class LibroClient {
   private apiKey: string;
   private baseUrl: string;
+  private cache: Map<string, CacheEntry> = new Map();
 
   constructor(options: LibroOptions) {
     if (!options.apiKey) {
@@ -75,6 +81,12 @@ export class LibroClient {
       content: request.text,
       metadata: request.metadata,
     };
+    // Invalidate related cache
+    for (const key of this.cache.keys()) {
+      if (key.startsWith(`context:${request.userId}`)) {
+        this.cache.delete(key);
+      }
+    }
     return this.fetchAPI("/api/v1/ingest", payload);
   }
 
@@ -87,14 +99,42 @@ export class LibroClient {
 
   /**
    * Fetch an LLM-optimized context pack including profile and recent activity.
+   * Features in-memory caching for performance.
    */
   async getContext(request: GetContextRequest) {
+    const cacheKey = `context:${request.userId}:${request.query}:${request.limitTimeline || 10}`;
+    const now = Date.now();
+    
+    // Check cache (TTL: 30 seconds)
+    const cached = this.cache.get(cacheKey);
+    if (cached && cached.expiresAt > now) {
+      return cached.data;
+    }
+
     const payload = {
       endUserId: request.userId,
       query: request.query,
       limitTimeline: request.limitTimeline,
     };
-    return this.fetchAPI("/api/v1/get-context", payload);
+    
+    const result = await this.fetchAPI("/api/v1/get-context", payload);
+    
+    // Save to cache
+    this.cache.set(cacheKey, {
+      data: result,
+      expiresAt: now + 30 * 1000 // 30 seconds
+    });
+    
+    // Cleanup old entries to prevent memory leaks
+    if (this.cache.size > 100) {
+      for (const [key, entry] of this.cache.entries()) {
+        if (entry.expiresAt <= now) {
+          this.cache.delete(key);
+        }
+      }
+    }
+    
+    return result;
   }
 
   /**
@@ -108,6 +148,12 @@ export class LibroClient {
    * Delete a specific memory by ID, or memories matching a query.
    */
   async forget(request: ForgetRequest) {
+    // Invalidate related cache
+    for (const key of this.cache.keys()) {
+      if (key.startsWith(`context:${request.userId}`)) {
+        this.cache.delete(key);
+      }
+    }
     return this.fetchAPI("/api/v1/forget", request);
   }
 
@@ -115,6 +161,12 @@ export class LibroClient {
    * Update an existing memory's text or metadata.
    */
   async update(request: UpdateRequest) {
+    // Invalidate related cache
+    for (const key of this.cache.keys()) {
+      if (key.startsWith(`context:${request.userId}`)) {
+        this.cache.delete(key);
+      }
+    }
     return this.fetchAPI("/api/v1/update", request);
   }
 }

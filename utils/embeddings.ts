@@ -53,8 +53,8 @@ async function generateEmbeddingHF(text: string, taskType: string): Promise<numb
     throw new Error('HF_TOKEN is not defined for fallback embeddings.');
   }
 
-  const HF_MODEL = "nomic-ai/nomic-embed-text-v1.5";
-  const HF_API_URL = `https://api-inference.huggingface.co/pipeline/feature-extraction/${HF_MODEL}`;
+  const HF_MODEL = "sentence-transformers/all-mpnet-base-v2";
+  const HF_API_URL = `https://router.huggingface.co/hf-inference/models/${HF_MODEL}/pipeline/feature-extraction`;
   const prefix = `${taskType}: `;
 
   const response = await fetch(HF_API_URL, {

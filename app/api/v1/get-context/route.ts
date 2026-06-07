@@ -64,7 +64,12 @@ export async function POST(req: Request) {
     return NextResponse.json({ 
       context: compiledContext, 
       memories: memories 
-    }, { status: 200 });
+    }, { 
+      status: 200,
+      headers: {
+        'Cache-Control': 'private, max-age=30, stale-while-revalidate=60'
+      }
+    });
   } catch (error: any) {
     logSdkError(error, 'get_context_route_catch');
     return NextResponse.json({ error: error.message || 'Internal Server Error' }, { status: 500 });
