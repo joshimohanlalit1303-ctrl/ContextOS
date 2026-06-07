@@ -3,6 +3,7 @@
 import React, { useRef } from "react";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
+import Link from "next/link";
 
 export default function HeroCinematic() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -59,19 +60,19 @@ export default function HeroCinematic() {
     <section 
       id="waitlist"
       ref={containerRef} 
-      className="relative w-full h-screen flex flex-col justify-center items-center text-center px-6 perspective-1000 overflow-hidden"
+      className="relative w-full min-h-screen flex flex-col justify-center items-center text-center px-6 perspective-1000 overflow-hidden pt-32 pb-24"
     >
       <div className="hero-parallax relative z-10 flex flex-col items-center w-full max-w-5xl mx-auto transform-gpu">
         
-        <div className="hero-pill px-6 py-2 rounded-full glass text-gray-800 font-semibold text-[13px] tracking-[0.2em] mb-12 shadow-xl shadow-black/5 hover:scale-105 transition-transform duration-500 cursor-default">
-          LIBRO EARLY ACCESS
+        <div className="hero-pill px-6 py-2 rounded-full border border-blue-200 bg-blue-50/50 text-blue-700 font-bold text-[13px] tracking-[0.2em] mb-12 shadow-xl shadow-blue-500/10 hover:scale-105 transition-transform duration-500 cursor-default">
+          LIBRO IS LIVE
         </div>
 
         <h1 className="text-[72px] md:text-[110px] tracking-[-0.05em] leading-[1.05] font-bold text-black drop-shadow-sm">
           <div className="hero-title-line transform-gpu origin-bottom">
             Memory that feels
           </div>
-          <div className="hero-title-line transform-gpu origin-bottom text-transparent bg-clip-text bg-gradient-to-r from-gray-500 via-gray-700 to-black pb-4">
+          <div className="hero-title-line transform-gpu origin-bottom text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 pb-4">
             like magic.
           </div>
         </h1>
@@ -88,6 +89,22 @@ export default function HeroCinematic() {
             <svg className="w-4 h-4 ml-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
           </div>
           <p className="text-sm text-gray-400 font-medium">v1.0.4 • Read the Documentation</p>
+        </div>
+
+        <div className="mt-10 w-full relative z-20 flex flex-col sm:flex-row items-center justify-center gap-4">
+          <Link
+            href="/login"
+            className="inline-flex items-center justify-center gap-2 bg-black text-white px-8 py-4 rounded-2xl font-bold text-[16px] hover:bg-gray-900 hover:-translate-y-1 hover:shadow-2xl hover:shadow-black/20 transition-all"
+          >
+            Get Started Free
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+          </Link>
+          <Link
+            href="/docs"
+            className="inline-flex items-center justify-center gap-2 bg-white border border-gray-200 text-gray-900 px-8 py-4 rounded-2xl font-bold text-[16px] hover:bg-gray-50 hover:-translate-y-1 hover:shadow-xl transition-all"
+          >
+            Read the Docs →
+          </Link>
         </div>
       </div>
     </section>

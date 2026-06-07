@@ -1,7 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
-import { users, organizations, organizationMembers, projects, sdkWaitlist } from "@/lib/db/schema";
+import { users, organizations, organizationMembers, projects } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
@@ -10,14 +10,6 @@ export default async function DashboardLayout({ children }: { children: React.Re
 
   if (!user) {
     redirect("/login");
-  }
-
-  const waitlistEntry = await db.query.sdkWaitlist.findFirst({
-    where: eq(sdkWaitlist.email, user.email!),
-  });
-
-  if (!waitlistEntry || !waitlistEntry.grantedAccess) {
-    redirect("/pending");
   }
 
   // Sync user to Drizzle database and provision default Org & Project if they don't exist

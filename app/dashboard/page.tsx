@@ -2,7 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { signOut as logout } from '../login/actions'
 import { generateApiKey, deleteApiKey } from './actions'
-import { Key, Trash2, LogOut, Database, Code2, Zap, BookOpen, Brain, Globe } from 'lucide-react'
+import { Key, Trash2, LogOut, Database, Code2, Zap, BookOpen, Brain, Globe, Plug2 } from 'lucide-react'
 import Link from 'next/link'
 import { CopyButton } from '@/components/CopyButton'
 
@@ -94,6 +94,26 @@ export default async function DashboardPage() {
             </p>
           </div>
         </div>
+
+        {/* Connect CTA — primary action */}
+        <Link href="/dashboard/connect" className="block mb-12 group">
+          <div className="bg-black rounded-3xl p-8 flex items-center justify-between hover:bg-gray-900 transition-colors cursor-pointer relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
+            <div className="relative z-10">
+              <div className="flex items-center gap-3 mb-2">
+                <Plug2 className="w-5 h-5 text-blue-400" />
+                <span className="text-xs font-semibold text-blue-400 uppercase tracking-widest">Quick Setup</span>
+              </div>
+              <h2 className="text-2xl font-bold text-white mb-1">Connect an AI Agent →</h2>
+              <p className="text-gray-400 font-medium text-sm">Get ready-to-paste configs for Claude, Cursor, Windsurf, Antigravity, ChatGPT & more.</p>
+            </div>
+            <div className="relative z-10 shrink-0">
+              <div className="w-14 h-14 rounded-2xl bg-white/10 border border-white/10 flex items-center justify-center group-hover:scale-110 transition-transform">
+                <span className="text-2xl">🔌</span>
+              </div>
+            </div>
+          </div>
+        </Link>
 
         {/* Hive Identity */}
         <section className="mb-12">
