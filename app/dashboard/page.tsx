@@ -2,10 +2,13 @@ import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { signOut as logout } from '../login/actions'
 import { generateApiKey, deleteApiKey } from './actions'
-import { Key, Trash2, LogOut, Database, Code2, Zap, BookOpen, Brain, Plug2, Clock } from 'lucide-react'
+import { Key, Trash2, LogOut, Database, Code2, Zap, BookOpen, Brain, Plug2, Clock, Map } from 'lucide-react'
 import Link from 'next/link'
 import { CopyButton } from '@/components/CopyButton'
 import MCPSetupWizard from '@/components/MCPSetupWizard'
+import { db } from '@/lib/db'
+import { users, passports } from '@/lib/db/schema'
+import { eq, desc } from 'drizzle-orm'
 
 export default async function DashboardPage() {
   const supabase = await createClient()
@@ -28,6 +31,27 @@ export default async function DashboardPage() {
       .order('created_at', { ascending: false })
       .limit(5)
   ]);
+
+  // Fetch internal user and passports
+  let internalUser;
+  let recentPassports = [];
+  let passportCount = 0;
+  
+  if (user.email) {
+    internalUser = await db.query.users.findFirst({
+      where: eq(users.email, user.email)
+    });
+    
+    if (internalUser) {
+      recentPassports = await db.query.passports.findMany({
+        where: eq(passports.userId, internalUser.id),
+        orderBy: [desc(passports.createdAt)],
+        limit: 5
+      });
+      // We don't have a direct count from Drizzle findMany easily without another query, just using the array length for the stat if <= 5
+      passportCount = recentPassports.length; 
+    }
+  }
 
   // Determine engine health
   const isEngineLive = !apiKeysError && !memoryError;
@@ -118,12 +142,64 @@ export default async function DashboardPage() {
           </div>
         </Link>
 
-        {/* Recent Memories Section - NEW CONTENT */}
+        {/* Recent Passports Section - Extension Memories */}
+        <section className="mb-12">
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-3">
+              <Map className="w-5 h-5 text-indigo-400" />
+              <h2 className="text-xl font-bold tracking-tight text-white">Context Passports</h2>
+            </div>
+          </div>
+
+          <div className="bg-white/5 border border-indigo-500/20 backdrop-blur-md shadow-[0_0_30px_-5px_rgba(99,102,241,0.15)] rounded-3xl overflow-hidden">
+            {recentPassports && recentPassports.length > 0 ? (
+              <table className="w-full text-left border-collapse">
+                <thead className="bg-white/5 border-b border-white/10 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                  <tr>
+                    <th className="px-6 py-4">Project / Goal</th>
+                    <th className="px-6 py-4">Summary</th>
+                    <th className="px-6 py-4 text-right">Created</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-white/5">
+                  {recentPassports.map((passport) => (
+                    <tr key={passport.id} className="hover:bg-white/[0.02] transition-colors group">
+                      <td className="px-6 py-4">
+                        <Link href={`/dashboard/passports/${passport.id}`} className="block">
+                          <div className="font-semibold text-indigo-300 group-hover:text-indigo-400 transition-colors">{passport.project}</div>
+                          <div className="text-xs text-gray-400 mt-1 max-w-[250px] truncate">{passport.goal}</div>
+                        </Link>
+                      </td>
+                      <td className="px-6 py-4 text-sm text-gray-300">
+                        <Link href={`/dashboard/passports/${passport.id}`} className="block max-w-[350px] truncate">
+                          {passport.summary}
+                        </Link>
+                      </td>
+                      <td className="px-6 py-4 text-sm font-medium text-gray-500 text-right">
+                        {new Date(passport.createdAt).toLocaleDateString()}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            ) : (
+              <div className="p-12 text-center flex flex-col items-center">
+                <div className="p-4 bg-indigo-500/10 rounded-full mb-4 border border-indigo-500/20">
+                  <Map className="w-8 h-8 text-indigo-400" />
+                </div>
+                <h3 className="text-lg font-semibold text-white mb-2">No Passports yet</h3>
+                <p className="text-gray-400 text-sm font-medium">Use the Chrome Extension to extract and save a Context Passport.</p>
+              </div>
+            )}
+          </div>
+        </section>
+
+        {/* Recent Memories Section - API Memories */}
         <section className="mb-12">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
               <Clock className="w-5 h-5 text-gray-400" />
-              <h2 className="text-xl font-bold tracking-tight text-white">Recent Memories</h2>
+              <h2 className="text-xl font-bold tracking-tight text-white">API Embeddings (Memories)</h2>
             </div>
           </div>
 
