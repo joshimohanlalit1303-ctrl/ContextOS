@@ -1,24 +1,23 @@
-import { MetadataRoute } from 'next';
+import { MetadataRoute } from 'next'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  return [
-    {
-      url: 'https://libro.co.in',
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 1,
-    },
-    {
-      url: 'https://libro.co.in/docs',
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.8,
-    },
-    {
-      url: 'https://libro.co.in/dashboard',
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.5,
-    },
-  ];
+  const baseUrl = 'https://libro.co.in'
+  
+  // Base routes
+  const routes = ['', '/docs', '/login'].map((route) => ({
+    url: `${baseUrl}${route}`,
+    lastModified: new Date(),
+    changeFrequency: 'daily' as const,
+    priority: route === '' ? 1 : 0.8,
+  }))
+
+  // Integration programmatic pages
+  const integrations = ['cursor', 'claude-desktop', 'chatgpt', 'windsurf'].map((slug) => ({
+    url: `${baseUrl}/integrations/${slug}`,
+    lastModified: new Date(),
+    changeFrequency: 'weekly' as const,
+    priority: 0.9,
+  }))
+
+  return [...routes, ...integrations]
 }
