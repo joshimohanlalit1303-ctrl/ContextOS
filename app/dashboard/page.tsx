@@ -8,7 +8,7 @@ import { CopyButton } from '@/components/CopyButton'
 import MCPSetupWizard from '@/components/MCPSetupWizard'
 import { db } from '@/lib/db'
 import { users, passports } from '@/lib/db/schema'
-import { eq, desc } from 'drizzle-orm'
+import { eq, desc, count } from 'drizzle-orm'
 
 export default async function DashboardPage() {
   const supabase = await createClient()
@@ -48,14 +48,19 @@ export default async function DashboardPage() {
         orderBy: [desc(passports.createdAt)],
         limit: 5
       });
-      // We don't have a direct count from Drizzle findMany easily without another query, just using the array length for the stat if <= 5
-      passportCount = recentPassports.length; 
+      
+      const [passportCountResult] = await db.select({ value: count() })
+        .from(passports)
+        .where(eq(passports.userId, internalUser.id));
+        
+      passportCount = passportCountResult.value; 
     }
   }
 
   // Determine engine health
   const isEngineLive = !apiKeysError && !memoryError;
   const keyCount = apiKeys?.length || 0;
+  const totalEmbeddings = (memoryCount || 0) + passportCount;
 
   return (
     <div className="min-h-screen bg-[#050505] text-white p-8 pt-28 md:p-12 md:pt-32 relative overflow-hidden">
@@ -91,7 +96,7 @@ export default async function DashboardPage() {
               </div>
               <h2 className="text-lg font-semibold text-gray-200">Memory Usage</h2>
             </div>
-            <div className="text-4xl font-bold tracking-tight text-white mb-1">{memoryCount || 0}</div>
+            <div className="text-4xl font-bold tracking-tight text-white mb-1">{totalEmbeddings}</div>
             <p className="text-sm font-medium text-gray-400">Embeddings stored</p>
           </div>
 
