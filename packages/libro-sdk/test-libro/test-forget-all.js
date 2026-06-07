@@ -1,5 +1,5 @@
 const { LibroClient } = require("libro-sdk");
-const client = new LibroClient({ apiKey: "libro_sk_zsjekcdivrnplylpcpwpl", baseUrl: "http://localhost:3000" });
+const client = new LibroClient({ apiKey: process.env.LIBRO_API_KEY || "libro_sk_...", baseUrl: "http://localhost:3000" });
 
 async function run() {
   console.log("Forgetting ALL memories for gdpr-user...");

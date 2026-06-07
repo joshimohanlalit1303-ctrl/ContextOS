@@ -1,14 +1,16 @@
 import { createAdminClient } from '@/lib/supabase/admin';
 import { Redis } from '@upstash/redis';
 import { Ratelimit } from '@upstash/ratelimit';
-import { PostHog } from 'posthog-node';
-
-// Initialize PostHog
-let posthog: PostHog | null = null;
-if (process.env.NEXT_PUBLIC_POSTHOG_KEY) {
-  posthog = new PostHog(process.env.NEXT_PUBLIC_POSTHOG_KEY, {
-    host: process.env.NEXT_PUBLIC_POSTHOG_HOST || 'https://us.i.posthog.com',
-  });
+let posthog: any = null;
+try {
+  if (process.env.NEXT_PUBLIC_POSTHOG_KEY) {
+    const { PostHog } = require('posthog-node');
+    posthog = new PostHog(process.env.NEXT_PUBLIC_POSTHOG_KEY, {
+      host: process.env.NEXT_PUBLIC_POSTHOG_HOST || 'https://us.i.posthog.com',
+    });
+  }
+} catch (e) {
+  console.warn("Could not initialize posthog-node");
 }
 
 // Initialize Upstash Redis

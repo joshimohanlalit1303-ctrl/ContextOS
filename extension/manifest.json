@@ -35,8 +35,7 @@
     "https://chatgpt.com/*",
     "https://gemini.google.com/*",
     "https://chat.deepseek.com/*",
-    "https://*.vercel.app/*",
-    "https://*/*"
+    "https://*.vercel.app/*"
   ],
   "background": {
     "service_worker": "src/background/index.ts",
@@ -52,5 +51,8 @@
       ],
       "js": ["src/content/tracker.ts"]
     }
-  ]
+  ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self';"
+  }
 }

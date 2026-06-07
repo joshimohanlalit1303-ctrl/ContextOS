@@ -24,7 +24,7 @@ export async function joinWaitlist(formData: FormData) {
 
   if (existing) {
     if (existing.grantedAccess) {
-      redirect("/login");
+      return { success: true, redirect: "/login" };
     }
     return { success: true };
   }

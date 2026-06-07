@@ -35,7 +35,7 @@ const { performance } = require("perf_hooks");
 
 // ─── Config ───────────────────────────────────────────────────────────────────
 const CONFIG = {
-  apiKey:  "libro_sk_zsjekcdivrnplylpcpwpl",
+  apiKey:  process.env.LIBRO_API_KEY || "libro_sk_...",
   baseUrl: "http://localhost:3000",
   runs:    20,
   reportDir: path.join(__dirname, "reports"),

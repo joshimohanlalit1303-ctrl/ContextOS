@@ -1,7 +1,7 @@
 {
   "name": "libro-mcp-server",
-  "version": "1.0.0",
-  "description": "An MCP server for bridging AI agents into Libro's Hive Memory.",
+  "version": "1.0.1",
+  "description": "The Model Context Protocol server for the Libro Hive Mind.",
   "main": "dist/index.js",
   "files": [
     "dist"

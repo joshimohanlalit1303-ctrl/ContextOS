@@ -25,7 +25,7 @@ export async function GET(request: Request) {
     }
 
     // Find the endUser
-    let dbUser = await db.query.users.findFirst({ where: eq(users.email, user.email || "") });
+    const dbUser = await db.query.users.findFirst({ where: eq(users.email, user.email || "") });
     if (!dbUser) return NextResponse.json({ context: "<user_context>No context established yet.</user_context>" });
     
     const member = await db.query.organizationMembers.findFirst({ where: eq(organizationMembers.userId, dbUser.id) });

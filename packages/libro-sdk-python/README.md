@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://raw.githubusercontent.com/joshimohanlalit1303-ctrl/ContextOS/main/public/libro-logo.png" alt="Libro Logo" width="120" />
+  <img src="https://raw.githubusercontent.com/joshimohanlalit1303-ctrl/Libro/main/public/libro-logo.png" alt="Libro Logo" width="120" />
 </div>
 
 <h1 align="center">Libro Python SDK</h1>
@@ -12,7 +12,7 @@
 <p align="center">
   <a href="https://pypi.org/project/libro-sdk/"><img src="https://img.shields.io/pypi/v/libro-sdk" alt="PyPI Version"></a>
   <a href="https://pypi.org/project/libro-sdk/"><img src="https://img.shields.io/pypi/pyversions/libro-sdk" alt="Python Versions"></a>
-  <a href="https://github.com/joshimohanlalit1303-ctrl/ContextOS"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License"></a>
+  <a href="https://github.com/joshimohanlalit1303-ctrl/Libro"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License"></a>
 </p>
 
 ---

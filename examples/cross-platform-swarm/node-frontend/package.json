@@ -1,0 +1,13 @@
+{
+  "name": "node-frontend-example",
+  "version": "1.0.0",
+  "description": "Libro JS SDK Swarm Example",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "libro-sdk": "file:../../../packages/libro-sdk",
+    "dotenv": "^16.4.5"
+  }
+}

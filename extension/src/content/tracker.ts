@@ -45,7 +45,7 @@ if (currentPlatform) {
   console.log(`Libro: Active on ${currentPlatform.name}`);
   
   // 1. Capture user messages
-  let processedNodes = new WeakSet();
+  const processedNodes = new WeakSet();
 
   function processMessage(element: HTMLElement) {
     if (processedNodes.has(element)) return;

@@ -173,7 +173,7 @@ for (let i = 0; i < args.length; i++) {
 }
 
 if (!libroKey) {
-  libroKey = "libro_sk_zsjekcdivrnplylpcpwpl";
+  libroKey = process.env.LIBRO_API_KEY || "libro_sk_...";
 }
 
 const USER_ID = "compare_user_123";

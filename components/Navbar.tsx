@@ -71,10 +71,16 @@ export default function Navbar() {
               <span className="hidden md:inline-block">GitHub</span>
             </Link>
             <Link
-              href="/#waitlist"
+              href="/dashboard"
+              className="text-[13px] text-gray-500 hover:text-black uppercase tracking-wide transition-colors font-medium whitespace-nowrap"
+            >
+              Dashboard
+            </Link>
+            <Link
+              href="/docs"
               className="px-5 py-2 bg-black text-white text-[13px] font-semibold rounded shadow-md hover:shadow-lg transition-all uppercase tracking-wide whitespace-nowrap"
             >
-              Join Waitlist
+              Get Started
             </Link>
           </div>
 

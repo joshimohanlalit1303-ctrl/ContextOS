@@ -48,7 +48,7 @@ export async function POST(request: Request) {
 
     // We need a Project ID for the engine.
     // Let's see if the user exists in our users table and has a project.
-    let dbUser = await db.query.users.findFirst({ where: eq(users.email, user.email || "") });
+    const dbUser = await db.query.users.findFirst({ where: eq(users.email, user.email || "") });
     
     let projectId: string;
     

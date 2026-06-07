@@ -42,6 +42,26 @@ export async function signInWithGoogle() {
   return redirect(data.url);
 }
 
+export async function signInWithMagicLink(formData: FormData) {
+  const email = formData.get("email") as string;
+  const supabase = await createClient();
+  const origin = (await headers()).get("origin");
+
+  const { error } = await supabase.auth.signInWithOtp({
+    email,
+    options: {
+      emailRedirectTo: `${origin}/auth/callback`,
+    },
+  });
+
+  if (error) {
+    console.error(error);
+    return redirect("/login?message=Could not send magic link. Please try again.");
+  }
+
+  return redirect("/login?message=Check your email for the magic link!");
+}
+
 export async function signInWithEmail(formData: FormData) {
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;

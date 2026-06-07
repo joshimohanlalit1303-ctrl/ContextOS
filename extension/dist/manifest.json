@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "ContextOS",
+  "name": "Libro",
   "version": "1.0.0",
   "description": "Continue any AI project anywhere. Save your context from ChatGPT, Claude & Gemini as a portable AI Context Passport.",
   "action": {
@@ -35,8 +35,7 @@
     "https://chatgpt.com/*",
     "https://gemini.google.com/*",
     "https://chat.deepseek.com/*",
-    "https://*.vercel.app/*",
-    "https://*/*"
+    "https://*.vercel.app/*"
   ],
   "background": {
     "service_worker": "service-worker-loader.js",
@@ -45,7 +44,7 @@
   "content_scripts": [
     {
       "js": [
-        "assets/tracker.ts-DY8s4PtP.js"
+        "assets/tracker.ts-BKHqDRll.js"
       ],
       "matches": [
         "https://claude.ai/*",
@@ -55,6 +54,9 @@
       ]
     }
   ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self';"
+  },
   "web_accessible_resources": [
     {
       "matches": [
@@ -64,7 +66,7 @@
         "https://gemini.google.com/*"
       ],
       "resources": [
-        "assets/tracker.ts-DY8s4PtP.js"
+        "assets/tracker.ts-BKHqDRll.js"
       ],
       "use_dynamic_url": false
     }

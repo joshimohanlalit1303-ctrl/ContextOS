@@ -120,50 +120,154 @@ curl -X POST https://libro.dev/api/v1/ingest \\
 
 Libro distributes a lightweight, dependency-free SDK designed to run in any JavaScript environment.
 
-### Node Package Manager
+### Installation
 \`\`\`bash
 npm install libro-sdk
 \`\`\`
 
-### Supported Environments
-Because the Libro SDK uses the native \`fetch\` API, it is universally compatible with:
-- **Node.js** (v18+)
-- **Vercel Edge Functions**
-- **Cloudflare Workers**
-- **Deno**
-- **Browser Environments** (though we strictly recommend against using API keys in client-side code).
+### Initialization
+\`\`\`typescript
+import { LibroClient } from 'libro-sdk';
+
+const client = new LibroClient({ 
+  apiKey: "cos_live_YOUR_KEY",
+  baseUrl: "https://libro.co.in" // Optional: defaults to production
+});
+\`\`\`
+
+### Core Methods
+
+#### 1. Ingest
+Save a piece of memory for a specific user.
+\`\`\`typescript
+const response = await client.ingest({
+  userId: "user_123",
+  content: "User prefers functional programming paradigms.",
+  metadata: { source: "slack", priority: "high" }
+});
+console.log(response.memory.id); // 'uuid-...'
+\`\`\`
+
+#### 2. Get Context
+Retrieve an optimized, LLM-ready context string.
+\`\`\`typescript
+const context = await client.getContext(
+  "user_123", 
+  "What programming style should I recommend?"
+);
+// "User prefers functional programming paradigms."
+\`\`\`
+
+#### 3. Semantic Search
+Return raw memory objects with scores and metadata.
+\`\`\`typescript
+const results = await client.search({
+  userId: "user_123",
+  query: "programming style",
+  limit: 5
+});
+console.log(results[0].content);
+\`\`\`
+
+#### 4. Update
+Modify an existing memory block.
+\`\`\`typescript
+await client.update({
+  userId: "user_123",
+  memoryId: "uuid-...",
+  text: "User prefers functional programming and TypeScript."
+});
+\`\`\`
+
+#### 5. Forget (Delete)
+Delete a specific memory by ID, or delete all memories matching a semantic query, or wipe a user entirely.
+\`\`\`typescript
+// Delete specific memory
+await client.forget({ userId: "user_123", memoryId: "uuid-..." });
+
+// Delete based on semantic query
+await client.forget({ userId: "user_123", query: "credit card details" });
+
+// Wipe all user data
+await client.forget({ userId: "user_123" });
+\`\`\`
 `,
   "python-sdk": `
 # Python SDK
 
-Libro provides a first-class Python SDK for machine learning pipelines and backend services.
+Libro provides a first-class Python SDK optimized for machine learning pipelines, backend services, and LangChain/LlamaIndex integrations.
 
 ### Installation
 \`\`\`bash
 pip install libro-sdk
 \`\`\`
 
-### Quick Start
+### Initialization
 \`\`\`python
 from libro import LibroClient
+import os
 
-# Initialize the client
-client = LibroClient(api_key="your_api_key", base_url="http://localhost:3000")
-
-# 1. Ingest a memory
-client.ingest(
-    user_id="user_123",
-    text="User prefers Python over Java",
-    metadata={"source": "slack"}
+client = LibroClient(
+    api_key=os.environ.get("LIBRO_API_KEY"), 
+    base_url="https://libro.co.in" # Optional
 )
+\`\`\`
 
-# 2. Retrieve context
+### Core Methods
+
+#### 1. Ingest
+Store user facts or conversational context.
+\`\`\`python
+res = client.ingest(
+    user_id="user_123",
+    text="User prefers Python over Java for backend work.",
+    metadata={"source": "api"}
+)
+print(res["memory"]["id"])
+\`\`\`
+
+#### 2. Get Context
+Retrieve semantic context formatted specifically for LLM system prompts.
+\`\`\`python
 context = client.get_context(
     user_id="user_123",
-    query="What programming language do they like?"
+    query="What language should we use?"
 )
+\`\`\`
 
-print(context)
+#### 3. Semantic Search
+Return raw arrays of memory dictionaries for programmatic filtering.
+\`\`\`python
+results = client.search(
+    user_id="user_123",
+    query="programming preferences",
+    limit=5
+)
+for r in results:
+    print(r["score"], r["content"])
+\`\`\`
+
+#### 4. Update
+Update a previously ingested memory. The embedding is recalculated automatically.
+\`\`\`python
+client.update(
+    user_id="user_123",
+    memory_id="uuid-...",
+    content="User prefers Python and Rust for backend work."
+)
+\`\`\`
+
+#### 5. Forget (Delete)
+Comply with GDPR by deleting specific facts or wiping users.
+\`\`\`python
+# Delete specific memory
+client.forget(user_id="user_123", memory_id="uuid-...")
+
+# Delete by semantic query
+client.forget(user_id="user_123", query="credit card")
+
+# Wipe all user data
+client.forget(user_id="user_123")
 \`\`\`
 `,
   "initializing-client": `

@@ -13,7 +13,7 @@ import { LibroClient } from "libro-sdk";
 import express from "express";
 import cors from "cors";
 
-const globalBaseUrl = process.env.LIBRO_BASE_URL || "http://localhost:3000";
+const globalBaseUrl = process.env.LIBRO_BASE_URL || "https://context-os.vercel.app";
 
 /**
  * Creates a unique MCP Server and LibroClient instance for a specific user/API key.

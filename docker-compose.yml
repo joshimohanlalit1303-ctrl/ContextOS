@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  # 1. Main Next.js App
+  contextos-web:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      # Map Coolify env variables here
+      - DATABASE_URL=${DATABASE_URL}
+      - SUPABASE_SERVICE_ROLE_KEY=${SUPABASE_SERVICE_ROLE_KEY}
+      - NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL}
+      - NEXT_PUBLIC_SUPABASE_ANON_KEY=${NEXT_PUBLIC_SUPABASE_ANON_KEY}
+      # Internal network path to the sidecar
+      - EMBEDDING_SIDECAR_URL=http://libro-embedding-service:8000
+      - NODE_ENV=production
+    restart: always
+
+  # 2. Python FastEmbed Sidecar
+  libro-embedding-service:
+    build:
+      context: ./packages/libro-embedding-service
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - PORT=8000
+    restart: always
+
+  # 3. Libro MCP Server
+  libro-mcp-server:
+    build:
+      context: .
+      dockerfile: ./packages/libro-mcp-server/Dockerfile
+    ports:
+      - "3001:3001"
+    environment:
+      - PORT=3001
+      # Internal network path to the Next.js API
+      - LIBRO_BASE_URL=http://contextos-web:3000
+      - LIBRO_API_KEY=${LIBRO_API_KEY}
+      - LIBRO_USER_ID=${LIBRO_USER_ID}
+    depends_on:
+      - contextos-web
+    restart: always

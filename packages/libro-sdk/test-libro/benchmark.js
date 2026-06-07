@@ -27,7 +27,7 @@ const path = require("path");
 const { performance } = require("perf_hooks");
 
 const CONFIG = {
-  apiKey:    "libro_sk_zsjekcdivrnplylpcpwpl",
+  apiKey:    process.env.LIBRO_API_KEY || "libro_sk_...",
   baseUrl:   "http://localhost:3000",
   quick:     process.argv.includes("--quick"),
   extensive: process.argv.includes("--extensive"),

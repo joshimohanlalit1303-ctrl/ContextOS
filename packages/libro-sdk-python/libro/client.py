@@ -22,7 +22,7 @@ class LibroClient:
 
     def ingest(self, user_id: str, text: str, metadata: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
         """Ingest a new memory for a user."""
-        payload = {"userId": user_id, "text": text}
+        payload = {"endUserId": user_id, "text": text}
         if metadata is not None:
             payload["metadata"] = metadata
 
@@ -32,7 +32,7 @@ class LibroClient:
 
     def get_context(self, user_id: str, query: str) -> Dict[str, Any]:
         """Retrieve relevant context for a user based on a query."""
-        payload = {"userId": user_id, "query": query}
+        payload = {"endUserId": user_id, "query": query}
         res = self.session.post(f"{self.base_url}/api/v1/get-context", json=payload)
         self._check_response(res)
         return res.json()
@@ -42,7 +42,7 @@ class LibroClient:
         if not memory_id and not query:
             raise ValueError("Must provide either memory_id or query to forget.")
         
-        payload = {"userId": user_id}
+        payload = {"endUserId": user_id}
         if memory_id:
             payload["memoryId"] = memory_id
         if query:
@@ -57,7 +57,7 @@ class LibroClient:
         if not text and not metadata:
             raise ValueError("Must provide either text or metadata to update.")
             
-        payload = {"userId": user_id, "memoryId": memory_id}
+        payload = {"endUserId": user_id, "memoryId": memory_id}
         if text:
             payload["text"] = text
         if metadata is not None:

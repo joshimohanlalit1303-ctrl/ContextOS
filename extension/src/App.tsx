@@ -2,9 +2,16 @@ import { useEffect, useState, useCallback, useMemo, useRef } from 'react';
 import { supabase } from './lib/supabase';
 import { Github, LogOut, Activity, Copy, Send, AlertCircle, RefreshCw, FileJson } from 'lucide-react';
 import { Logo } from './Logo';
-import { motion, AnimatePresence } from 'framer-motion';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
+const TypewriterText = () => {
+  return (
+    <span className="block opacity-100 translate-y-0">
+      Engine healthy...
+    </span>
+  );
+};
 
 function App() {
   const [session, setSession] = useState<any>(null);
@@ -14,8 +21,12 @@ function App() {
   const [passportData, setPassportData] = useState<any>(null);
   const [capsuleCopied, setCapsuleCopied] = useState(false);
   const [exportCopied, setExportCopied] = useState(false);
+  
+  const containerRef = useRef<HTMLDivElement>(null);
   const abortRef = useRef<AbortController | null>(null);
   const errorTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Entrance Animations removed completely
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -32,11 +43,12 @@ function App() {
     };
   }, []);
 
-  // Auto-dismiss errors after 5 seconds
   const showError = useCallback((msg: string) => {
     setFetchError(msg);
     if (errorTimerRef.current) clearTimeout(errorTimerRef.current);
-    errorTimerRef.current = setTimeout(() => setFetchError(null), 5000);
+    errorTimerRef.current = setTimeout(() => {
+      setFetchError(null);
+    }, 5000);
   }, []);
 
   const handleGitHubLogin = useCallback(async () => {
@@ -75,16 +87,16 @@ function App() {
 
   const extractLocalChat = useCallback(async () => {
     let tabs = await chrome.tabs.query({ active: true, currentWindow: true });
-    let tab = tabs.find(t => t.url && !t.url.startsWith('chrome-extension://'));
+    let tab = tabs.find(t => t.url && !t.url.startsWith('chrome-extension://') && !t.url.startsWith('chrome://'));
     if (!tab?.id) {
       tabs = await chrome.tabs.query({ active: true, lastFocusedWindow: true });
-      tab = tabs.find(t => t.url && !t.url.startsWith('chrome-extension://'));
+      tab = tabs.find(t => t.url && !t.url.startsWith('chrome-extension://') && !t.url.startsWith('chrome://'));
     }
     if (!tab?.id) {
       tabs = await chrome.tabs.query({ url: ["*://chatgpt.com/*", "*://claude.ai/*", "*://gemini.google.com/*", "*://chat.deepseek.com/*"] });
       tab = tabs[0];
     }
-    if (!tab?.id) throw new Error("Cannot find an active AI tab.");
+    if (!tab?.id) throw new Error("Please open an active ChatGPT, Claude, or Gemini tab to extract context.");
 
     let response: any;
     try {
@@ -133,7 +145,6 @@ function App() {
     abortRef.current?.abort();
     abortRef.current = new AbortController();
     try {
-      // Reuse existing session from state — avoid redundant network call
       if (!session) throw new Error("You must be logged in to save a passport.");
       const history = await extractLocalChat();
       const apiRes = await fetch(`${API_URL}/api/passport/generate`, {
@@ -152,6 +163,8 @@ function App() {
       if (err.name === 'AbortError') return;
       console.error("Passport Save error:", err);
       showError(`Save failed: ${err.message}`);
+      
+      // Error banner renders natively via React state
     } finally {
       setPassportLoading(false);
     }
@@ -172,7 +185,6 @@ function App() {
     setTimeout(() => setter(false), 2000);
   }, []);
 
-  // Memoize passport JSONs — only recompute when passportData changes
   const passportJson = useMemo(() => {
     if (!passportData) return null;
     return {
@@ -214,148 +226,194 @@ function App() {
     }
   }, [passportJson, copyToClipboard]);
 
+  const handleHoverEnter = (e: React.MouseEvent<HTMLButtonElement>) => {
+    // hover animations handled by css now
+  };
+  
+  const handleHoverLeave = (e: React.MouseEvent<HTMLButtonElement>) => {
+    // hover animations handled by css now
+  };
+
+  const handleMouseDown = (e: React.MouseEvent<HTMLButtonElement>) => {
+    // hover animations handled by css now
+  };
+
+  const handleMouseUp = (e: React.MouseEvent<HTMLButtonElement>) => {
+    // hover animations handled by css now
+  };
+
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-full w-full bg-bg">
-        <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 1.5, ease: "linear" }} className="text-gray-400">
+      <main ref={containerRef} className="flex items-center justify-center h-full w-full bg-bg" aria-busy="true" aria-label="Loading application">
+        <div className="loader-logo text-gray-400">
           <Logo />
-        </motion.div>
-      </div>
+        </div>
+      </main>
     );
   }
 
   if (!session) {
     return (
-      <div className="flex flex-col items-center justify-center h-full w-full bg-bg p-6 text-center">
-        <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="w-20 h-20 bg-glass rounded-3xl flex items-center justify-center mb-8 border border-glassborder shadow-sm">
+      <main ref={containerRef} className="flex flex-col items-center justify-center h-full w-full bg-bg p-6 text-center">
+        <div className="login-stagger w-20 h-20 bg-glass rounded-3xl flex items-center justify-center mb-8 border border-glassborder shadow-sm">
           <Logo className="w-10 h-10 text-black" />
-        </motion.div>
-        <motion.h1 initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.1 }} className="text-3xl font-bold tracking-tight mb-3 text-black">Libro</motion.h1>
-        <motion.p initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.2 }} className="text-sm text-gray-500 mb-10 leading-relaxed font-medium">
+        </div>
+        <h1 className="login-stagger text-3xl font-bold tracking-tight mb-3 text-black">Libro</h1>
+        <p className="login-stagger text-sm text-gray-500 mb-10 leading-relaxed font-medium">
           The User Context Layer For AI Applications.<br/>Sign in to sync your local context.
-        </motion.p>
-        <motion.button
-          initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.3 }}
-          whileHover={{ scale: 1.02, backgroundColor: '#f3f4f6' }} whileTap={{ scale: 0.98 }}
+        </p>
+        <button
+          className="login-stagger w-full flex items-center justify-center gap-3 bg-white text-black font-semibold py-4 px-4 rounded-2xl border border-gray-200 shadow-sm mb-6"
           onClick={handleGitHubLogin}
-          className="w-full flex items-center justify-center gap-3 bg-white text-black font-semibold py-4 px-4 rounded-2xl border border-gray-200 shadow-sm mb-6"
+          onMouseEnter={handleHoverEnter}
+          onMouseLeave={handleHoverLeave}
+          onMouseDown={handleMouseDown}
+          onMouseUp={handleMouseUp}
+          aria-label="Continue with GitHub"
         >
-          <Github className="w-5 h-5" />
+          <Github className="w-5 h-5" aria-hidden="true" />
           Continue with GitHub
-        </motion.button>
-      </div>
+        </button>
+      </main>
     );
   }
 
   return (
-    <div className="flex flex-col min-h-screen w-full bg-bg text-accent font-sans selection:bg-blue-100">
+    <main ref={containerRef} className="flex flex-col min-h-screen w-full bg-bg text-accent font-sans selection:bg-blue-100">
       {/* Top Header */}
-      <motion.div initial={{ y: -50 }} animate={{ y: 0 }} className="flex items-center justify-between px-6 py-4 bg-white/70 backdrop-blur-2xl border-b border-gray-100 z-20 sticky top-0">
+      <header className="app-header flex items-center justify-between px-6 py-4 bg-white/70 backdrop-blur-2xl border-b border-gray-100 z-20 sticky top-0">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-black to-gray-700 flex items-center justify-center shadow-md">
-            <Logo className="w-4 h-4 text-white" />
+            <Logo className="w-4 h-4 text-white" aria-hidden="true" />
           </div>
           <span className="font-bold tracking-tight text-gray-900 text-lg">Libro</span>
         </div>
-        <button onClick={handleLogout} className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-full transition-all" title="Logout">
-          <LogOut className="w-4 h-4" />
+        <button onClick={handleLogout} className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-full transition-all" aria-label="Logout">
+          <LogOut className="w-4 h-4" aria-hidden="true" />
         </button>
-      </motion.div>
+      </header>
 
-      <div className="p-6 flex-1 flex flex-col relative z-10">
-        <AnimatePresence>
-          {fetchError && (
-            <motion.div initial={{ opacity: 0, height: 0, marginBottom: 0 }} animate={{ opacity: 1, height: 'auto', marginBottom: 24 }} exit={{ opacity: 0, height: 0, marginBottom: 0 }} className="overflow-hidden">
-              <div className="bg-red-50 border border-red-100 text-red-600 text-sm p-4 rounded-2xl flex items-start gap-3 shadow-sm">
-                <AlertCircle className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
-                <div className="flex-1">
-                  <span className="font-semibold block mb-0.5 text-red-800">Connection Failed</span>
-                  {fetchError}
-                </div>
+      <section className="p-6 flex-1 flex flex-col relative z-10" aria-label="Main Application Area">
+        {fetchError && (
+          <div className="error-banner overflow-hidden mb-6">
+            <div className="bg-red-50 border border-red-100 text-red-600 text-sm p-4 rounded-2xl flex items-start gap-3 shadow-sm">
+              <AlertCircle className="w-5 h-5 text-red-500 shrink-0 mt-0.5" aria-hidden="true" />
+              <div className="flex-1" role="alert">
+                <span className="font-semibold block mb-0.5 text-red-800">Connection Failed</span>
+                {fetchError}
               </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* Profile Card */}
-        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="flex items-center gap-4 mb-8 bg-white p-5 rounded-[20px] border border-gray-100 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)]">
-          <img src={session.user.user_metadata.avatar_url} alt="Avatar" className="w-12 h-12 rounded-full border border-gray-100 shadow-sm" />
-          <div>
-            <div className="font-bold text-[16px] text-gray-900 leading-tight">{session.user.user_metadata.full_name || session.user.email}</div>
-            <div className="text-[12px] text-emerald-500 flex items-center gap-1.5 mt-1 font-medium tracking-wide">
-              <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse-slow shadow-[0_0_8px_rgba(16,185,129,0.5)]"></div>
-              Engine Active
             </div>
           </div>
-        </motion.div>
+        )}
+
+        {/* Profile Card */}
+        <article className="app-card flex items-center gap-4 mb-8 bg-white p-5 rounded-[20px] border border-gray-100 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)]">
+          <img src={session.user?.user_metadata?.avatar_url || 'https://www.gravatar.com/avatar/?d=mp'} alt={`${session.user?.email || 'User'} avatar`} className="w-12 h-12 rounded-full border border-gray-100 shadow-sm" />
+          <div>
+            <div className="font-bold text-[16px] text-gray-900 leading-tight">{session.user?.user_metadata?.full_name || session.user?.email || 'User'}</div>
+            <div className="text-[12px] text-emerald-500 flex items-center gap-1.5 mt-1 font-medium tracking-wide">
+              <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse-slow shadow-[0_0_8px_rgba(16,185,129,0.5)]" aria-hidden="true"></div>
+              <span>Engine Active</span>
+            </div>
+          </div>
+        </article>
+
+        {/* Onboarding Instructions */}
+        {!passportData && (
+          <article className="app-card mb-4 bg-blue-50/50 p-4 rounded-[16px] border border-blue-100 shadow-sm" aria-label="Onboarding Instructions">
+            <h4 className="text-blue-800 font-semibold text-[13px] mb-1">How to use Libro</h4>
+            <p className="text-blue-600/90 text-[12px] leading-relaxed">
+              1. Open an active tab with ChatGPT, Claude, or Gemini.<br/>
+              2. Click <strong>Save Context Passport</strong> to extract the chat memory.<br/>
+              3. Inject that memory into any other AI chat!
+            </p>
+          </article>
+        )}
 
         {/* Action Buttons */}
-        <div className="flex flex-col gap-3.5 mb-10">
-          <motion.button whileHover={{ scale: 1.01, y: -1 }} whileTap={{ scale: 0.98 }} onClick={handleSavePassport} disabled={passportLoading}
-            className="w-full flex items-center justify-center gap-3 bg-black hover:bg-gray-900 text-white font-medium py-4 px-5 rounded-[16px] shadow-[0_8px_20px_-8px_rgba(0,0,0,0.3)] transition-all disabled:opacity-50 disabled:hover:scale-100 relative overflow-hidden group">
+        <nav className="flex flex-col gap-3.5 mb-10" aria-label="Action Navigation">
+          <button 
+            className="app-card w-full flex items-center justify-center gap-3 bg-black hover:bg-gray-900 text-white font-medium py-4 px-5 rounded-[16px] shadow-[0_8px_20px_-8px_rgba(0,0,0,0.3)] transition-all disabled:opacity-50 disabled:hover:scale-100 relative overflow-hidden group"
+            onClick={handleSavePassport} 
+            disabled={passportLoading}
+            onMouseEnter={handleHoverEnter} onMouseLeave={handleHoverLeave} onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}
+            aria-label="Save Context Passport"
+          >
             {passportLoading ? (
-              <RefreshCw className="w-5 h-5 animate-spin text-white/80" />
+              <RefreshCw className="w-5 h-5 animate-spin text-white/80" aria-hidden="true" />
             ) : passportData ? (
               <>
-                <motion.svg initial={{ scale: 0 }} animate={{ scale: 1 }} className="w-5 h-5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className="success-icon w-5 h-5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
-                </motion.svg>
-                Passport Saved!
+                </svg>
+                <span>Passport Saved!</span>
               </>
             ) : (
               <>
-                <FileJson className="w-5 h-5 text-white/80 group-hover:text-white transition-colors" />
-                Save Context Passport
+                <FileJson className="w-5 h-5 text-white/80 group-hover:text-white transition-colors" aria-hidden="true" />
+                <span>Save Context Passport</span>
               </>
             )}
-          </motion.button>
+          </button>
 
-          <motion.button whileHover={{ scale: 1.01, y: -1 }} whileTap={{ scale: 0.98 }} onClick={handleContinueProject} disabled={!passportData}
-            className="w-full flex items-center justify-center gap-3 bg-white text-gray-800 font-medium py-4 px-5 rounded-[16px] border border-gray-200 hover:border-gray-300 hover:shadow-[0_4px_12px_-4px_rgba(0,0,0,0.05)] transition-all disabled:opacity-50 disabled:hover:scale-100 group">
+          <button 
+            className="app-card w-full flex items-center justify-center gap-3 bg-white text-gray-800 font-medium py-4 px-5 rounded-[16px] border border-gray-200 hover:border-gray-300 hover:shadow-[0_4px_12px_-4px_rgba(0,0,0,0.05)] transition-all disabled:opacity-50 disabled:hover:scale-100 group"
+            onClick={handleContinueProject} 
+            disabled={!passportData}
+            onMouseEnter={handleHoverEnter} onMouseLeave={handleHoverLeave} onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}
+            aria-label="Continue Project"
+          >
             {exportCopied ? (
               <>
-                <motion.svg initial={{ scale: 0 }} animate={{ scale: 1 }} className="w-5 h-5 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className="copy-success-icon w-5 h-5 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
-                </motion.svg>
+                </svg>
                 <span className="text-emerald-600 font-semibold">Prompt Copied!</span>
               </>
             ) : (
               <>
-                <Send className="w-5 h-5 text-gray-400 group-hover:text-blue-500 transition-colors" />
-                Continue Project
+                <Send className="w-5 h-5 text-gray-400 group-hover:text-blue-500 transition-colors" aria-hidden="true" />
+                <span>Continue Project</span>
               </>
             )}
-          </motion.button>
+          </button>
 
-          <motion.button whileHover={{ scale: 1.01, y: -1 }} whileTap={{ scale: 0.98 }} onClick={handleCopyPassport} disabled={!passportData}
-            className="w-full flex items-center justify-center gap-3 bg-white text-gray-800 font-medium py-4 px-5 rounded-[16px] border border-gray-200 hover:border-gray-300 hover:shadow-[0_4px_12px_-4px_rgba(0,0,0,0.05)] transition-all disabled:opacity-50 disabled:hover:scale-100 group">
+          <button 
+            className="app-card w-full flex items-center justify-center gap-3 bg-white text-gray-800 font-medium py-4 px-5 rounded-[16px] border border-gray-200 hover:border-gray-300 hover:shadow-[0_4px_12px_-4px_rgba(0,0,0,0.05)] transition-all disabled:opacity-50 disabled:hover:scale-100 group"
+            onClick={handleCopyPassport} 
+            disabled={!passportData}
+            onMouseEnter={handleHoverEnter} onMouseLeave={handleHoverLeave} onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}
+            aria-label="Copy Raw JSON Passport"
+          >
             {capsuleCopied ? (
               <>
-                <motion.svg initial={{ scale: 0 }} animate={{ scale: 1 }} className="w-5 h-5 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className="copy-success-icon w-5 h-5 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
-                </motion.svg>
+                </svg>
                 <span className="text-emerald-600 font-semibold">JSON Copied!</span>
               </>
             ) : (
               <>
-                <Copy className="w-5 h-5 text-gray-400 group-hover:text-gray-900 transition-colors" />
-                Copy Raw JSON
+                <Copy className="w-5 h-5 text-gray-400 group-hover:text-gray-900 transition-colors" aria-hidden="true" />
+                <span>Copy Raw JSON</span>
               </>
             )}
-          </motion.button>
-        </div>
+          </button>
+        </nav>
 
         {/* Status Stream */}
-        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="mt-auto">
+        <article className="app-card mt-auto" aria-live="polite">
           <h3 className="text-[11px] uppercase tracking-widest text-gray-400 font-bold mb-3 px-1">System Status</h3>
           <div className="bg-white p-4 border border-gray-100 rounded-[16px] text-[13px] flex gap-3.5 items-center shadow-[0_2px_10px_-4px_rgba(0,0,0,0.02)] relative overflow-hidden group hover:border-blue-100 transition-colors">
-            <div className="absolute top-0 left-0 w-1 h-full bg-blue-500 group-hover:w-1.5 transition-all"></div>
-            <Activity className="w-4 h-4 text-blue-500 shrink-0" />
-            <div className="text-gray-600 font-medium leading-relaxed">Listening for AI interactions...</div>
+            <div className="absolute top-0 left-0 w-1 h-full bg-blue-500 group-hover:w-1.5 transition-all" aria-hidden="true"></div>
+            <Activity className="w-4 h-4 text-blue-500 shrink-0 animate-pulse" aria-hidden="true" />
+            <div className="text-gray-600 font-medium leading-relaxed">
+              <TypewriterText />
+            </div>
           </div>
-        </motion.div>
-      </div>
-    </div>
+        </article>
+      </section>
+    </main>
   );
 }
 
