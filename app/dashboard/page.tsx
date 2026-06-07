@@ -53,7 +53,7 @@ export default async function DashboardPage() {
         .from(passports)
         .where(eq(passports.userId, internalUser.id));
         
-      passportCount = passportCountResult.value; 
+      passportCount = Number(passportCountResult?.value || 0);
     }
   }
 
