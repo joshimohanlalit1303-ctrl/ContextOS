@@ -8,8 +8,8 @@ import { gsap } from "gsap";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const NODE_COUNT = 400; // Drastically reduced to allow for complex line calculations
-const MAX_CONNECTION_DISTANCE = 4.5;
+const NODE_COUNT = 150; // Reduced for performance
+const MAX_CONNECTION_DISTANCE = 4.0;
 
 function AlgorithmicKnowledgeGraph({ progress }: { progress: React.MutableRefObject<number> }) {
   const pointsRef = useRef<THREE.Points>(null);
@@ -17,6 +17,9 @@ function AlgorithmicKnowledgeGraph({ progress }: { progress: React.MutableRefObj
   
   const targetMouse = useRef({ x: 0, y: 0 });
   const currentMouse = useRef({ x: 0, y: 0 });
+  
+  // Track previous pulsed nodes to reset them without looping entire array
+  const activePulses = useRef<number[]>([]);
   
   // Robust global mouse tracking
   useEffect(() => {
@@ -69,10 +72,16 @@ function AlgorithmicKnowledgeGraph({ progress }: { progress: React.MutableRefObj
     return new Uint16Array(indices);
   }, [nodePositions]);
 
-  // Setup dynamic color array for lines
-  const edgeColors = useMemo(() => {
-    return new Float32Array(edgeIndices.length * 3); // 3 colors per vertex
-  }, [edgeIndices]);
+  // Setup dynamic color array for lines (per vertex, not per edge)
+  const lineColors = useMemo(() => {
+    const cols = new Float32Array(NODE_COUNT * 3);
+    for (let i = 0; i < NODE_COUNT; i++) {
+      cols[i * 3] = 0.1;
+      cols[i * 3 + 1] = 0.15;
+      cols[i * 3 + 2] = 0.3;
+    }
+    return cols;
+  }, []);
 
   useFrame((state, delta) => {
     if (!pointsRef.current || !linesRef.current) return;
@@ -93,24 +102,20 @@ function AlgorithmicKnowledgeGraph({ progress }: { progress: React.MutableRefObj
     linesRef.current.rotation.y = rotY;
     linesRef.current.rotation.x = rotX;
 
-    // Simulate "Data Pulses" through the network
+    // Simulate "Data Pulses" highly optimized
     const colorAttr = linesRef.current.geometry.attributes.color as THREE.BufferAttribute;
     
-    // Every frame, subtly fade all lines back to a dim blue
-    for (let i = 0; i < colorAttr.count; i++) {
-      colorAttr.setXYZ(i, 0.1, 0.15, 0.3); // Dim default state
+    // Reset only the previously pulsed nodes back to dim blue (O(1) operation instead of O(N))
+    for (const nodeIdx of activePulses.current) {
+      colorAttr.setXYZ(nodeIdx, 0.1, 0.15, 0.3);
     }
+    activePulses.current = [];
     
-    // Highlight a few random connections to simulate algorithmic RAG search
-    const numActivePulses = 15;
-    for (let i = 0; i < numActivePulses; i++) {
-      // Pick a random edge to light up
-      // The edge index array has 2 points per line. 
-      const randomLineIndex = Math.floor(Math.random() * (edgeIndices.length / 2)) * 2;
-      
-      // Set the two points of this line to a bright cyan/white to simulate a data pulse
-      colorAttr.setXYZ(randomLineIndex, 0.4, 0.9, 1.0);
-      colorAttr.setXYZ(randomLineIndex + 1, 0.4, 0.9, 1.0);
+    // Pick 5 random nodes to pulse this frame
+    for (let i = 0; i < 5; i++) {
+      const randomNode = Math.floor(Math.random() * NODE_COUNT);
+      colorAttr.setXYZ(randomNode, 0.4, 0.9, 1.0);
+      activePulses.current.push(randomNode);
     }
     colorAttr.needsUpdate = true;
 
@@ -131,12 +136,12 @@ function AlgorithmicKnowledgeGraph({ progress }: { progress: React.MutableRefObj
         <bufferGeometry>
           <bufferAttribute attach="attributes-position" args={[nodePositions, 3]} />
           <bufferAttribute attach="index" args={[edgeIndices, 1]} />
-          <bufferAttribute attach="attributes-color" args={[edgeColors, 3]} />
+          <bufferAttribute attach="attributes-color" args={[lineColors, 3]} />
         </bufferGeometry>
         <lineBasicMaterial 
           vertexColors 
           transparent 
-          opacity={0.6} 
+          opacity={0.4} 
           blending={THREE.AdditiveBlending}
           depthWrite={false}
         />
@@ -202,7 +207,7 @@ export default function ThreeScene() {
         gl={{ alpha: true, antialias: true, powerPreference: "high-performance" }} 
         dpr={[1, 2]} 
       >
-        <fog attach="fog" args={['#f5f5f7', 10, 30]} />
+        <fog attach="fog" args={['#050505', 10, 30]} />
         <SceneOrchestrator />
       </Canvas>
     </div>
