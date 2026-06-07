@@ -24,7 +24,7 @@ export default async function DashboardPage() {
       .order('created_at', { ascending: false }),
     supabase
       .from('memories')
-      .select('id, content, created_at, endUserId', { count: 'exact' })
+      .select('id, content, created_at, end_user_id', { count: 'exact' })
       .order('created_at', { ascending: false })
       .limit(5)
   ]);
@@ -147,7 +147,7 @@ export default async function DashboardPage() {
                       </td>
                       <td className="px-6 py-4">
                         <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-500/10 text-indigo-300 border border-indigo-500/20">
-                          {mem.endUserId}
+                          {mem.end_user_id}
                         </span>
                       </td>
                       <td className="px-6 py-4 text-sm font-medium text-gray-500 text-right">
