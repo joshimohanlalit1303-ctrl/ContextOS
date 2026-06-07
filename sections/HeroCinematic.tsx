@@ -62,46 +62,49 @@ export default function HeroCinematic() {
       ref={containerRef} 
       className="relative w-full min-h-screen flex flex-col justify-center items-center text-center px-6 perspective-1000 overflow-hidden pt-32 pb-24"
     >
+      {/* Background glow effect */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-indigo-500/10 blur-[120px] rounded-full pointer-events-none" />
+
       <div className="hero-parallax relative z-10 flex flex-col items-center w-full max-w-5xl mx-auto transform-gpu">
         
-        <div className="hero-pill px-6 py-2 rounded-full border border-blue-200 bg-blue-50/50 text-blue-700 font-bold text-[13px] tracking-[0.2em] mb-12 shadow-xl shadow-blue-500/10 hover:scale-105 transition-transform duration-500 cursor-default">
+        <div className="hero-pill px-6 py-2 rounded-full border border-indigo-500/30 bg-indigo-500/10 text-indigo-300 font-bold text-[13px] tracking-[0.2em] mb-12 shadow-[0_0_30px_rgba(99,102,241,0.2)] hover:scale-105 hover:bg-indigo-500/20 transition-all duration-500 cursor-default">
           LIBRO IS LIVE
         </div>
 
-        <h1 className="text-[72px] md:text-[110px] tracking-[-0.05em] leading-[1.05] font-bold text-black drop-shadow-sm">
+        <h1 className="text-[72px] md:text-[110px] tracking-[-0.05em] leading-[1.05] font-bold text-white drop-shadow-sm">
           <div className="hero-title-line transform-gpu origin-bottom">
             Memory that feels
           </div>
-          <div className="hero-title-line transform-gpu origin-bottom text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 pb-4">
+          <div className="hero-title-line transform-gpu origin-bottom text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400 pb-4">
             like magic.
           </div>
         </h1>
 
-        <p className="hero-desc text-[20px] md:text-[24px] text-gray-500 max-w-2xl mx-auto leading-relaxed mt-10 font-light">
+        <p className="hero-desc text-[20px] md:text-[24px] text-gray-400 max-w-2xl mx-auto leading-relaxed mt-10 font-light">
           Drop-in context infrastructure for your AI applications. 
           Zero pipeline changes. Full data sovereignty.
         </p>
 
         <div className="hero-actions mt-14 w-full relative z-20 flex flex-col items-center gap-4">
-          <div className="flex items-center gap-3 bg-white/60 backdrop-blur-md border border-gray-200/50 px-6 py-4 rounded-xl shadow-sm cursor-copy hover:bg-white/80 transition-colors" onClick={() => navigator.clipboard.writeText('npm install libro-sdk')}>
-            <span className="text-gray-400 font-mono text-sm">$</span>
-            <code className="text-gray-800 font-mono font-medium tracking-tight">npm install libro-sdk</code>
-            <svg className="w-4 h-4 ml-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
+          <div className="flex items-center gap-3 bg-white/5 backdrop-blur-xl border border-white/10 px-6 py-4 rounded-xl shadow-2xl cursor-copy hover:bg-white/10 transition-colors" onClick={() => navigator.clipboard.writeText('npm install @libro/sdk')}>
+            <span className="text-gray-500 font-mono text-sm">$</span>
+            <code className="text-gray-200 font-mono font-medium tracking-tight">npm install @libro/sdk</code>
+            <svg className="w-4 h-4 ml-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
           </div>
-          <p className="text-sm text-gray-400 font-medium">v1.0.4 • Read the Documentation</p>
+          <p className="text-sm text-gray-500 font-medium">v1.0.4 • Read the Documentation</p>
         </div>
 
         <div className="mt-10 w-full relative z-20 flex flex-col sm:flex-row items-center justify-center gap-4">
           <Link
             href="/login"
-            className="inline-flex items-center justify-center gap-2 bg-black text-white px-8 py-4 rounded-2xl font-bold text-[16px] hover:bg-gray-900 hover:-translate-y-1 hover:shadow-2xl hover:shadow-black/20 transition-all"
+            className="inline-flex items-center justify-center gap-2 bg-white text-black px-8 py-4 rounded-2xl font-bold text-[16px] hover:bg-gray-200 hover:-translate-y-1 hover:shadow-[0_0_40px_rgba(255,255,255,0.3)] transition-all"
           >
             Get Started Free
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
           </Link>
           <Link
             href="/docs"
-            className="inline-flex items-center justify-center gap-2 bg-white border border-gray-200 text-gray-900 px-8 py-4 rounded-2xl font-bold text-[16px] hover:bg-gray-50 hover:-translate-y-1 hover:shadow-xl transition-all"
+            className="inline-flex items-center justify-center gap-2 bg-white/5 backdrop-blur-md border border-white/10 text-white px-8 py-4 rounded-2xl font-bold text-[16px] hover:bg-white/10 hover:-translate-y-1 transition-all"
           >
             Read the Docs →
           </Link>

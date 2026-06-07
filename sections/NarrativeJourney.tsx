@@ -83,14 +83,14 @@ export default function NarrativeJourney() {
           key={chapter.id}
           className="narrative-section w-full h-[150vh] flex items-center justify-center px-6"
         >
-          <div className="narrative-text text-center max-w-4xl mx-auto glass p-12 md:p-20 rounded-[2rem] shadow-2xl backdrop-blur-2xl border border-white/40 bg-white/40 transform-gpu pointer-events-auto">
-            <div className="text-accent font-mono text-sm tracking-[0.2em] mb-6 font-semibold">
+          <div className="narrative-text text-center max-w-4xl mx-auto glass p-12 md:p-20 rounded-[2rem] shadow-[0_0_40px_rgba(0,0,0,0.5)] backdrop-blur-2xl border border-white/5 bg-white/5 transform-gpu pointer-events-auto">
+            <div className="text-indigo-400 font-mono text-sm tracking-[0.2em] mb-6 font-semibold">
               {chapter.subtitle}
             </div>
-            <h2 className="text-[48px] md:text-[72px] font-bold text-black tracking-tight leading-[1.1] mb-8">
+            <h2 className="text-[48px] md:text-[72px] font-bold text-white tracking-tight leading-[1.1] mb-8">
               {chapter.title}
             </h2>
-            <p className="text-[20px] md:text-[26px] text-gray-700 font-light leading-relaxed">
+            <p className="text-[20px] md:text-[26px] text-gray-400 font-light leading-relaxed">
               {chapter.description}
             </p>
           </div>
