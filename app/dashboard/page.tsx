@@ -34,7 +34,7 @@ export default async function DashboardPage() {
 
   // Fetch internal user and passports
   let internalUser;
-  let recentPassports = [];
+  let recentPassports: any[] = [];
   let passportCount = 0;
   
   if (user.email) {

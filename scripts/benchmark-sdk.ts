@@ -1,3 +1,4 @@
+// @ts-ignore
 import { LibroClient } from "libro-sdk";
 import * as dotenv from 'dotenv';
 import path from 'path';
