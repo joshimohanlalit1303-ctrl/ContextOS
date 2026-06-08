@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-import { pgTable, text, timestamp, uuid, jsonb, integer, varchar, boolean, index, foreignKey, customType } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, uuid, jsonb, integer, varchar, boolean, index, foreignKey, customType, serial } from "drizzle-orm/pg-core";
 import { sql, relations } from "drizzle-orm";
 
 // -----------------------------------------------------------------------------
@@ -85,6 +85,7 @@ const customVector = customType<{ data: number[] }>({
 
 export const memories = pgTable("memories", {
   id: uuid("id").primaryKey().defaultRandom(),
+  vectorId: serial("vector_id").notNull().unique(), // Mapped to Turbovec uint64
   apiKeyId: uuid("api_key_id").references(() => apiKeys.id, { onDelete: "cascade" }),
   endUserId: uuid("end_user_id").notNull().references(() => endUsers.id, { onDelete: "cascade" }),
   content: text("content").notNull(),
@@ -200,6 +201,7 @@ export const billing = pgTable("billing", {
 
 export const passports = pgTable("passports", {
   id: uuid("id").primaryKey().defaultRandom(),
+  vectorId: serial("vector_id").notNull().unique(), // Mapped to Turbovec uint64
   userId: uuid("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
   project: varchar("project", { length: 255 }).notNull(),
   goal: text("goal").notNull(),

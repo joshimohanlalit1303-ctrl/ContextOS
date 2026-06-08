@@ -106,26 +106,40 @@ export async function POST(request: Request) {
     }
 
     // 2. Semantic Deduplication
-    const embedding = await SemanticDeduplicationEngine.generateEmbedding(text);
-    const isDup = await SemanticDeduplicationEngine.isDuplicate(userRecord.id, text, embedding);
+    const isDup = await SemanticDeduplicationEngine.isDuplicate(userRecord.id, text);
+
+    const PYTHON_SERVICE_URL = process.env.PYTHON_SERVICE_URL || "http://localhost:8000";
 
     if (isDup) {
-      await db.insert(memories).values({
+      const inserted = await db.insert(memories).values({
         endUserId: userRecord.id,
         content: text,
-        embedding,
         metadata: { source: parsed.data.source, duplicate: true },
-      });
+      }).returning({ vectorId: memories.vectorId });
+
+      try {
+        await fetch(`${PYTHON_SERVICE_URL}/add`, {
+          method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id: inserted[0].vectorId, text })
+        });
+      } catch (e) { console.error("Turbovec insert error:", e); }
+
       return NextResponse.json({ success: true, message: "Context ingested (deduplicated)" });
     }
 
     // 3. Store raw memory
-    await db.insert(memories).values({
+    const insertedRaw = await db.insert(memories).values({
       endUserId: userRecord.id,
       content: text,
-      embedding,
       metadata: { source: parsed.data.source },
-    });
+    }).returning({ vectorId: memories.vectorId });
+
+    try {
+      await fetch(`${PYTHON_SERVICE_URL}/add`, {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: insertedRaw[0].vectorId, text })
+      });
+    } catch (e) { console.error("Turbovec insert error:", e); }
 
     // 4. Extract Structured Profile
     const extracted = await ProfileExtractionEngine.extract(text);

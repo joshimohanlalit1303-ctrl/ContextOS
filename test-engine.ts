@@ -4,13 +4,7 @@ import { ProfileExtractionEngine } from './lib/engines/ProfileExtractionEngine';
 import { SemanticDeduplicationEngine } from './lib/engines/SemanticDeduplicationEngine';
 
 async function run() {
-  console.log("Testing Semantic Deduplication Engine...");
-  try {
-    const embedding = await SemanticDeduplicationEngine.generateEmbedding("i lova chicken, i am a enginner");
-    console.log("Embedding length:", embedding.length);
-  } catch (err) {
-    console.error("Semantic Error:", err);
-  }
+  console.log("Testing Semantic Deduplication Engine... (Skipped, moved to Python Turbovec service)");
 
   console.log("Testing Profile Extraction Engine...");
   try {

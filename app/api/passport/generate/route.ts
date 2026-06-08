@@ -45,35 +45,52 @@ export async function POST(request: Request) {
     // 1. Extract Passport via Gemini
     const passportData = await PassportExtractionEngine.extract(history);
 
-    // 2. Generate Embedding for the Project + Goal for Deduplication
+    // 2. Generate Search Query for Deduplication
     const embeddingText = `Project: ${passportData.project}. Goal: ${passportData.goal}`;
-    const vector = await SemanticDeduplicationEngine.generateEmbedding(embeddingText);
-    const vectorString = JSON.stringify(vector);
+    const PYTHON_SERVICE_URL = process.env.PYTHON_SERVICE_URL || "http://localhost:8000";
 
-    // 3. Check for Similar Passports (Cosine distance < 0.1 means > 0.9 similarity)
-    const similarPassports = await db
-      .select({
-        id: passports.id,
-        distance: sql<number>`${passports.embedding} <=> ${vectorString}::vector`,
-      })
+    // 3. Check for Similar Passports via Turbovec
+    const userPassports = await db
+      .select({ id: passports.id, vectorId: passports.vectorId })
       .from(passports)
-      .where(
-        sql`${passports.userId} = ${internalUserId} AND ${passports.embedding} <=> ${vectorString}::vector < 0.15` // Using 0.15 for slightly broader match
-      )
-      .orderBy(sql`${passports.embedding} <=> ${vectorString}::vector`)
-      .limit(1);
+      .where(eq(passports.userId, internalUserId));
 
-    let passportId: string;
+    let passportId: string | undefined;
+    let action = 'created';
 
-    if (similarPassports.length > 0) {
+    if (userPassports.length > 0) {
+      const allowlist = userPassports.map(p => p.vectorId);
+      
+      try {
+        const searchRes = await fetch(`${PYTHON_SERVICE_URL}/search`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ query: embeddingText, k: 1, allowlist })
+        });
+        
+        if (searchRes.ok) {
+          const searchData = await searchRes.json();
+          if (searchData.scores && searchData.scores.length > 0 && searchData.scores[0] > 0.85) {
+            const matchedVectorId = searchData.ids[0];
+            const matchedPassport = userPassports.find(p => p.vectorId === matchedVectorId);
+            if (matchedPassport) {
+              passportId = matchedPassport.id;
+              action = 'merged';
+            }
+          }
+        }
+      } catch (e) {
+        console.error("Turbovec search failed:", e);
+      }
+    }
+
+    if (passportId) {
       // Merge into existing passport
-      passportId = similarPassports[0].id;
       await db.update(passports)
         .set({
           project: passportData.project,
           goal: passportData.goal,
           summary: passportData.summary,
-          embedding: vector,
           updatedAt: new Date(),
         })
         .where(eq(passports.id, passportId));
@@ -87,17 +104,27 @@ export async function POST(request: Request) {
         project: passportData.project,
         goal: passportData.goal,
         summary: passportData.summary,
-        embedding: vector,
-      }).returning({ id: passports.id });
+      }).returning({ id: passports.id, vectorId: passports.vectorId });
       
       passportId = newPassport[0].id;
+
+      // Index in Turbovec
+      try {
+        await fetch(`${PYTHON_SERVICE_URL}/add`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id: newPassport[0].vectorId, text: embeddingText })
+        });
+      } catch (e) {
+        console.error("Failed to add vector to Turbovec:", e);
+      }
     }
 
     // Insert Tasks
     if (passportData.tasks && passportData.tasks.length > 0) {
       await db.insert(passportTasks).values(
         passportData.tasks.map(task => ({
-          passportId,
+          passportId: passportId!,
           task
         }))
       );
@@ -107,7 +134,7 @@ export async function POST(request: Request) {
     if (passportData.decisions && passportData.decisions.length > 0) {
       await db.insert(passportDecisions).values(
         passportData.decisions.map(decision => ({
-          passportId,
+          passportId: passportId!,
           decision
         }))
       );
@@ -116,7 +143,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ 
       success: true, 
       passportId, 
-      action: similarPassports.length > 0 ? 'merged' : 'created',
+      action,
       data: passportData
     });
     
