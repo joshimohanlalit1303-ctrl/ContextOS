@@ -109,6 +109,18 @@ export default function HeroCinematic() {
             Read the Docs →
           </Link>
         </div>
+
+        <div className="mt-12 hero-actions flex justify-center relative z-20">
+          <a href="https://www.producthunt.com/products/libro-2?embed=true&utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-libro-2" target="_blank" rel="noopener noreferrer">
+            <img 
+              alt="Libro - The open-source brain for AI agents. | Product Hunt" 
+              width={250} 
+              height={54} 
+              src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1165986&theme=light&t=1780910992135" 
+              className="hover:scale-105 hover:drop-shadow-[0_0_20px_rgba(255,255,255,0.2)] transition-all duration-300"
+            />
+          </a>
+        </div>
       </div>
     </section>
   );
