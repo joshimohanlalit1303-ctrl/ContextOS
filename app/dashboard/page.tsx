@@ -6,9 +6,10 @@ import { Key, Trash2, LogOut, Database, Code2, Zap, BookOpen, Brain, Plug2, Cloc
 import Link from 'next/link'
 import { CopyButton } from '@/components/CopyButton'
 import MCPSetupWizard from '@/components/MCPSetupWizard'
+import KnowledgeGraph from '@/components/KnowledgeGraph'
 import { db } from '@/lib/db'
-import { users, passports } from '@/lib/db/schema'
-import { eq, desc, count } from 'drizzle-orm'
+import { users, passports, memories } from '@/lib/db/schema'
+import { eq, desc, count, inArray } from 'drizzle-orm'
 
 export default async function DashboardPage() {
   const supabase = await createClient()
@@ -16,21 +17,44 @@ export default async function DashboardPage() {
 
   if (!user) redirect('/login')
 
-  // Fetch data in parallel for speed and health check
-  const [
-    { data: apiKeys, error: apiKeysError },
-    { data: recentMemories, count: memoryCount, error: memoryError }
-  ] = await Promise.all([
-    supabase
-      .from('api_keys')
-      .select('*')
-      .order('created_at', { ascending: false }),
-    supabase
-      .from('memories')
-      .select('id, content, created_at, end_user_id', { count: 'exact' })
-      .order('created_at', { ascending: false })
-      .limit(5)
-  ]);
+  // 1. Fetch API keys
+  const { data: apiKeys, error: apiKeysError } = await supabase
+    .from('api_keys')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  const apiKeyIds = (apiKeys || []).map(k => k.id);
+
+  // 2. Fetch memories using Drizzle to bypass RLS issues
+  let recentMemories: any[] = [];
+  let allMemories: any[] = [];
+  let memoryCount = 0;
+  let memoryError = null;
+  
+  if (apiKeyIds.length > 0) {
+    try {
+      recentMemories = await db.query.memories.findMany({
+        where: inArray(memories.apiKeyId, apiKeyIds),
+        orderBy: [desc(memories.createdAt)],
+        limit: 5,
+        columns: { id: true, content: true, createdAt: true, endUserId: true }
+      });
+
+      allMemories = await db.query.memories.findMany({
+        where: inArray(memories.apiKeyId, apiKeyIds),
+        orderBy: [desc(memories.createdAt)],
+        limit: 200,
+        columns: { id: true, content: true, embedding: true }
+      });
+      
+      const [countResult] = await db.select({ value: count() })
+        .from(memories)
+        .where(inArray(memories.apiKeyId, apiKeyIds));
+      memoryCount = Number(countResult?.value || 0);
+    } catch (e: any) {
+      memoryError = e.message;
+    }
+  }
 
   // Fetch internal user and passports
   let internalUser;
@@ -61,6 +85,53 @@ export default async function DashboardPage() {
   const isEngineLive = !apiKeysError && !memoryError;
   const keyCount = apiKeys?.length || 0;
   const totalEmbeddings = (memoryCount || 0) + passportCount;
+
+  // Build Knowledge Graph
+  const graphNodes: any[] = [];
+  const graphLinks: any[] = [];
+  
+  if (allMemories && allMemories.length > 0) {
+    const memoryNodes = allMemories.map(m => {
+      let vec = m.embedding;
+      if (typeof vec === 'string') {
+        try { vec = JSON.parse(vec); } catch(e) { vec = []; }
+      }
+      return {
+        id: m.id,
+        name: m.content.substring(0, 35) + (m.content.length > 35 ? '...' : ''),
+        embedding: vec || []
+      };
+    }).filter(n => n.embedding.length > 0);
+
+    memoryNodes.forEach(n => {
+      graphNodes.push({ id: n.id, name: n.name });
+    });
+
+    for (let i = 0; i < memoryNodes.length; i++) {
+      for (let j = i + 1; j < memoryNodes.length; j++) {
+        const A = memoryNodes[i].embedding;
+        const B = memoryNodes[j].embedding;
+        
+        let dotProduct = 0;
+        let normA = 0;
+        let normB = 0;
+        for (let k = 0; k < A.length; k++) {
+            dotProduct += A[k] * B[k];
+            normA += A[k] * A[k];
+            normB += B[k] * B[k];
+        }
+        const sim = (normA === 0 || normB === 0) ? 0 : dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
+        
+        // 0.70 threshold for edge
+        if (sim > 0.70) {
+          graphLinks.push({
+            source: memoryNodes[i].id,
+            target: memoryNodes[j].id
+          });
+        }
+      }
+    }
+  }
 
   return (
     <div className="min-h-screen bg-[#050505] text-white p-8 pt-28 md:p-12 md:pt-32 relative overflow-hidden">
@@ -199,6 +270,15 @@ export default async function DashboardPage() {
           </div>
         </section>
 
+        {/* Hive Mind Constellation Graph */}
+        <section className="mb-12">
+          <div className="flex items-center gap-3 mb-6">
+            <Brain className="w-5 h-5 text-indigo-400" />
+            <h2 className="text-xl font-bold tracking-tight text-white">Hive Mind Constellation</h2>
+          </div>
+          <KnowledgeGraph nodes={graphNodes} links={graphLinks} />
+        </section>
+
         {/* Recent Memories Section - API Memories */}
         <section className="mb-12">
           <div className="flex items-center justify-between mb-6">
@@ -228,11 +308,11 @@ export default async function DashboardPage() {
                       </td>
                       <td className="px-6 py-4">
                         <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-500/10 text-indigo-300 border border-indigo-500/20">
-                          {mem.end_user_id}
+                          {mem.endUserId}
                         </span>
                       </td>
                       <td className="px-6 py-4 text-sm font-medium text-gray-500 text-right">
-                        {new Date(mem.created_at).toLocaleDateString()}
+                        {new Date(mem.createdAt).toLocaleDateString()}
                       </td>
                     </tr>
                   ))}
