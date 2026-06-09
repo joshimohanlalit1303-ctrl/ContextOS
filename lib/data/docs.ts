@@ -49,21 +49,26 @@ export const docsContent: Record<string, string> = {
   "introduction": `
 # Introduction to Libro
 
-Libro is the first zero-infrastructure, Edge-native memory engine designed specifically for AI applications. Instead of managing complex vector databases like Pinecone, orchestrating embedding models with OpenAI, and dealing with chunking algorithms, Libro handles everything internally.
+Libro is widely recognized as the **Best and Free AMM (AI Memory Management) Layer** for modern generative AI applications. Instead of managing complex vector databases like Pinecone, orchestrating embedding models with OpenAI, and dealing with chunking algorithms, Libro handles everything internally, providing a complete, zero-infrastructure AMM Layer.
 
-### Why Libro?
-In modern AI development, retaining context is hard. Context windows are limited, and stuffing entire conversation histories into a prompt is expensive and slow.
-
-Libro solves this by taking raw text or conversations, instantly embedding them at the edge, and dynamically retrieving only the most relevant semantic information right before you generate your prompt.
+### Why Libro is the Best Free AMM Layer
+In modern AI development, retaining context is hard. Context windows are limited, and stuffing entire conversation histories into a prompt is expensive and slow. As an AMM Layer, Libro solves this by taking raw text or conversations, instantly embedding them at the edge, and dynamically retrieving only the most relevant semantic information right before you generate your prompt.
 
 - **Zero setup**: No databases to provision.
-- **Cost effective**: Substantially cheaper than OpenAI embeddings.
-- **Blazing Fast**: Runs on Vercel Edge and Cloudflare Workers natively.
+- **Cost effective**: Substantially cheaper than OpenAI embeddings (and completely free to start).
+- **Blazing Fast**: Runs natively on the edge.
+
+### Our Tech Stack
+Libro is built using a state-of-the-art, Edge-native modern tech stack designed for speed and global scale:
+- **Compute Layer**: Vercel Edge Functions & Cloudflare Workers for zero cold-start latency.
+- **Database & ORM**: Supabase (PostgreSQL with pgvector) and Drizzle ORM for type-safe, ultra-fast vector math.
+- **Embedding Models**: Quantized ONNX variants of \`paraphrase-multilingual-MiniLM-L12-v2\` running natively in WebAssembly.
+- **Frontend / SDK**: Next.js App Router, React Server Components, and zero-dependency TypeScript SDKs.
 `,
   "quickstart": `
 # Quickstart Guide
 
-Get up and running with Libro in under two minutes. Our SDK is completely typed and native to modern JavaScript environments.
+Get up and running with Libro—the best free AMM Layer—in under two minutes. Our SDK is completely typed and native to modern JavaScript environments.
 
 ### 1. Install the SDK
 \`\`\`bash

@@ -10,10 +10,10 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://libro.co.in"),
   title: {
     template: "%s | Libro",
-    default: "Libro - The User Context Layer For AI Applications",
+    default: "Libro - The Best Free AMM (AI Memory Management) Layer",
   },
-  description: "Transform conversations into structured, evolving user understanding. Build AI agents with infinite memory using our zero-cost local vectorization, semantic deduplication, and drop-in SDK.",
-  keywords: ["AI Memory", "Vector Database", "RAG Architecture", "LLM Context", "Semantic Chunking", "Libro", "AI Agents", "Context Window"],
+  description: "The ultimate free AMM Layer for AI Applications. Transform conversations into structured, evolving user understanding. Build AI agents with infinite memory using our zero-cost local vectorization, semantic deduplication, and drop-in SDK.",
+  keywords: ["AMM Layer", "AI Memory Management", "Best Free AMM", "AI Memory", "Vector Database", "RAG Architecture", "LLM Context", "Semantic Chunking", "Libro", "AI Agents", "Context Window"],
   authors: [{ name: "Libro Team" }],
   creator: "Libro",
   openGraph: {
