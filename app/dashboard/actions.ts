@@ -3,7 +3,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
 
-export async function generateApiKey() {
+export async function generateApiKey(formData?: FormData) {
   const supabase = await createClient()
   
   const { data: { user } } = await supabase.auth.getUser()
@@ -12,11 +12,14 @@ export async function generateApiKey() {
   // Generate a key like libro_sk_a1b2c3d4e5f6
   const rawKey = 'libro_sk_' + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
 
+  const name = formData?.get('name')?.toString() || 'Default Key'
+
   const { error } = await supabase
     .from('api_keys')
     .insert({
       user_id: user.id,
-      key: rawKey
+      key: rawKey,
+      name: name
     })
 
   if (error) {
