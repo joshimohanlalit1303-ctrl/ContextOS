@@ -55,7 +55,7 @@ export default function PrivacyPolicy() {
           <section className="mb-12">
             <h2>5. Contact Us</h2>
             <p>
-              If you have any questions or concerns about this Privacy Policy or our data practices, please contact our security team at <a href="mailto:security@libro.dev">security@libro.dev</a>.
+              If you have any questions or concerns about this Privacy Policy or our data practices, please contact our security team at <a href="mailto:joshimohanlalit1303@gmail.com">joshimohanlalit1303@gmail.com</a>.
             </p>
           </section>
         </div>

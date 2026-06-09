@@ -16,7 +16,22 @@ export default async function Home() {
         <HeroCinematic />
         <NarrativeJourney />
         <UseCases />
+        <SemanticSEO />
       </div>
     </div>
   );
+}
+
+function SemanticSEO() {
+  return (
+    <section aria-label="About Libro AMM Layer" className="max-w-5xl mx-auto px-6 py-12 text-gray-500/60 text-xs border-t border-white/5 mt-10">
+      <h3 className="font-semibold mb-2 text-gray-400/70">The Open-Source AMM Layer and Vector Memory Engine</h3>
+      <p className="mb-2 leading-relaxed">
+        Libro is designed for engineers building advanced AI agents and modern LLM applications. Instead of provisioning traditional vector databases like Pinecone, or piecing together complex RAG architectures with Langchain, Libro serves as a fully integrated AI Memory Management (AMM) layer. 
+      </p>
+      <p className="leading-relaxed">
+        Our core infrastructure features zero-latency edge embeddings, automated semantic chunking, multilingual vectorization, and GDPR-compliant data sovereignty. Add infinite, persistent context to Claude, OpenAI, or any Anthropic model with our free SDK.
+      </p>
+    </section>
+  )
 }

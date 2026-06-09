@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     default: "Libro - The Best Free AMM (AI Memory Management) Layer",
   },
   description: "The ultimate free AMM Layer for AI Applications. Transform conversations into structured, evolving user understanding. Build AI agents with infinite memory using our zero-cost local vectorization, semantic deduplication, and drop-in SDK.",
-  keywords: ["AMM Layer", "AI Memory Management", "Best Free AMM", "AI Memory", "Vector Database", "RAG Architecture", "LLM Context", "Semantic Chunking", "Libro", "AI Agents", "Context Window"],
+  keywords: ["AMM Layer", "AI Memory Management", "Best Free AMM", "AI Memory", "Vector Database", "RAG Architecture", "LLM Context", "Semantic Chunking", "Libro", "AI Agents", "Context Window", "Pinecone Alternative", "Langchain Alternative", "Vector Search", "Developer Tools", "Open Source AI"],
   authors: [{ name: "Libro Team" }],
   creator: "Libro",
   openGraph: {
@@ -64,7 +64,24 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "SoftwareApplication",
+              "name": "Libro AMM Layer",
+              "applicationCategory": "DeveloperApplication",
+              "operatingSystem": "Web",
+              "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD"
+              },
+              "description": "Libro is the best free AMM (AI Memory Management) Layer for AI applications. Add infinite memory to your AI agents with zero pipeline changes. An alternative to complex Pinecone or Langchain setups."
+            })
+          }}
+        />
 
         {/* Google Analytics */}
         <Script

@@ -71,19 +71,19 @@ export default function HeroCinematic() {
           LIBRO IS LIVE
         </div>
 
-        <h1 className="text-[72px] md:text-[110px] tracking-[-0.05em] leading-[1.05] font-bold text-white drop-shadow-sm">
+        <h1 className="text-[64px] md:text-[96px] tracking-[-0.05em] leading-[1.05] font-bold text-white drop-shadow-sm">
           <div className="hero-title-line transform-gpu origin-bottom">
-            Memory that feels
+            The Free AMM Layer
           </div>
           <div className="hero-title-line transform-gpu origin-bottom text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400 pb-4">
-            like magic.
+            for AI Agents.
           </div>
         </h1>
 
-        <p className="hero-desc text-[20px] md:text-[24px] text-gray-400 max-w-2xl mx-auto leading-relaxed mt-10 font-light">
-          Drop-in context infrastructure for your AI applications. 
-          Zero pipeline changes. Full data sovereignty.
-        </p>
+        <h2 className="hero-desc text-[20px] md:text-[24px] text-gray-400 max-w-2xl mx-auto leading-relaxed mt-10 font-light">
+          The ultimate open-source alternative to Pinecone and Langchain. 
+          Drop-in vector search and semantic chunking with zero pipeline changes.
+        </h2>
 
         <div className="hero-actions mt-14 w-full relative z-20 flex flex-col items-center gap-4">
           <div className="flex items-center gap-3 bg-white/5 backdrop-blur-xl border border-white/10 px-6 py-4 rounded-xl shadow-2xl cursor-copy hover:bg-white/10 transition-colors" onClick={() => navigator.clipboard.writeText('npm install @libro/sdk')}>

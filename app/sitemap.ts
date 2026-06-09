@@ -4,7 +4,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://libro.co.in'
   
   // Base routes
-  const routes = ['', '/docs', '/login'].map((route) => ({
+  const routes = ['', '/docs', '/login', '/about', '/explore', '/privacy', '/terms', '/security'].map((route) => ({
     url: `${baseUrl}${route}`,
     lastModified: new Date(),
     changeFrequency: 'daily' as const,
