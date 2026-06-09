@@ -1,19 +1,70 @@
-import { type NextRequest } from 'next/server'
-import { updateSession } from '@/lib/supabase/middleware'
+import { NextRequest, NextResponse } from "next/server";
+import { Ratelimit } from "@upstash/ratelimit";
+import { Redis } from "@upstash/redis";
+
+// Initialize Redis only if the env vars exist so it doesn't crash local development
+const redis = (process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN) 
+  ? new Redis({
+      url: process.env.UPSTASH_REDIS_REST_URL,
+      token: process.env.UPSTASH_REDIS_REST_TOKEN,
+    }) 
+  : null;
+
+// Create a new ratelimiter, that allows 100 requests per 1 minute
+const ratelimit = redis 
+  ? new Ratelimit({
+      redis: redis,
+      limiter: Ratelimit.slidingWindow(100, "1 m"),
+      analytics: true,
+      prefix: "libro-rate-limit",
+    })
+  : null;
 
 export async function middleware(request: NextRequest) {
-  return await updateSession(request)
+  // We only rate limit the external API routes
+  if (request.nextUrl.pathname.startsWith("/api/v1/")) {
+    
+    // If Redis is not configured, warn but pass through (useful for local dev without env vars)
+    if (!ratelimit) {
+      console.warn("Upstash Redis is not configured. API Rate limiting is bypassed.");
+      return NextResponse.next();
+    }
+
+    const ip = request.ip ?? "127.0.0.1";
+    const { success, limit, reset, remaining } = await ratelimit.limit(ip);
+
+    if (!success) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Rate limit exceeded. You are limited to 100 requests per minute.",
+        },
+        { 
+          status: 429,
+          headers: {
+            "X-RateLimit-Limit": limit.toString(),
+            "X-RateLimit-Remaining": remaining.toString(),
+            "X-RateLimit-Reset": reset.toString(),
+          }
+        }
+      );
+    }
+
+    const res = NextResponse.next();
+    res.headers.set("X-RateLimit-Limit", limit.toString());
+    res.headers.set("X-RateLimit-Remaining", remaining.toString());
+    res.headers.set("X-RateLimit-Reset", reset.toString());
+    return res;
+  }
+
+  return NextResponse.next();
 }
 
 export const config = {
   matcher: [
     /*
-     * Match all request paths except for the ones starting with:
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     * Feel free to modify this pattern to include more paths.
+     * Match all API v1 routes
      */
-    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+    "/api/v1/:path*",
   ],
-}
+};
