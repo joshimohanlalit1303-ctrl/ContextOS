@@ -79,9 +79,9 @@ export default function KnowledgeGraph({ nodes, links }: KnowledgeGraphProps) {
     // Draw Node Circle
     ctx.beginPath();
     ctx.arc(node.x, node.y, nodeSize, 0, 2 * Math.PI, false);
-    ctx.fillStyle = isHovered ? '#4f46e5' : isNeighbor ? '#6366f1' : isDimmed ? 'rgba(0, 0, 0, 0.05)' : '#171717';
+    ctx.fillStyle = isHovered ? '#818cf8' : isNeighbor ? '#6366f1' : isDimmed ? 'rgba(255, 255, 255, 0.1)' : 'rgba(165, 180, 252, 0.8)';
     if (isHighlighted) {
-      ctx.shadowColor = 'rgba(79, 70, 229, 0.4)';
+      ctx.shadowColor = '#818cf8';
       ctx.shadowBlur = 10;
     } else {
       ctx.shadowBlur = 0;
@@ -100,7 +100,7 @@ export default function KnowledgeGraph({ nodes, links }: KnowledgeGraphProps) {
       ctx.font = `${fontSize}px Inter, sans-serif`;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'top';
-      ctx.fillStyle = isHovered ? '#000000' : 'rgba(0, 0, 0, 0.7)';
+      ctx.fillStyle = isHovered ? '#ffffff' : 'rgba(255, 255, 255, 0.7)';
       
       // truncate label if too long
       const maxLen = 30;
@@ -123,14 +123,14 @@ export default function KnowledgeGraph({ nodes, links }: KnowledgeGraphProps) {
     const targetId = typeof link.target === 'object' ? link.target.id : link.target;
     
     if (hoverNode && (sourceId === hoverNode.id || targetId === hoverNode.id)) {
-      return 'rgba(99, 102, 241, 0.4)'; // Highlighted indigo
+      return 'rgba(129, 140, 248, 0.6)'; // Highlighted indigo
     }
     
     if (hoverNode) {
-      return 'rgba(0, 0, 0, 0.02)'; // Dimmed
+      return 'rgba(255, 255, 255, 0.02)'; // Dimmed
     }
     
-    return 'rgba(0, 0, 0, 0.08)'; // Normal
+    return 'rgba(255, 255, 255, 0.1)'; // Normal
   }, [hoverNode]);
 
   const linkWidth = useCallback((link: any) => {
@@ -143,10 +143,12 @@ export default function KnowledgeGraph({ nodes, links }: KnowledgeGraphProps) {
     return 1;
   }, [hoverNode]);
 
+  const graphData = useMemo(() => ({ nodes, links }), [nodes, links]);
+
   if (nodes.length === 0) {
     return (
-      <div className="w-full h-[400px] flex items-center justify-center border border-gray-200/50 rounded-3xl bg-white/50 backdrop-blur-md shadow-sm">
-        <p className="text-gray-500 font-medium">Not enough memories to generate constellation.</p>
+      <div className="w-full h-[400px] flex items-center justify-center border border-white/10 rounded-3xl bg-white/5 backdrop-blur-md">
+        <p className="text-gray-400 font-medium">Not enough memories to generate constellation.</p>
       </div>
     );
   }
@@ -154,15 +156,15 @@ export default function KnowledgeGraph({ nodes, links }: KnowledgeGraphProps) {
   return (
     <div 
       ref={containerRef} 
-      className={`rounded-3xl overflow-hidden border border-gray-200/80 bg-white relative transition-all duration-500 ease-in-out ${
-        isFullscreen ? 'fixed inset-4 z-50 shadow-2xl h-[calc(100vh-2rem)]' : 'w-full h-[500px] shadow-sm'
+      className={`rounded-3xl overflow-hidden border border-white/10 bg-[#0a0a0a]/80 backdrop-blur-xl relative transition-all duration-500 ease-in-out ${
+        isFullscreen ? 'fixed inset-4 z-50 shadow-2xl h-[calc(100vh-2rem)]' : 'w-full h-[500px]'
       }`}
     >
       <ForceGraph2D
         ref={fgRef}
         width={dimensions.width}
         height={dimensions.height}
-        graphData={{ nodes, links }}
+        graphData={graphData}
         nodeCanvasObject={paintNode}
         nodePointerAreaPaint={nodePointerAreaPaint}
         linkColor={linkColor}
@@ -175,7 +177,7 @@ export default function KnowledgeGraph({ nodes, links }: KnowledgeGraphProps) {
       
       {/* Top Left Stats */}
       <div className="absolute top-4 left-4 pointer-events-none">
-        <div className="bg-white/80 backdrop-blur-md text-indigo-600 text-xs px-3 py-1.5 rounded-full border border-indigo-100 font-medium shadow-sm">
+        <div className="bg-black/40 backdrop-blur-md text-indigo-300 text-xs px-3 py-1.5 rounded-full border border-indigo-500/30 font-medium shadow-lg">
           {nodes.length} Nodes • {links.length} Edges
         </div>
       </div>
@@ -184,7 +186,7 @@ export default function KnowledgeGraph({ nodes, links }: KnowledgeGraphProps) {
       <div className="absolute top-4 right-4 flex gap-2">
         <button 
           onClick={() => setIsFullscreen(!isFullscreen)}
-          className="p-2 bg-white/80 hover:bg-gray-100 backdrop-blur-md border border-gray-200 text-gray-700 rounded-full transition-colors focus:outline-none shadow-sm"
+          className="p-2 bg-black/40 hover:bg-white/10 backdrop-blur-md border border-white/10 text-gray-300 rounded-full transition-colors focus:outline-none shadow-sm"
           title={isFullscreen ? "Exit Full Screen" : "Full Screen"}
         >
           {isFullscreen ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
