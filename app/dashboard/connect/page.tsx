@@ -21,9 +21,12 @@ const tools = [
         }
       }
     }, null, 2),
-    instruction: 'Edit this file on your Mac:',
-    filePath: '~/Library/Application Support/Claude/claude_desktop_config.json',
-    step: 'Then restart Claude Desktop. You\'ll see a 🔌 icon when connected.',
+    instruction: 'Create or edit your config file. Run this command to open it:',
+    commands: [
+      { os: 'Mac', cmd: 'nano ~/Library/Application\\ Support/Claude/claude_desktop_config.json' },
+      { os: 'Windows (Command Prompt)', cmd: 'notepad %APPDATA%\\Claude\\claude_desktop_config.json' }
+    ],
+    step: 'Then paste the config below and restart Claude Desktop. You\'ll see a 🔌 icon when connected.',
   },
   {
     id: 'cursor',
@@ -210,15 +213,42 @@ export default async function ConnectPage() {
                   </div>
                 </div>
 
-                {tool.filePath && (
-                  <div className="mb-3">
-                    <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">{tool.instruction}</p>
-                    <div className="bg-gray-50 px-4 py-2.5 rounded-xl border border-gray-200 font-mono text-xs text-gray-600">
-                      {tool.filePath}
+                {tool.commands && (
+                  <div className="mb-4">
+                    <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">{tool.instruction}</p>
+                    <div className="flex flex-col gap-3">
+                      {tool.commands.map((c: any, i: number) => (
+                        <div key={i} className="flex flex-col gap-1.5">
+                          <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">{c.os}</span>
+                          <div className="relative">
+                            <div className="bg-gray-50 px-4 py-2.5 rounded-xl border border-gray-200 font-mono text-xs text-gray-600 pr-12 overflow-x-auto whitespace-nowrap">
+                              {c.cmd}
+                            </div>
+                            <div className="absolute right-2 top-1.5">
+                              <CopyButton text={c.cmd} />
+                            </div>
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 )}
-                {!tool.filePath && (
+
+                {tool.filePath && !tool.commands && (
+                  <div className="mb-3">
+                    <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">{tool.instruction}</p>
+                    <div className="relative">
+                      <div className="bg-gray-50 px-4 py-2.5 rounded-xl border border-gray-200 font-mono text-xs text-gray-600">
+                        {tool.filePath}
+                      </div>
+                      <div className="absolute right-2 top-1.5">
+                        <CopyButton text={tool.filePath} />
+                      </div>
+                    </div>
+                  </div>
+                )}
+                
+                {!tool.filePath && !tool.commands && (
                   <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">{tool.instruction}</p>
                 )}
 
