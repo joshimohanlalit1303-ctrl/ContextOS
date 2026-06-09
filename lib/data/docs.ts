@@ -16,6 +16,15 @@ export const docsNavigation = [
     ]
   },
   {
+    section: "MCP Setup (AI Agents)",
+    links: [
+      { title: "What is MCP?", slug: "mcp-introduction" },
+      { title: "Claude Desktop Setup", slug: "mcp-claude" },
+      { title: "Cursor IDE Setup", slug: "mcp-cursor" },
+      { title: "Windsurf Setup", slug: "mcp-windsurf" }
+    ]
+  },
+  {
     section: "Core Concepts",
     links: [
       { title: "Global Architecture", slug: "global-architecture" },
@@ -28,6 +37,7 @@ export const docsNavigation = [
   {
     section: "Data Management",
     links: [
+      { title: "REST API Reference", slug: "rest-api-reference" },
       { title: "Ingesting Data", slug: "ingesting-data-basic" },
       { title: "Retrieving Context", slug: "retrieving-context" },
       { title: "Semantic Search", slug: "semantic-search-api" },
@@ -633,4 +643,200 @@ return result.toDataStreamResponse();
 ### Supabase Integration
 You can trigger Libro ingestion directly from Supabase Database Webhooks when a new row is inserted into your \`users\` table!
 `,
+  "mcp-introduction": `
+# What is MCP?
+
+The **Model Context Protocol (MCP)** is an open standard introduced by Anthropic that allows AI agents and IDEs (like Claude Desktop, Cursor, and Windsurf) to securely communicate with external data sources.
+
+### Why use Libro with MCP?
+Usually, an AI like Claude has amnesia. The moment you start a new chat thread, it forgets everything about you. By connecting the **Libro MCP Server** to your AI client, you instantly give your AI infinite, long-term memory. 
+
+Whenever you chat with your AI, it will automatically query your Libro AMM Layer in the background to pull your preferences, past architectural decisions, and context directly into its prompt before it answers you.
+
+### How it works
+1. You run our official MCP Server locally, or point your IDE to our Cloud SSE MCP endpoint.
+2. The MCP Server exposes tools like \`remember_fact\`, \`get_user_context\`, and \`search_memories\`.
+3. The AI agent automatically calls these tools whenever it realizes it needs more context about you.
+`,
+  "mcp-claude": `
+# Connecting to Claude Desktop
+
+Claude Desktop supports MCP natively. You can give Claude infinite memory across all your chat threads in less than 2 minutes.
+
+### Step 1: Open the Config File
+Open the Claude Desktop configuration file located at:
+- **Mac**: \`~/Library/Application Support/Claude/claude_desktop_config.json\`
+- **Windows**: \`%APPDATA%\\Claude\\claude_desktop_config.json\`
+
+### Step 2: Add the Libro SSE Server
+Add the Libro SSE (Server-Sent Events) endpoint to your configuration file. You do not need to install anything locally—Claude will connect directly to our cloud MCP server.
+
+Make sure to replace \`YOUR_API_KEY\` and \`YOUR_USER_ID\` with the credentials found on your Libro Dashboard.
+
+\`\`\`json
+{
+  "mcpServers": {
+    "libro-memory": {
+      "command": "curl",
+      "args": [
+        "-N",
+        "-s",
+        "https://libro-mcp-server.onrender.com/sse?apiKey=YOUR_API_KEY&userId=YOUR_USER_ID"
+      ]
+    }
+  }
+}
+\`\`\`
+
+### Step 3: Restart Claude
+Completely quit Claude Desktop (\`Cmd+Q\`) and open it again. You will now see the "plug" icon next to your chat bar, indicating the Libro Memory tools are active! Tell Claude to remember something, then start a new chat and ask it if it remembers!
+`,
+  "mcp-cursor": `
+# Connecting to Cursor IDE
+
+Cursor is a deeply integrated AI code editor. By giving Cursor access to Libro via MCP, Cursor will remember your architectural decisions, code patterns, and project rules across all your different workspaces.
+
+### Step 1: Open Cursor Settings
+1. Open Cursor Settings.
+2. Navigate to **Features** > **MCP Servers**.
+3. Click the **+ Add New MCP Server** button.
+
+### Step 2: Configure the Server
+Cursor supports SSE (Server-Sent Events) natively in its UI.
+
+1. **Name**: \`LibroMemory\`
+2. **Type**: Select \`sse\`
+3. **URL**: Paste your personalized SSE URL from the Libro Dashboard. It should look like this:
+   \`https://libro-mcp-server.onrender.com/sse?apiKey=YOUR_API_KEY&userId=YOUR_USER_ID\`
+
+### Step 3: Verify
+Click **Save**. You should see a green dot indicating the server is connected. Cursor can now automatically access your centralized developer memory!
+`,
+  "mcp-windsurf": `
+# Connecting to Windsurf
+
+Windsurf (by Codeium) supports MCP servers via its configuration files.
+
+### Step 1: Open the Config File
+Locate the Windsurf configuration file:
+- **Mac/Linux**: \`~/.codeium/windsurf/mcp_config.json\`
+- **Windows**: \`%USERPROFILE%\\.codeium\\windsurf\\mcp_config.json\`
+
+*(If the file does not exist, create it).*
+
+### Step 2: Add the Configuration
+Add the Libro SSE connection command.
+
+\`\`\`json
+{
+  "mcpServers": {
+    "libro-memory": {
+      "command": "curl",
+      "args": [
+        "-N",
+        "-s",
+        "https://libro-mcp-server.onrender.com/sse?apiKey=YOUR_API_KEY&userId=YOUR_USER_ID"
+      ]
+    }
+  }
+}
+\`\`\`
+
+### Step 3: Restart Windsurf
+Restart the IDE. Windsurf's AI will now automatically invoke the Libro memory tools to store and retrieve your preferences.
+`,
+  "rest-api-reference": `
+# REST API Reference
+
+If you are not using our TypeScript or Python SDKs, you can interact directly with our Edge Engine using standard HTTP REST requests.
+
+All requests must include your API key in the \`Authorization\` header as a Bearer token.
+
+---
+
+## 1. Ingest Memory
+Store a new piece of context.
+
+- **Endpoint**: \`POST https://libro.co.in/api/v1/ingest\`
+- **Headers**: 
+  - \`Authorization: Bearer YOUR_API_KEY\`
+  - \`Content-Type: application/json\`
+
+#### Request Payload
+\`\`\`json
+{
+  "userId": "string (required)",
+  "content": "string (required) - The text to vectorize.",
+  "metadata": { "key": "value" } // optional JSON object
+}
+\`\`\`
+
+#### Response \`200 OK\`
+\`\`\`json
+{
+  "success": true,
+  "memory": {
+    "id": "uuid",
+    "content": "string"
+  }
+}
+\`\`\`
+
+---
+
+## 2. Get Context
+Retrieve an optimized string of semantics formatted for an LLM prompt.
+
+- **Endpoint**: \`POST https://libro.co.in/api/v1/context\`
+- **Headers**: \`Authorization: Bearer YOUR_API_KEY\`
+
+#### Request Payload
+\`\`\`json
+{
+  "userId": "string (required)",
+  "query": "string (required) - The semantic question."
+}
+\`\`\`
+
+#### Response \`200 OK\`
+\`\`\`json
+{
+  "success": true,
+  "context": "string (Formatted results separated by newlines)"
+}
+\`\`\`
+
+---
+
+## 3. Semantic Search
+Return raw arrays of memory objects with their cosine similarity scores.
+
+- **Endpoint**: \`POST https://libro.co.in/api/v1/search\`
+- **Headers**: \`Authorization: Bearer YOUR_API_KEY\`
+
+#### Request Payload
+\`\`\`json
+{
+  "userId": "string (required)",
+  "query": "string (required)",
+  "limit": 5, // optional
+  "filter": { "priority": "high" } // optional metadata filter
+}
+\`\`\`
+
+#### Response \`200 OK\`
+\`\`\`json
+{
+  "success": true,
+  "results": [
+    {
+      "id": "uuid",
+      "content": "string",
+      "score": 0.89,
+      "metadata": {}
+    }
+  ]
+}
+\`\`\`
+`
 };
