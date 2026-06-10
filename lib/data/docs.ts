@@ -11,6 +11,7 @@ export const docsNavigation = [
       { title: "Introduction", slug: "introduction" },
       { title: "Quickstart", slug: "quickstart" },
       { title: "Authentication", slug: "authentication" },
+      { title: "Chrome Extension", slug: "chrome-extension" },
       { title: "JavaScript SDK", slug: "sdk-installation" },
       { title: "Python SDK", slug: "python-sdk" },
     ]
@@ -21,7 +22,8 @@ export const docsNavigation = [
       { title: "What is MCP?", slug: "mcp-introduction" },
       { title: "Claude Desktop Setup", slug: "mcp-claude" },
       { title: "Cursor IDE Setup", slug: "mcp-cursor" },
-      { title: "Windsurf Setup", slug: "mcp-windsurf" }
+      { title: "Windsurf Setup", slug: "mcp-windsurf" },
+      { title: "Antigravity Setup", slug: "mcp-antigravity" }
     ]
   },
   {
@@ -668,28 +670,29 @@ Open the Claude Desktop configuration file located at:
 - **Mac**: \`~/Library/Application Support/Claude/claude_desktop_config.json\`
 - **Windows**: \`%APPDATA%\\Claude\\claude_desktop_config.json\`
 
-### Step 2: Add the Libro SSE Server
-Add the Libro SSE (Server-Sent Events) endpoint to your configuration file. You do not need to install anything locally—Claude will connect directly to our cloud MCP server.
+### Step 2: Add the Libro MCP Server
+Add the Libro MCP Server to your configuration file. You will run the server locally using \`npx\`.
 
-Make sure to replace \`YOUR_API_KEY\` and \`YOUR_USER_ID\` with the credentials found on your Libro Dashboard.
+Make sure to replace \`YOUR_API_KEY\`, \`YOUR_USER_ID\` and \`YOUR_BASE_URL\` with the credentials found on your Libro Dashboard.
 
 \`\`\`json
 {
   "mcpServers": {
-    "libro-memory": {
-      "command": "curl",
-      "args": [
-        "-N",
-        "-s",
-        "https://libro-mcp-server.onrender.com/sse?apiKey=YOUR_API_KEY&userId=YOUR_USER_ID"
-      ]
+    "libro": {
+      "command": "npx",
+      "args": ["-y", "libro-mcp-server@latest"],
+      "env": {
+        "LIBRO_API_KEY": "YOUR_API_KEY",
+        "LIBRO_USER_ID": "YOUR_USER_ID",
+        "LIBRO_BASE_URL": "https://www.libro.co.in"
+      }
     }
   }
 }
 \`\`\`
 
 ### Step 3: Restart Claude
-Completely quit Claude Desktop (\`Cmd+Q\`) and open it again. You will now see the "plug" icon next to your chat bar, indicating the Libro Memory tools are active! Tell Claude to remember something, then start a new chat and ask it if it remembers!
+Completely quit Claude Desktop (\`Cmd+Q\`) and open it again. You will now see the "plug" icon next to your chat bar, indicating the Libro Memory tools are active! Tell Claude to \`/ingest\` something or \`/fetch\` what it knows about you!
 `,
   "mcp-cursor": `
 # Connecting to Cursor IDE
@@ -702,12 +705,15 @@ Cursor is a deeply integrated AI code editor. By giving Cursor access to Libro v
 3. Click the **+ Add New MCP Server** button.
 
 ### Step 2: Configure the Server
-Cursor supports SSE (Server-Sent Events) natively in its UI.
+We will run the server locally using \`npx\`.
 
-1. **Name**: \`LibroMemory\`
-2. **Type**: Select \`sse\`
-3. **URL**: Paste your personalized SSE URL from the Libro Dashboard. It should look like this:
-   \`https://libro-mcp-server.onrender.com/sse?apiKey=YOUR_API_KEY&userId=YOUR_USER_ID\`
+1. **Name**: \`libro\`
+2. **Type**: Select \`command\`
+3. **Command**: \`npx -y libro-mcp-server@latest\`
+4. **Environment Variables**: Add the following (found on your dashboard):
+   - \`LIBRO_API_KEY\`: \`YOUR_API_KEY\`
+   - \`LIBRO_USER_ID\`: \`YOUR_USER_ID\`
+   - \`LIBRO_BASE_URL\`: \`https://www.libro.co.in\`
 
 ### Step 3: Verify
 Click **Save**. You should see a green dot indicating the server is connected. Cursor can now automatically access your centralized developer memory!
@@ -725,18 +731,19 @@ Locate the Windsurf configuration file:
 *(If the file does not exist, create it).*
 
 ### Step 2: Add the Configuration
-Add the Libro SSE connection command.
+Add the Libro MCP connection command.
 
 \`\`\`json
 {
   "mcpServers": {
-    "libro-memory": {
-      "command": "curl",
-      "args": [
-        "-N",
-        "-s",
-        "https://libro-mcp-server.onrender.com/sse?apiKey=YOUR_API_KEY&userId=YOUR_USER_ID"
-      ]
+    "libro": {
+      "command": "npx",
+      "args": ["-y", "libro-mcp-server@latest"],
+      "env": {
+        "LIBRO_API_KEY": "YOUR_API_KEY",
+        "LIBRO_USER_ID": "YOUR_USER_ID",
+        "LIBRO_BASE_URL": "https://www.libro.co.in"
+      }
     }
   }
 }
@@ -744,6 +751,54 @@ Add the Libro SSE connection command.
 
 ### Step 3: Restart Windsurf
 Restart the IDE. Windsurf's AI will now automatically invoke the Libro memory tools to store and retrieve your preferences.
+`,
+  "mcp-antigravity": `
+# Connecting to Antigravity
+
+Antigravity IDE supports MCP servers via its configuration file.
+
+### Step 1: Open the Config File
+Locate the Antigravity configuration file:
+- \`~/.gemini/config/mcp_servers.json\`
+
+*(If the file does not exist, create it).*
+
+### Step 2: Add the Configuration
+Add the Libro MCP connection command.
+
+\`\`\`json
+{
+  "mcpServers": {
+    "libro": {
+      "command": "npx",
+      "args": ["-y", "libro-mcp-server@latest"],
+      "env": {
+        "LIBRO_API_KEY": "YOUR_API_KEY",
+        "LIBRO_USER_ID": "YOUR_USER_ID",
+        "LIBRO_BASE_URL": "https://www.libro.co.in"
+      }
+    }
+  }
+}
+\`\`\`
+
+### Step 3: Reload Window
+Reload your Antigravity IDE Window. The Antigravity agent will now automatically invoke the Libro memory tools to store and retrieve your context.
+`,
+  "chrome-extension": `
+# Chrome Extension
+
+The ContextOS Chrome Extension allows you to easily ingest data from web pages, highlight important information, and sync your browsing context into your global AI memory.
+
+### Integration
+The backend API for the Chrome Extension is fully built and ready!
+- \`/api/extension/ingest\` - Securely validates Supabase JWTs and runs text through the ProfileExtractionEngine, SemanticDeduplicationEngine, MemoryEvolutionEngine, and ContextGraphEngine.
+
+### Checking Review Status
+If you have submitted your extension to the Chrome Web Store for review, you can check its status by going to the **[Chrome Developer Dashboard](https://chrome.google.com/webstore/devconsole)**.
+- Log in with the Google Account you used to submit it.
+- Click on your extension in the list.
+- The status will say **Pending Review**, **Published**, or **Rejected**. Reviews typically take 2-4 business days for new extensions.
 `,
   "rest-api-reference": `
 # REST API Reference

@@ -6,7 +6,9 @@ const supabase = createClient(
 );
 
 async function run() {
-  const { data, error } = await supabase.from('memories').select('*');
-  console.log(data.map(d => ({ id: d.id, content: d.content, end_user_id: d.end_user_id })));
+  const { data: apiKeys } = await supabase.from('api_keys').select('*');
+  console.log("All API Keys:", apiKeys);
+  const { data: memories } = await supabase.from('memories').select('id, api_key_id, end_user_id').limit(5);
+  console.log("Memories:", memories);
 }
 run();

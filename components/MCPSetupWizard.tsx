@@ -53,27 +53,6 @@ export default function MCPSetupWizard({ apiKey, userId }: { apiKey: string, use
         </div>
       </div>
 
-      <div className="mb-8">
-        <h3 className="text-[11px] font-bold text-gray-400 uppercase tracking-widest mb-3">
-          Ready-to-use MCP Server URL
-        </h3>
-        <div className="bg-[#1a1a1a] p-4 rounded-xl border border-white/5 flex items-center justify-between group relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity" />
-          <code className="text-sm text-indigo-300 font-mono truncate mr-4 relative z-10 select-all">
-            https://libro-mcp-server.onrender.com/sse?apiKey={apiKey}&userId={userId}
-          </code>
-          <button 
-            onClick={() => handleCopy(`https://libro-mcp-server.onrender.com/sse?apiKey=${apiKey}&userId=${userId}`, "sse")}
-            className="p-2 bg-white/5 hover:bg-white/10 rounded-lg transition-colors relative z-10 shrink-0"
-          >
-            {copied === "sse" ? <CheckCircle2 className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4 text-gray-400 hover:text-white transition-colors" />}
-          </button>
-        </div>
-        <p className="text-xs text-gray-500 mt-3">
-          Paste this URL into Claude Desktop, Cursor, Windsurf, or Antigravity to connect instantly.
-        </p>
-      </div>
-
       <div className="flex gap-2 border-b border-white/10 pb-4 mb-6 overflow-x-auto">
         {TABS.map((tab) => (
           <button
@@ -111,9 +90,17 @@ export default function MCPSetupWizard({ apiKey, userId }: { apiKey: string, use
                     {copied === "mac-path" ? <CheckCircle2 className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
                   </button>
                 </div>
+                <div className="mt-2 text-xs text-gray-400 bg-white/5 p-3 rounded-lg border border-white/5">
+                  <p className="font-medium text-gray-300 mb-1">💡 Nano Editor Tips:</p>
+                  <ul className="list-disc list-inside space-y-1 ml-1">
+                    <li><strong className="text-gray-300">Ctrl + K</strong>: Delete an entire line instantly.</li>
+                    <li><strong className="text-gray-300">Ctrl + O</strong> then <strong className="text-gray-300">Enter</strong>: Save the file.</li>
+                    <li><strong className="text-gray-300">Ctrl + X</strong>: Exit the editor.</li>
+                  </ul>
+                </div>
               </div>
               
-              <div className="flex flex-col gap-1.5">
+              <div className="flex flex-col gap-1.5 mt-4">
                 <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Windows (Command Prompt)</span>
                 <div className="bg-black/50 p-4 rounded-xl border border-white/5 flex items-center justify-between group">
                   <code className="text-sm text-blue-300">notepad %APPDATA%\Claude\claude_desktop_config.json</code>

@@ -58,7 +58,6 @@ export default function HeroCinematic() {
 
   return (
     <section 
-      id="waitlist"
       ref={containerRef} 
       className="relative w-full min-h-screen flex flex-col justify-center items-center text-center px-6 perspective-1000 overflow-hidden pt-32 pb-24"
     >

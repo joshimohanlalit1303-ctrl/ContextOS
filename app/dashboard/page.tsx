@@ -12,6 +12,7 @@ import { users, passports, memories } from '@/lib/db/schema'
 import { eq, desc, count, inArray } from 'drizzle-orm'
 import { Suspense } from 'react'
 import { Skeleton } from '@/components/ui/skeleton'
+import MemoryExplorer from '@/components/MemoryExplorer'
 
 export default async function DashboardPage() {
   const supabase = await createClient()
@@ -376,62 +377,12 @@ async function RecentMemories({ apiKeyIds }: { apiKeyIds: string[] }) {
     recentMemories = await db.query.memories.findMany({
       where: inArray(memories.apiKeyId, apiKeyIds),
       orderBy: [desc(memories.createdAt)],
-      limit: 5,
-      columns: { id: true, content: true, createdAt: true, endUserId: true }
+      limit: 100,
+      columns: { id: true, content: true, createdAt: true, endUserId: true, metadata: true }
     });
   }
 
-  return (
-    <section className="mb-12">
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-3">
-          <Clock className="w-5 h-5 text-gray-400" />
-          <h2 className="text-xl font-bold tracking-tight text-white">API Embeddings (Memories)</h2>
-        </div>
-      </div>
-
-      <div className="bg-white/5 border border-white/10 backdrop-blur-xl shadow-2xl rounded-3xl overflow-hidden">
-        {recentMemories && recentMemories.length > 0 ? (
-          <table className="w-full text-left border-collapse">
-            <thead className="bg-white/5 border-b border-white/10 text-xs font-semibold text-gray-400 uppercase tracking-wider">
-              <tr>
-                <th className="px-6 py-4">Memory Content</th>
-                <th className="px-6 py-4">End User ID</th>
-                <th className="px-6 py-4 text-right">Created</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-white/5">
-              {recentMemories.map((mem) => (
-                <tr key={mem.id} className="hover:bg-white/[0.04] transition-colors">
-                  <td className="px-6 py-4 text-sm text-gray-300">
-                    <div className="max-w-[400px] truncate">
-                      {mem.content}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-500/10 text-indigo-300 border border-indigo-500/20">
-                      {mem.endUserId}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 text-sm font-medium text-gray-500 text-right">
-                    {new Date(mem.createdAt).toLocaleDateString()}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        ) : (
-          <div className="p-12 text-center flex flex-col items-center">
-            <div className="p-4 bg-white/5 rounded-full mb-4 border border-white/10 shadow-[0_0_15px_rgba(255,255,255,0.05)]">
-              <Brain className="w-8 h-8 text-gray-400" />
-            </div>
-            <h3 className="text-lg font-semibold text-white mb-2">No memories yet</h3>
-            <p className="text-gray-400 text-sm font-medium">Connect an agent and start sending context to see it appear here.</p>
-          </div>
-        )}
-      </div>
-    </section>
-  )
+  return <MemoryExplorer initialMemories={recentMemories} />
 }
 
 function MemoriesSkeleton() {
