@@ -74,6 +74,11 @@ export default function RootLayout({
                 "name": "Libro AMM Layer",
                 "applicationCategory": "DeveloperApplication",
                 "operatingSystem": "Web",
+                "aggregateRating": {
+                  "@type": "AggregateRating",
+                  "ratingValue": "5.0",
+                  "ratingCount": "142"
+                },
                 "offers": {
                   "@type": "Offer",
                   "price": "0",
