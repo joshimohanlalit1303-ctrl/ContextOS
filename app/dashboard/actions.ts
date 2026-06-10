@@ -112,11 +112,16 @@ export async function deleteAllMemories() {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) throw new Error('Not authenticated')
 
-  const { error } = await supabase.from('memories').delete().eq('end_user_id', user.id)
+  const { data: apiKeys } = await supabase.from('api_keys').select('id');
   
-  if (error) {
-    console.error('Delete All Error:', error)
-    throw new Error('Failed to delete all memories')
+  if (apiKeys && apiKeys.length > 0) {
+    const apiKeyIds = apiKeys.map(k => k.id);
+    const { error } = await supabase.from('memories').delete().in('api_key_id', apiKeyIds);
+    
+    if (error) {
+      console.error('Delete All Error:', error)
+      throw new Error('Failed to delete all memories')
+    }
   }
 
   revalidatePath('/dashboard')
