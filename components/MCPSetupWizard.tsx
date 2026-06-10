@@ -70,14 +70,32 @@ export default function MCPSetupWizard({ apiKey, userId }: { apiKey: string, use
               <span className="flex items-center justify-center w-6 h-6 rounded-full bg-white/10 text-xs">1</span>
               Open Claude Desktop config file
             </h3>
-            <div className="bg-black/50 p-4 rounded-xl border border-white/5 flex items-center justify-between group">
-              <code className="text-sm text-blue-300">~/Library/Application Support/Claude/claude_desktop_config.json</code>
-              <button 
-                onClick={() => handleCopy("~/Library/Application Support/Claude/claude_desktop_config.json", "path")}
-                className="p-2 hover:bg-white/10 rounded-md transition-colors opacity-0 group-hover:opacity-100"
-              >
-                {copied === "path" ? <CheckCircle2 className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
-              </button>
+            <div className="space-y-4">
+              <div className="flex flex-col gap-1.5">
+                <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Mac</span>
+                <div className="bg-black/50 p-4 rounded-xl border border-white/5 flex items-center justify-between group">
+                  <code className="text-sm text-blue-300">nano ~/Library/Application\ Support/Claude/claude_desktop_config.json</code>
+                  <button 
+                    onClick={() => handleCopy("nano ~/Library/Application\\ Support/Claude/claude_desktop_config.json", "mac-path")}
+                    className="p-2 hover:bg-white/10 rounded-md transition-colors opacity-0 group-hover:opacity-100"
+                  >
+                    {copied === "mac-path" ? <CheckCircle2 className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
+                  </button>
+                </div>
+              </div>
+              
+              <div className="flex flex-col gap-1.5">
+                <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Windows (Command Prompt)</span>
+                <div className="bg-black/50 p-4 rounded-xl border border-white/5 flex items-center justify-between group">
+                  <code className="text-sm text-blue-300">notepad %APPDATA%\Claude\claude_desktop_config.json</code>
+                  <button 
+                    onClick={() => handleCopy("notepad %APPDATA%\\Claude\\claude_desktop_config.json", "win-path")}
+                    className="p-2 hover:bg-white/10 rounded-md transition-colors opacity-0 group-hover:opacity-100"
+                  >
+                    {copied === "win-path" ? <CheckCircle2 className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
+                  </button>
+                </div>
+              </div>
             </div>
 
             <h3 className="text-lg font-medium mt-8 mb-4 flex items-center gap-2">

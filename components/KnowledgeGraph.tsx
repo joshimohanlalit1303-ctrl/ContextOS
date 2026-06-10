@@ -123,14 +123,14 @@ export default function KnowledgeGraph({ nodes, links }: KnowledgeGraphProps) {
     const targetId = typeof link.target === 'object' ? link.target.id : link.target;
     
     if (hoverNode && (sourceId === hoverNode.id || targetId === hoverNode.id)) {
-      return 'rgba(129, 140, 248, 0.6)'; // Highlighted indigo
+      return 'rgba(129, 140, 248, 1)'; // Highlighted indigo (more opaque)
     }
     
     if (hoverNode) {
-      return 'rgba(255, 255, 255, 0.02)'; // Dimmed
+      return 'rgba(255, 255, 255, 0.05)'; // Dimmed
     }
     
-    return 'rgba(255, 255, 255, 0.1)'; // Normal
+    return 'rgba(255, 255, 255, 0.4)'; // Normal (more opaque)
   }, [hoverNode]);
 
   const linkWidth = useCallback((link: any) => {
@@ -138,9 +138,9 @@ export default function KnowledgeGraph({ nodes, links }: KnowledgeGraphProps) {
     const targetId = typeof link.target === 'object' ? link.target.id : link.target;
     
     if (hoverNode && (sourceId === hoverNode.id || targetId === hoverNode.id)) {
-      return 2;
+      return 3;
     }
-    return 1;
+    return 1.5;
   }, [hoverNode]);
 
   const graphData = useMemo(() => ({ nodes, links }), [nodes, links]);
