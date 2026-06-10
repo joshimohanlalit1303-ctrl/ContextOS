@@ -7,7 +7,7 @@ import { Analytics } from "@vercel/analytics/next";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://libro.co.in"),
+  metadataBase: new URL("https://www.libro.co.in"),
   title: {
     template: "%s | Libro",
     default: "Libro - The Best Free AMM (AI Memory Management) Layer",
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://libro.co.in",
+    url: "https://www.libro.co.in",
     title: "Libro - The Brain for AI Agents",
     description: "Build AI applications that actually remember your users. Drop-in infinite memory SDK with local embeddings, semantic chunking, and full privacy compliance.",
     siteName: "Libro",
@@ -85,8 +85,8 @@ export default function RootLayout({
                 "@context": "https://schema.org",
                 "@type": "Organization",
                 "name": "Libro",
-                "url": "https://libro.co.in",
-                "logo": "https://libro.co.in/logo.png",
+                "url": "https://www.libro.co.in",
+                "logo": "https://www.libro.co.in/logo.png",
                 "sameAs": [
                   "https://github.com/joshimohanlalit1303-ctrl/ContextOS",
                   "https://twitter.com/libro_ai"
@@ -96,10 +96,10 @@ export default function RootLayout({
                 "@context": "https://schema.org",
                 "@type": "WebSite",
                 "name": "Libro",
-                "url": "https://libro.co.in",
+                "url": "https://www.libro.co.in",
                 "potentialAction": {
                   "@type": "SearchAction",
-                  "target": "https://libro.co.in/explore/{search_term_string}",
+                  "target": "https://www.libro.co.in/explore/{search_term_string}",
                   "query-input": "required name=search_term_string"
                 }
               }

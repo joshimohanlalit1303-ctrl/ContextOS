@@ -3,7 +3,7 @@ import { docsNavigation } from '@/lib/data/docs'
 import { exploreData } from '@/lib/data/explore'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://libro.co.in'
+  const baseUrl = 'https://www.libro.co.in'
   
   // Base routes
   const routes = ['', '/docs', '/login', '/about', '/explore', '/privacy', '/terms', '/security', '/llms.txt'].map((route) => ({

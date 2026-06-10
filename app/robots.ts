@@ -14,6 +14,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ['/dashboard/', '/api/'],
       }
     ],
-    sitemap: 'https://libro.co.in/sitemap.xml',
+    sitemap: 'https://www.libro.co.in/sitemap.xml',
   }
 }
