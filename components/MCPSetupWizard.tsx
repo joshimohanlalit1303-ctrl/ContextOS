@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Copy, CheckCircle2, ChevronRight, Terminal, Box, Globe, ExternalLink } from "lucide-react";
 import clsx from "clsx";
 
@@ -13,6 +13,13 @@ const TABS = [
 export default function MCPSetupWizard({ apiKey, userId }: { apiKey: string, userId: string }) {
   const [activeTab, setActiveTab] = useState("claude");
   const [copied, setCopied] = useState<string | null>(null);
+  const [baseUrl, setBaseUrl] = useState("http://localhost:3000");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setBaseUrl(window.location.origin);
+    }
+  }, []);
 
   const handleCopy = (text: string, id: string) => {
     navigator.clipboard.writeText(text);
@@ -27,7 +34,8 @@ export default function MCPSetupWizard({ apiKey, userId }: { apiKey: string, use
       "args": ["-y", "libro-mcp-server@latest"],
       "env": {
         "LIBRO_API_KEY": "${apiKey}",
-        "LIBRO_USER_ID": "${userId}"
+        "LIBRO_USER_ID": "${userId}",
+        "LIBRO_BASE_URL": "${baseUrl}"
       }
     }
   }
@@ -43,6 +51,27 @@ export default function MCPSetupWizard({ apiKey, userId }: { apiKey: string, use
           <h2 className="text-xl font-semibold">Connect to your Hive Mind</h2>
           <p className="text-sm text-gray-400">Install the Libro MCP Server in your favorite AI clients.</p>
         </div>
+      </div>
+
+      <div className="mb-8">
+        <h3 className="text-[11px] font-bold text-gray-400 uppercase tracking-widest mb-3">
+          Ready-to-use MCP Server URL
+        </h3>
+        <div className="bg-[#1a1a1a] p-4 rounded-xl border border-white/5 flex items-center justify-between group relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity" />
+          <code className="text-sm text-indigo-300 font-mono truncate mr-4 relative z-10 select-all">
+            https://libro-mcp-server.onrender.com/sse?apiKey={apiKey}&userId={userId}
+          </code>
+          <button 
+            onClick={() => handleCopy(`https://libro-mcp-server.onrender.com/sse?apiKey=${apiKey}&userId=${userId}`, "sse")}
+            className="p-2 bg-white/5 hover:bg-white/10 rounded-lg transition-colors relative z-10 shrink-0"
+          >
+            {copied === "sse" ? <CheckCircle2 className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4 text-gray-400 hover:text-white transition-colors" />}
+          </button>
+        </div>
+        <p className="text-xs text-gray-500 mt-3">
+          Paste this URL into Claude Desktop, Cursor, Windsurf, or Antigravity to connect instantly.
+        </p>
       </div>
 
       <div className="flex gap-2 border-b border-white/10 pb-4 mb-6 overflow-x-auto">
@@ -168,6 +197,12 @@ export default function MCPSetupWizard({ apiKey, userId }: { apiKey: string, use
                 <span className="font-mono text-sm text-gray-300">LIBRO_USER_ID={userId}</span>
                 <button onClick={() => handleCopy(`LIBRO_USER_ID=${userId}`, "env2")}>
                    {copied === "env2" ? <CheckCircle2 className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4 text-gray-500 hover:text-white" />}
+                </button>
+              </div>
+              <div className="flex justify-between items-center group">
+                <span className="font-mono text-sm text-gray-300">LIBRO_BASE_URL={baseUrl}</span>
+                <button onClick={() => handleCopy(`LIBRO_BASE_URL=${baseUrl}`, "env3")}>
+                   {copied === "env3" ? <CheckCircle2 className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4 text-gray-500 hover:text-white" />}
                 </button>
               </div>
             </div>

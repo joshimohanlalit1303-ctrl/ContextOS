@@ -4,7 +4,7 @@ import React, { useRef, useEffect, useState, useCallback, useMemo } from 'react'
 import dynamic from 'next/dynamic';
 import { Maximize2, Minimize2 } from 'lucide-react';
 
-const ForceGraph2D = dynamic(() => import('react-force-graph-2d'), { ssr: false });
+const ForceGraph3D = dynamic(() => import('react-force-graph-3d'), { ssr: false });
 
 export type GraphNode = {
   id: string;
@@ -68,56 +68,6 @@ export default function KnowledgeGraph({ nodes, links }: KnowledgeGraphProps) {
     return () => observer.disconnect();
   }, [isFullscreen]);
 
-  const paintNode = useCallback((node: any, ctx: CanvasRenderingContext2D, globalScale: number) => {
-    const isHovered = node === hoverNode;
-    const isNeighbor = hoverNode && neighbors.get(hoverNode.id)?.has(node.id);
-    const isHighlighted = isHovered || isNeighbor;
-    const isDimmed = hoverNode && !isHighlighted;
-    
-    const nodeSize = isHovered ? 6 : isNeighbor ? 5 : 4;
-    
-    // Draw Node Circle
-    ctx.beginPath();
-    ctx.arc(node.x, node.y, nodeSize, 0, 2 * Math.PI, false);
-    ctx.fillStyle = isHovered ? '#818cf8' : isNeighbor ? '#6366f1' : isDimmed ? 'rgba(255, 255, 255, 0.1)' : 'rgba(165, 180, 252, 0.8)';
-    if (isHighlighted) {
-      ctx.shadowColor = '#818cf8';
-      ctx.shadowBlur = 10;
-    } else {
-      ctx.shadowBlur = 0;
-    }
-    ctx.fill();
-    ctx.shadowBlur = 0; // reset
-    
-    // Draw Text Label
-    if (!isDimmed && (globalScale > 1.5 || isHighlighted)) {
-      const label = node.name;
-      let fontSize = isHovered ? 14 / globalScale : 12 / globalScale;
-      // bound font size
-      if (fontSize > 14) fontSize = 14;
-      if (fontSize < 3) fontSize = 3;
-      
-      ctx.font = `${fontSize}px Inter, sans-serif`;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'top';
-      ctx.fillStyle = isHovered ? '#ffffff' : 'rgba(255, 255, 255, 0.7)';
-      
-      // truncate label if too long
-      const maxLen = 30;
-      const displayLabel = label.length > maxLen ? label.substring(0, maxLen) + '...' : label;
-      
-      ctx.fillText(displayLabel, node.x, node.y + nodeSize + 2);
-    }
-  }, [hoverNode, neighbors]);
-
-  const nodePointerAreaPaint = useCallback((node: any, color: string, ctx: CanvasRenderingContext2D) => {
-    ctx.fillStyle = color;
-    const nodeSize = 6;
-    ctx.beginPath();
-    ctx.arc(node.x, node.y, nodeSize + 4, 0, 2 * Math.PI, false);
-    ctx.fill();
-  }, []);
-
   const linkColor = useCallback((link: any) => {
     const sourceId = typeof link.source === 'object' ? link.source.id : link.source;
     const targetId = typeof link.target === 'object' ? link.target.id : link.target;
@@ -160,19 +110,27 @@ export default function KnowledgeGraph({ nodes, links }: KnowledgeGraphProps) {
         isFullscreen ? 'fixed inset-4 z-50 shadow-2xl h-[calc(100vh-2rem)]' : 'w-full h-[500px]'
       }`}
     >
-      <ForceGraph2D
+      <ForceGraph3D
         ref={fgRef}
         width={dimensions.width}
         height={dimensions.height}
         graphData={graphData}
-        nodeCanvasObject={paintNode}
-        nodePointerAreaPaint={nodePointerAreaPaint}
+        nodeLabel="name"
+        nodeColor={(node: any) => 
+          hoverNode && (node.id === hoverNode.id || neighbors.get(hoverNode.id)?.has(node.id))
+            ? 'rgba(129, 140, 248, 1)' 
+            : hoverNode
+              ? 'rgba(255, 255, 255, 0.1)'
+              : 'rgba(96, 165, 250, 0.8)'
+        }
+        nodeRelSize={6}
         linkColor={linkColor}
         linkWidth={linkWidth}
         onNodeHover={setHoverNode}
         d3VelocityDecay={0.3}
         warmupTicks={100}
         cooldownTicks={0}
+        backgroundColor="rgba(0,0,0,0)"
       />
       
       {/* Top Left Stats */}

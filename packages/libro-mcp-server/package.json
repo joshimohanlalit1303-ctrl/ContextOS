@@ -1,6 +1,6 @@
 {
   "name": "libro-mcp-server",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "The Model Context Protocol server for the Libro Hive Mind.",
   "main": "dist/index.js",
   "files": [

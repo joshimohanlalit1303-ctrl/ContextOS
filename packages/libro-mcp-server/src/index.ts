@@ -13,7 +13,7 @@ import { LibroClient } from "libro-sdk";
 import express from "express";
 import cors from "cors";
 
-const globalBaseUrl = process.env.LIBRO_BASE_URL || "https://context-os.vercel.app";
+const globalBaseUrl = process.env.LIBRO_BASE_URL || "https://libro.co.in";
 
 /**
  * Creates a unique MCP Server and LibroClient instance for a specific user/API key.
@@ -39,13 +39,13 @@ function createMcpServer(apiKey: string, defaultUserId?: string) {
       tools: [
         {
           name: "libro_ingest",
-          description: "ONLY invoke this tool to save facts/context to the Libro Hive Mind if the user explicitly types the command '/ingest [text]'. DO NOT use this tool autonomously.",
+          description: "Save facts, context, or summaries of the conversation to the Libro Hive Mind. IMPORTANT: If the user says 'ingest everything we talked about' or 'ingest everything about X', you MUST synthesize a detailed, comprehensive summary of the actual knowledge/context from the conversation and ingest that rich content. DO NOT just ingest the literal command string. Make the ingested memory as descriptive and useful as possible.",
           inputSchema: {
             type: "object",
             properties: {
               text: {
                 type: "string",
-                description: "The detailed context or fact to remember.",
+                description: "The detailed context, fact, or comprehensive summary to remember. Do not just use a few words; be as descriptive as necessary to capture the full knowledge.",
               },
               userId: {
                 type: "string",
