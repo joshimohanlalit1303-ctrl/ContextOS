@@ -893,5 +893,53 @@ Return raw arrays of memory objects with their cosine similarity scores.
   ]
 }
 \`\`\`
+
+---
+
+## 4. Agent Segregation (Namespaces)
+If you are building multiple agents (e.g. a "Coding Agent" and a "Support Agent") under the same Libro project, you must ensure their memories do not leak into each other.
+
+Libro provides an elegant way to segregate memories using **Implicit Metadata Filtering**. You do not need to create separate projects or API keys.
+
+### 1. Ingesting with a Namespace
+Simply pass a \`namespace\` (or any arbitrary key) in the metadata payload during ingestion:
+
+\`\`\`javascript
+await fetch('https://libro.co.in/api/v1/ingest', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer libro_sk_...',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    text: "The main server IP is 10.0.0.5",
+    metadata: {
+      namespace: "coding-agent",
+      project: "backend"
+    }
+  })
+});
+\`\`\`
+
+### 2. Searching within a Namespace
+When you retrieve context, simply pass the exact same metadata payload back. Libro will pre-filter the vector index to ensure the semantic search *only* runs over memories matching that namespace!
+
+\`\`\`javascript
+await fetch('https://libro.co.in/api/v1/get-context', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer libro_sk_...',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    query: "What is the server IP?",
+    metadata: {
+      namespace: "coding-agent"
+    }
+  })
+});
+\`\`\`
+
+This pattern can be extended to segregate by \`session_id\`, \`customer_id\`, or \`tenant_id\` effortlessly.
 `
 };
