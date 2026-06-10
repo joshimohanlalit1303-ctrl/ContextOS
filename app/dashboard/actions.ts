@@ -106,23 +106,3 @@ export async function ensureApiKey(): Promise<string> {
   return rawKey
 }
 
-
-export async function deleteAllMemories() {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Not authenticated')
-
-  const { data: apiKeys } = await supabase.from('api_keys').select('id');
-  
-  if (apiKeys && apiKeys.length > 0) {
-    const apiKeyIds = apiKeys.map(k => k.id);
-    const { error } = await supabase.from('memories').delete().in('api_key_id', apiKeyIds);
-    
-    if (error) {
-      console.error('Delete All Error:', error)
-      throw new Error('Failed to delete all memories')
-    }
-  }
-
-  revalidatePath('/dashboard')
-}
