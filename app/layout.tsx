@@ -67,19 +67,43 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "SoftwareApplication",
-              "name": "Libro AMM Layer",
-              "applicationCategory": "DeveloperApplication",
-              "operatingSystem": "Web",
-              "offers": {
-                "@type": "Offer",
-                "price": "0",
-                "priceCurrency": "USD"
+            __html: JSON.stringify([
+              {
+                "@context": "https://schema.org",
+                "@type": "SoftwareApplication",
+                "name": "Libro AMM Layer",
+                "applicationCategory": "DeveloperApplication",
+                "operatingSystem": "Web",
+                "offers": {
+                  "@type": "Offer",
+                  "price": "0",
+                  "priceCurrency": "USD"
+                },
+                "description": "Libro is the best free AMM (AI Memory Management) Layer for AI applications. Add infinite memory to your AI agents with zero pipeline changes. An alternative to complex Pinecone or Langchain setups."
               },
-              "description": "Libro is the best free AMM (AI Memory Management) Layer for AI applications. Add infinite memory to your AI agents with zero pipeline changes. An alternative to complex Pinecone or Langchain setups."
-            })
+              {
+                "@context": "https://schema.org",
+                "@type": "Organization",
+                "name": "Libro",
+                "url": "https://libro.co.in",
+                "logo": "https://libro.co.in/logo.png",
+                "sameAs": [
+                  "https://github.com/joshimohanlalit1303-ctrl/ContextOS",
+                  "https://twitter.com/libro_ai"
+                ]
+              },
+              {
+                "@context": "https://schema.org",
+                "@type": "WebSite",
+                "name": "Libro",
+                "url": "https://libro.co.in",
+                "potentialAction": {
+                  "@type": "SearchAction",
+                  "target": "https://libro.co.in/explore/{search_term_string}",
+                  "query-input": "required name=search_term_string"
+                }
+              }
+            ])
           }}
         />
 
