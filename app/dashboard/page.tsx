@@ -13,7 +13,6 @@ import { eq, desc, count, inArray } from 'drizzle-orm'
 import { Suspense } from 'react'
 import { Skeleton } from '@/components/ui/skeleton'
 import MemoryExplorer from '@/components/MemoryExplorer'
-import VectorPlayground from '@/components/VectorPlayground'
 import DangerZone from '@/components/DangerZone'
 export default async function DashboardPage() {
   const supabase = await createClient()
@@ -90,8 +89,6 @@ export default async function DashboardPage() {
           <HiveMindGraph apiKeyIds={apiKeyIds} />
         </Suspense>
 
-        {/* Vector Playground */}
-        <VectorPlayground />
 
         {/* Recent Memories Section - API Memories */}
         <Suspense fallback={<MemoriesSkeleton />}>

@@ -106,36 +106,6 @@ export async function ensureApiKey(): Promise<string> {
   return rawKey
 }
 
-export async function searchMemories(query: string) {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Not authenticated')
-
-  // We need to fetch the embedding for the query.
-  // Using dynamic import so it doesn't break edge runtime if not supported, but Server Actions are Node by default usually.
-  const { generateEmbedding } = await import('@/utils/embeddings')
-  const query_embedding = await generateEmbedding(query, 'search_query')
-
-  // Call the Supabase match_memories RPC
-  const { data, error } = await supabase.rpc('match_memories', {
-    query_embedding: query_embedding,
-    match_count: 5,
-    user_id_param: user.id
-  })
-
-  if (error) {
-    console.error('RPC Error:', error)
-    throw new Error('Failed to search memories')
-  }
-
-  return data as Array<{
-    id: string;
-    content: string;
-    metadata: any;
-    similarity: number;
-    created_at: string;
-  }>
-}
 
 export async function deleteAllMemories() {
   const supabase = await createClient()
