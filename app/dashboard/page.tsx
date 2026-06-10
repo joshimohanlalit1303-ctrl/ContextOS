@@ -119,7 +119,7 @@ export default async function DashboardPage() {
               View Docs →
             </Link>
           </div>
-
+        </section>
 
       </div>
     </div>
